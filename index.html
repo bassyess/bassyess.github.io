@@ -172,7 +172,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-17 16:25:32" itemprop="dateModified" datetime="2020-02-17T16:25:32+08:00">2020-02-17</time>
+                <time title="修改时间：2020-02-17 20:31:05" itemprop="dateModified" datetime="2020-02-17T20:31:05+08:00">2020-02-17</time>
               </span>
 
           
@@ -199,7 +199,7 @@
 <li>集成算法：集成算法用一些相对较弱的学习模型队里地就同样的样本进行训练，然后把结果整合起来进行整体预测。集成算法的主要难点在于究竟集成哪些独立的较弱的学习模型以及如何把学习结果整合起来。常见的算法包括：Boosting，Bootstrapped Aggregation(Bagging)，AdaBoost，堆叠泛化（Stacked Generalization, Blending），梯度推进及（Gradient Boosting Machine, GBM），随机森林（Random Forest）。</li>
 <li>人工神经网络：人工神经网络算法模拟生物神经网络，是一类模式匹配算法， 通常用于解决分类和回归问题。重要的人工神经网络算法包括：感知器神经网络（Perceptron Neural Network），反向传递（Back Propagation），自组织映射（Self-Organizing Map，SOM）以及学习矢量量化（Learning Vector Quantization, LVQ）。</li>
 </ol>
-<h1 id="数学问题"><a href="#数学问题" class="headerlink" title="数学问题"></a>数学问题</h1><h2 id="SGD-Momentum-Adagard-Adam原理"><a href="#SGD-Momentum-Adagard-Adam原理" class="headerlink" title="SGD,Momentum,Adagard,Adam原理"></a>SGD,Momentum,Adagard,Adam原理</h2><h3 id="1-SGD、BGD和Mini-BGD"><a href="#1-SGD、BGD和Mini-BGD" class="headerlink" title="1. SGD、BGD和Mini-BGD:"></a>1. SGD、BGD和Mini-BGD:</h3><p>SGD(stochastic gradient descent):随机梯度下降，算法在每读入一个数据都会立刻计算loss function的梯度来更新参数，假设loss function为L(w),下同。</p>
+<h1 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h1><h2 id="SGD-Momentum-Adagard-Adam原理"><a href="#SGD-Momentum-Adagard-Adam原理" class="headerlink" title="SGD,Momentum,Adagard,Adam原理"></a>SGD,Momentum,Adagard,Adam原理</h2><h3 id="1-SGD、BGD和Mini-BGD"><a href="#1-SGD、BGD和Mini-BGD" class="headerlink" title="1. SGD、BGD和Mini-BGD:"></a>1. SGD、BGD和Mini-BGD:</h3><p>SGD(stochastic gradient descent):随机梯度下降，算法在每读入一个数据都会立刻计算loss function的梯度来更新参数，假设loss function为L(w),下同。</p>
 <script type="math/tex; mode=display">w-=\eta \bigtriangledown_{w_{i}}L(w_{i})</script><p>优点：收敛的速度快，可以实现在线更新，能够跳出局部最优<br>缺点：很容易陷入到局部最优，困在马鞍点<br>BGD(batch gradient decent):批量梯度下降，算法在读取整个数据集后累加来计算损失函数的梯度。</p>
 <script type="math/tex; mode=display">w-=\eta \bigtriangledown_{w}L(w)</script><p>优点：如果loss function为convex(凸函数)，则基本可以找到全局最优解<br>缺点：数据处理量大，导致梯度下降慢；不能实时增加实例，在线更新；训练占内存<br>Mini-BGD(mini-batch gradient descent):选择小批量数据进行梯度下降，这是一个折中的方法，采用训练集的子集(mini-batch)来计算loss function的梯度：</p>
 <script type="math/tex; mode=display">w-=\eta \bigtriangledown_{w_{i:i+n}}L(w_{i:i+n})</script><p>这个优化方法用的比较多，计算效率高且收敛稳定，是现在深度学习的主流方法。<br>上面的方法都存在一个问题，就是update更新的方向完全依赖计算出来的梯度，很容易陷入局部最优的马鞍点。能不能改变其走向，又保证原本的梯度方向，就像向量变换一样，我们模拟物理中物体流动的动量概念（惯性），引入Momentum的概念。</p>
@@ -237,7 +237,22 @@ f(x)=
 x &\text(if\ x>0)\\
 \alpha(e^x-1) &\text{otherwise}
 \end{cases}</script><p>函数及其导数的图像如下：<br><img src="/images/ELU函数.png" alt="ELU函数及导数图像"><br>显然，ELU有ReLU的基本所有优点，以及不会有Dead ReLU问题，输出的均值接近于0，是zero-centered。它的一个小问题在于计算量稍大。</p>
-
+<h2 id="神经网络权重初始化方式"><a href="#神经网络权重初始化方式" class="headerlink" title="神经网络权重初始化方式"></a>神经网络权重初始化方式</h2><p>在深度学习找那个，神经网络的权重初始化方法(weight initialization)对模型的收敛速度和性能有着至关重要的影响。神经网络其实就是对权重参数w的不停迭代更新，以期达到较好的性能。在深度神经网络中，随着层数的增多，在梯度下降的过程中，极易出现梯度消失或者梯度爆炸。因此，对权重w的初始化显得至关重要，一个好的权重初始化虽然不能完全解决梯度消失和梯度爆炸问题，但是对于处理这两个问题是由很大的帮助的，并且十分有利于模型性能和收敛速度。</p>
+<h3 id="初始化为0"><a href="#初始化为0" class="headerlink" title="初始化为0"></a>初始化为0</h3><p>在线性回归和logistics回归中可以使用，因为隐藏层只有一层。在超过一层的神经网络中就不能够使用了。因为如果所有的权重参数都为0，那么所有的神经元输出都是一样的，在反向传播时向后传递的梯度也是一致，将无法发挥多层的效果，实际上相当于一层隐藏层。</p>
+<h3 id="随机初始化"><a href="#随机初始化" class="headerlink" title="随机初始化"></a>随机初始化</h3><p>卷积层的方差为：</p>
+<script type="math/tex; mode=display">Var(w_ix_i)=E[w_i]^2Var(x_i)+E[x_i]^2Var(w_i)+Var(w_i)Var(x_i)</script><p>使用高斯随机初始化时要把W随机初始化到一个相对较小的值，因为如果X很大的话，W又相对较大，会导致输出值特别大，这样如果激活函数是sigmoid，就会导致sigmoid的输出值为1或0，导致更多的问题。但是随机初始化也有缺点，在均值为0，方差为1的高斯分布中，当神经网络层数增加时，会发现越往高层的激活函数（tanh函数）的输出值几乎都接近于0，使得神经元不被激活。</p>
+<h3 id="Xavier初始化"><a href="#Xavier初始化" class="headerlink" title="Xavier初始化"></a>Xavier初始化</h3><p>每层的权重初始化为：</p>
+<script type="math/tex; mode=display">W\sim U[-\frac{\sqrt{6}}{\sqrt{n_j+n_{j+1}}}, \frac{\sqrt{6}}{\sqrt{n_j+n_{j+1}}}]</script><p>服从均匀分布，$n_j$为输入层的参数，$n_{j+1}$为输出层参数。<br>Xavier是为了解决随机初始化问题而提出的一种初始化方式，其思想是尽可能让输入和输出服从相同的分布，这样能够避免高层的激活函数的输出值趋向于0。虽然Xavier初始化能很好地用于tanh函数，但是对于目前最常用的ReLU激活函数，还是无能为力，因此引出He initialization。</p>
+<h3 id="MSRA-He-initialization"><a href="#MSRA-He-initialization" class="headerlink" title="MSRA/He initialization"></a>MSRA/He initialization</h3><p>Xavier初始化对于Relu激活函数表现非常不好，因此何恺明针对ReLU重新推导，每层的初始化公式为：</p>
+<script type="math/tex; mode=display">W\sim U[0, \sqrt{\frac{2}{n}}]</script><p>是一个均值为0，方差为$\frac{2}{n}$的高斯分布。<br>缺点是：MSRA方法只考虑一个方向，无法使得正向反向传播时方差变化都很小。</p>
+<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><h3 id="损失函数、代价函数与目标函数"><a href="#损失函数、代价函数与目标函数" class="headerlink" title="损失函数、代价函数与目标函数"></a>损失函数、代价函数与目标函数</h3><p>损失函数(Loss Function)：是定义在单个样本上的，是指一个样本的误差。<br>代价函数(Cost Function)：是定义在整个训练集上，是所有样本误差的平均值，也就是所有损失函数值的平均。<br>目标函数(Object Function)：是指最终需要优化的函数，一般来说是代价函数+正则化项。</p>
+<h3 id="常用的损失函数"><a href="#常用的损失函数" class="headerlink" title="常用的损失函数"></a>常用的损失函数</h3><p>（1）0-1损失函数(0-1 loss function)</p>
+<script type="math/tex; mode=display">
+L(y, f(x))=
+\begin{cases}
+1, &\text{y\ne f(x)}\\
+0, &\text{y=f(x)}
+\end{cases}</script>
       
     </div>
 
