@@ -172,7 +172,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-17 11:02:38" itemprop="dateModified" datetime="2020-02-17T11:02:38+08:00">2020-02-17</time>
+                <time title="修改时间：2020-02-17 16:20:03" itemprop="dateModified" datetime="2020-02-17T16:20:03+08:00">2020-02-17</time>
               </span>
 
           
@@ -188,7 +188,7 @@
       
           <h1 id="机器学习常见问题"><a href="#机器学习常见问题" class="headerlink" title="机器学习常见问题"></a>机器学习常见问题</h1><h2 id="传统的机器学习算法了解吗？"><a href="#传统的机器学习算法了解吗？" class="headerlink" title="传统的机器学习算法了解吗？"></a>传统的机器学习算法了解吗？</h2><p>常见的机器学习算法包括：</p>
 <ol>
-<li>回归算法：回归算法是试图采用对误差的衡量来探索变量之间的关系的一类算法。回归算法是统计机器学习的利器，常见的回归算法包括：最小二乘法（Ordinary Least Square），逻辑回归（Logistic Regression）,逐步式回归（Stepwise Regression），多元自适应回归样条（Multivariate Adaptive Regression Splines）以及本地三点平滑估计（Locally Estimated Scatterplot Smoothing）。</li>
+<li>回归算法：回归算法是试图采用对误差的衡量来探索变量之间的关系的一类算法。回归算法是统计机器学习的利器，常见的回归算法包括：最小二乘法（Ordinary Least Square），逻辑回归（Logistic Regression）,逐步式回归（Stepwise Regression），多元自适应回归样条（Multivariate Adaptive Regression Splines）以及本地散点平滑估计（Locally Estimated Scatterplot Smoothing）。</li>
 <li>基于实例的算法：基于实例的算法常常用来对决策问题建立模型，这样的模型常常先选择一批样本数据，然后根据某些近似性把新数据与样本数据进行比较通过这种方式来寻找最佳的匹配。因此，基于实例的算法也被称为“基于记忆的学习”。常见的算法包括k-Nearest Neighbor(KNN)，学习矢量量化（Learning Vector Quantization, LVQ）以及自组织映射算法（Self-Organizing Map, SOM）。</li>
 <li>决策树学习：决策树算法根据数据的属性采用树状结构建立决策模型，决策树模型常常用来解决分类和回归问题。常见的算法包括：分类及回归树（Classification And Regression Tree, CART），随机森林（Random Forest），多元自适应回归样条（MARS）以及梯度推进及（Gradient Boosting Machine, GBM）。</li>
 <li>贝叶斯方法：贝叶斯算法是基于贝叶斯定理的一类算法，主要用来解决分类和回归问题。常见算法包括：朴素贝叶斯算法，平均单依赖估计（Averaged One-Dependence Estimators, AODE）以及Bayesian Belief Network(BBN)。</li>
@@ -199,35 +199,47 @@
 <li>集成算法：集成算法用一些相对较弱的学习模型队里地就同样的样本进行训练，然后把结果整合起来进行整体预测。集成算法的主要难点在于究竟集成哪些独立的较弱的学习模型以及如何把学习结果整合起来。常见的算法包括：Boosting，Bootstrapped Aggregation(Bagging)，AdaBoost，堆叠泛化（Stacked Generalization, Blending），梯度推进及（Gradient Boosting Machine, GBM），随机森林（Random Forest）。</li>
 <li>人工神经网络：人工神经网络算法模拟生物神经网络，是一类模式匹配算法， 通常用于解决分类和回归问题。重要的人工神经网络算法包括：感知器神经网络（Perceptron Neural Network），反向传递（Back Propagation），自组织映射（Self-Organizing Map，SOM）以及学习矢量量化（Learning Vector Quantization, LVQ）。</li>
 </ol>
-<h1 id="数学问题"><a href="#数学问题" class="headerlink" title="数学问题"></a>数学问题</h1><h2 id="SGD-Momentum-Adagard-Adam原理"><a href="#SGD-Momentum-Adagard-Adam原理" class="headerlink" title="SGD,Momentum,Adagard,Adam原理"></a>SGD,Momentum,Adagard,Adam原理</h2><ol>
-<li>SGD、BGD和Mini-BGD:<br>SGD(stochastic gradient descent):随机梯度下降，算法在每读入一个数据都会立刻计算loss function的梯度来更新参数，假设loss function为L(w),下同。<script type="math/tex; mode=display">w-=\eta \bigtriangledown_{w_{i}}L(w_{i})</script>优点：收敛的速度快，可以实现在线更新，能够跳出局部最优<br>缺点：很容易陷入到局部最优，困在马鞍点<br>BGD(batch gradient decent):批量梯度下降，算法在读取整个数据集后累加来计算损失函数的梯度。<script type="math/tex; mode=display">w-=\eta \bigtriangledown_{w}L(w)</script>优点：如果loss function为convex(凸函数)，则基本可以找到全局最优解<br>缺点：数据处理量大，导致梯度下降慢；不能实时增加实例，在线更新；训练占内存<br>Mini-BGD(mini-batch gradient descent):选择小批量数据进行梯度下降，这是一个折中的方法，采用训练集的子集(mini-batch)来计算loss function的梯度：<script type="math/tex; mode=display">w-=\eta \bigtriangledown_{w_{i:i+n}}L(w_{i:i+n})</script>这个优化方法用的比较多，计算效率高且收敛稳定，是现在深度学习的主流方法。<br>上面的方法都存在一个问题，就是update更新的方向完全依赖计算出来的梯度，很容易陷入局部最优的马鞍点。能不能改变其走向，又保证原本的梯度方向，就像向量变换一样，我们模拟物理中物体流动的动量概念（惯性），引入Momentum的概念。</li>
-<li>Momentum<br>在更新方向的时候保留之前的方向，增加稳定性而且还有摆脱局部最优的能力。<script type="math/tex; mode=display">\Delta w=\alpha \Delta w- \eta \bigtriangledown L(w)</script><script type="math/tex; mode=display">w=w+\Delta w</script>若当前梯度的方向与历史梯度方向一致（表明当前样本不太可能为异常点），则会增强这个方向的梯度，若当前梯度与历史梯度方向不一致，则梯度会衰减。一种形象的解释是：我们把一个球推下山，球在下坡时积聚动量，在途中变得越来越快，<script type="math/tex">\eta</script>可视为空气阻力，若球的方向发生变化，则动量会衰减。</li>
-<li>Adagrad<br>Adagrad(adaptive gradient)自适应梯度算法，是一种改进的随机梯度下降算法。以前的算法中，每一个参数都使用相同的学习率<script type="math/tex">\alpha</script>,而Adagrad算法能够在训练中自动对learning_rate进行调整，出现频率较低参数采用较大的<script type="math/tex">\alpha</script>更新，出现频率较高的参数采用较小的<script type="math/tex">\alpha</script>更新，根据描述这个优化方法很适合处理稀疏数据。<script type="math/tex; mode=display">G=\sum ^{t}_{\tau=1}g_{\tau} g_{\tau}^{T} 　其中 s.t. g_{\tau}=\bigtriangledown L(w_{i})</script>对角矩阵<script type="math/tex; mode=display">G_{j,j}=\sum _{\tau=1}^{t} g_{\tau,j\cdot}^{2}</script>这个对角线矩阵的元素代表的是参数的出现频率，每个参数的更新：<script type="math/tex; mode=display">w_{j}=w_{j}-\frac{\eta}{\sqrt{G_{j,j}}}g_{j}</script></li>
-<li>RMSprop<br>RMSprop(root mean square propagation)也是一种自适应学习率方法，不同之处在于，Adagrad会累加之前所有的梯度平方，RMSprop仅仅是计算对应的平均值，可以缓解Adagrad算法学习率下降较快的问题。<script type="math/tex; mode=display">v(w,t)=\gamma v(w,t-1)+(1-\gamma)(\bigtriangledown L(w_{i}))^{2}  ,其中 \gamma 是遗忘因子</script>参数更新<script type="math/tex; mode=display">w=w-\frac{\eta}{\sqrt{v(w,t)}}\bigtriangledown L(w_{i})</script></li>
-<li>Adam<br>Adam(adaptive moment eatimation)是对RMSprop优化器的更新，利用梯度的一阶矩估计和二阶矩估计动态调整每个参数的学习率。优点：每一次迭代学习率都有一个明确的范围，使得参数变化很平稳。<script type="math/tex; mode=display">m_{w}^{t+1}=\beta_{1}m_{w}^{t}+(1-\beta_{1}) \bigtriangledown L^{t} ,m为一阶矩估计</script><script type="math/tex; mode=display">v_{w}^{t+1}=\beta_{2}m_{w}^{t}+(1-\beta_{2}) (\bigtriangledown L^{t})^{2},v为二阶矩估计</script><script type="math/tex; mode=display">\hat{m}_{w}=\frac{m_{w}^{t+1}}{1-\beta_{1}^{t+1}}，估计校正，实现无偏估计</script><script type="math/tex; mode=display">\hat{v}_{w}=\frac{v_{w}^{t+1}}{1-\beta_{2}^{t+1}}</script><script type="math/tex; mode=display">w^{t+1} \leftarrow=w^{t}-\eta \frac{\hat{m}_{w}}{\sqrt{\hat{v}_{w}}+\epsilon}</script>Adam是实际中最常用的算法</li>
-</ol>
+<h1 id="数学问题"><a href="#数学问题" class="headerlink" title="数学问题"></a>数学问题</h1><h2 id="SGD-Momentum-Adagard-Adam原理"><a href="#SGD-Momentum-Adagard-Adam原理" class="headerlink" title="SGD,Momentum,Adagard,Adam原理"></a>SGD,Momentum,Adagard,Adam原理</h2><h3 id="1-SGD、BGD和Mini-BGD"><a href="#1-SGD、BGD和Mini-BGD" class="headerlink" title="1. SGD、BGD和Mini-BGD:"></a>1. SGD、BGD和Mini-BGD:</h3><p>SGD(stochastic gradient descent):随机梯度下降，算法在每读入一个数据都会立刻计算loss function的梯度来更新参数，假设loss function为L(w),下同。</p>
+<script type="math/tex; mode=display">w-=\eta \bigtriangledown_{w_{i}}L(w_{i})</script><p>优点：收敛的速度快，可以实现在线更新，能够跳出局部最优<br>缺点：很容易陷入到局部最优，困在马鞍点<br>BGD(batch gradient decent):批量梯度下降，算法在读取整个数据集后累加来计算损失函数的梯度。</p>
+<script type="math/tex; mode=display">w-=\eta \bigtriangledown_{w}L(w)</script><p>优点：如果loss function为convex(凸函数)，则基本可以找到全局最优解<br>缺点：数据处理量大，导致梯度下降慢；不能实时增加实例，在线更新；训练占内存<br>Mini-BGD(mini-batch gradient descent):选择小批量数据进行梯度下降，这是一个折中的方法，采用训练集的子集(mini-batch)来计算loss function的梯度：</p>
+<script type="math/tex; mode=display">w-=\eta \bigtriangledown_{w_{i:i+n}}L(w_{i:i+n})</script><p>这个优化方法用的比较多，计算效率高且收敛稳定，是现在深度学习的主流方法。<br>上面的方法都存在一个问题，就是update更新的方向完全依赖计算出来的梯度，很容易陷入局部最优的马鞍点。能不能改变其走向，又保证原本的梯度方向，就像向量变换一样，我们模拟物理中物体流动的动量概念（惯性），引入Momentum的概念。</p>
+<h3 id="2-Momentum"><a href="#2-Momentum" class="headerlink" title="2. Momentum"></a>2. Momentum</h3><p>在更新方向的时候保留之前的方向，增加稳定性而且还有摆脱局部最优的能力。</p>
+<script type="math/tex; mode=display">\Delta w=\alpha \Delta w- \eta \bigtriangledown L(w)</script><script type="math/tex; mode=display">w=w+\Delta w</script><p>若当前梯度的方向与历史梯度方向一致（表明当前样本不太可能为异常点），则会增强这个方向的梯度，若当前梯度与历史梯度方向不一致，则梯度会衰减。一种形象的解释是：我们把一个球推下山，球在下坡时积聚动量，在途中变得越来越快，<script type="math/tex">\eta</script>可视为空气阻力，若球的方向发生变化，则动量会衰减。</p>
+<h3 id="3-Adagrad"><a href="#3-Adagrad" class="headerlink" title="3. Adagrad"></a>3. Adagrad</h3><p>Adagrad(adaptive gradient)自适应梯度算法，是一种改进的随机梯度下降算法。以前的算法中，每一个参数都使用相同的学习率<script type="math/tex">\alpha</script>,而Adagrad算法能够在训练中自动对learning_rate进行调整，出现频率较低参数采用较大的<script type="math/tex">\alpha</script>更新，出现频率较高的参数采用较小的<script type="math/tex">\alpha</script>更新，根据描述这个优化方法很适合处理稀疏数据。</p>
+<script type="math/tex; mode=display">G=\sum ^{t}_{\tau=1}g_{\tau} g_{\tau}^{T} \quad s.t. \ g_{\tau}=\bigtriangledown L(w_{i})$$　
+对角矩阵
+$$G_{j,j}=\sum _{\tau=1}^{t} g_{\tau,j\cdot}^{2}</script><p>这个对角线矩阵的元素代表的是参数的出现频率，每个参数的更新：</p>
+<script type="math/tex; mode=display">w_{j}=w_{j}-\frac{\eta}{\sqrt{G_{j,j}}}g_{j}</script><h3 id="4-RMSprop"><a href="#4-RMSprop" class="headerlink" title="4. RMSprop"></a>4. RMSprop</h3><p>RMSprop(root mean square propagation)也是一种自适应学习率方法，不同之处在于，Adagrad会累加之前所有的梯度平方，RMSprop仅仅是计算对应的平均值，可以缓解Adagrad算法学习率下降较快的问题。</p>
+<script type="math/tex; mode=display">v(w,t)=\gamma v(w,t-1)+(1-\gamma)(\bigtriangledown L(w_{i}))^{2}</script><p>其中 $\gamma$ 是遗忘因子</p>
+<p>参数更新</p>
+<script type="math/tex; mode=display">w=w-\frac{\eta}{\sqrt{v(w,t)}}\bigtriangledown L(w_{i})</script><h3 id="5-Adam"><a href="#5-Adam" class="headerlink" title="5. Adam"></a>5. Adam</h3><p>Adam(adaptive moment eatimation)是对RMSprop优化器的更新，利用梯度的一阶矩估计和二阶矩估计动态调整每个参数的学习率。优点：每一次迭代学习率都有一个明确的范围，使得参数变化很平稳。</p>
+<script type="math/tex; mode=display">m_{w}^{t+1}=\beta_{1}m_{w}^{t}+(1-\beta_{1}) \bigtriangledown L^{t}</script><script type="math/tex; mode=display">v_{w}^{t+1}=\beta_{2}m_{w}^{t}+(1-\beta_{2}) (\bigtriangledown L^{t})^{2}</script><p>其中，m为一阶矩估计，v为二阶矩估计，然后进行估计校正，实现无偏估计</p>
+<script type="math/tex; mode=display">\hat{m}_{w}=\frac{m_{w}^{t+1}}{1-\beta_{1}^{t+1}}</script><script type="math/tex; mode=display">\hat{v}_{w}=\frac{v_{w}^{t+1}}{1-\beta_{2}^{t+1}}</script><script type="math/tex; mode=display">w^{t+1} \leftarrow=w^{t}-\eta \frac{\hat{m}_{w}}{\sqrt{\hat{v}_{w}}+\epsilon}</script><p>Adam是实际中最常用的算法</p>
 <h2 id="L1、L2范数"><a href="#L1、L2范数" class="headerlink" title="L1、L2范数"></a>L1、L2范数</h2><p>在机器学习中几乎可以看到在损失函数后面后悔添加一个额外项，常用的额外项一般有两种，称为L1正则化和L2正则化，或者L1范数和L2范数。L1范数和L2范数可以看做是损失函数的惩罚想，所谓“惩罚”是指对损失函数中的某些参数做些限制。对于现行回归模型，使用L1范数的模型叫做Lasso回归，使用L2范数的模型叫做Ridge回归（岭回归）。</p>
-<ol>
-<li>L1范数<br>L1范数是指向量中各个元素绝对值之和，也叫“稀疏规则算子”(Lasso regularization)。稀疏的意思是可以让权重矩阵的一部分值等于0。为什么L1范数会使权值稀疏？有一种回答“它是L0范数的最优凸近似”，还存在一种更优雅的回答：任何的规则算子，如果他在<script type="math/tex">w_{i}=0</script>处不可微，并且可以分解为一个“求和”的形式，那么这个规则化算子可以实现稀疏。<script type="math/tex; mode=display">||x||_{1}=\sum_{i}|x_{i}|</script>L1范数可以实现稀疏，而实现稀疏的作用为：</li>
-</ol>
+<h3 id="1-L1范数"><a href="#1-L1范数" class="headerlink" title="1. L1范数"></a>1. L1范数</h3><p>L1范数是指向量中各个元素绝对值之和，也叫“稀疏规则算子”(Lasso regularization)。稀疏的意思是可以让权重矩阵的一部分值等于0。为什么L1范数会使权值稀疏？有一种回答“它是L0范数的最优凸近似”，还存在一种更优雅的回答：任何的规则算子，如果他在$w_{i}=0$处不可微，并且可以分解为一个“求和”的形式，那么这个规则化算子可以实现稀疏。</p>
+<script type="math/tex; mode=display">||x||_{1}=\sum_{i}|x_{i}|</script><p>L1范数可以实现稀疏，而实现稀疏的作用为：</p>
 <ul>
 <li>可解释性：可以看到到底是哪些特征和预测的信息有关</li>
-<li>特征选择：输入的x的大部分特征与输出y是没有关系的，如果让参数矩阵w中出现许多0，则可以直接干掉与y无关的元素，也就是选择出于y真正相关的特征。如果不这么做，那么x中本来与y无关的特征也加入到模型中，虽然会更好的减小训练误差，但是在预测新样本时会考虑到无关的信息，干扰了预测。</li>
+<li>特征选择：输入的x的大部分特征与输出y是没有关系的，如果让参数矩阵w中出现许多0，则可以直接干掉与y无关的元素，也就是选择出于y真正相关的特征。如果不这么做，那么x中本来与y无关的特征也加入到模型中，虽然会更好的减小训练误差，但是在预测新样本时会考虑到无关的信息，干扰了预测。<h3 id="2-L2范数"><a href="#2-L2范数" class="headerlink" title="2. L2范数"></a>2. L2范数</h3>L2范数是指向量中各元素的平方和然后再求平方根，也叫做“岭回归(Ridge Regression)”，或叫做“权值衰减(weight decay)”。<script type="math/tex; mode=display">||x||_{2}=\sqrt{\sum_{i}x_{i}^2}</script>L2范数与L1范数不同，它不会让参数等于0，而是让每个参数都接近于0。L2范数的优点是：</li>
+<li>防止过拟合。一般的用法是在损失函数后面加上w的L2范数，即$||x||_{2}$，这是一种规则。</li>
+<li>优化求解变得稳定快速。简单地说它可以让$w$在接近全局最优点$w^*$的时候，还保持较大的梯度。这样可以跳出局部最优，也使得收敛速度变快。<br>总之，L1会趋向产生少量的特征，而其他的特征都是0，L2会产生更多地特征但都会接近于0。L1在特征选择时候非常有用，而L2就是一种规则化而已<h3 id="3-L1不可导的时候该怎么办"><a href="#3-L1不可导的时候该怎么办" class="headerlink" title="3. L1不可导的时候该怎么办"></a>3. L1不可导的时候该怎么办</h3>当损失函数不可导，梯度下降不再有效，可以使用坐标轴下降法。梯度下降是沿着当前点的负梯度方向进行参数更新，而坐标轴下降法是沿着坐标轴的方向。假设有m个特征个数，坐标轴下降法进行参数更新的时候，先固定m-1个值，然后再求另外一个的局部最优解，从而避免损失函数不可导问题。坐标轴下降法每轮迭代都需要O(mn)的计算，和梯度下降算法相同。</li>
 </ul>
-<ol>
-<li>L2范数<br>L2范数是指向量中各元素的平方和然后再求平方根，也叫做“岭回归(Ridge Regression)”，或叫做“权值衰减(weight decay)”。<script type="math/tex; mode=display">||x||_{2}=\sqrt{\sum_{i}}x_{i}^2</script>L2范数与L1范数不同，它不会让参数等于0，而是让每个参数都接近于0。L2范数的优点是：</li>
-</ol>
-<ul>
-<li>防止过拟合。一般的用法是在损失函数后面加上w的L2范数，即<script type="math/tex">||x||_{2}</script>，这是一种规则。</li>
-<li>优化求解变得稳定快速。简单地说它可以让<script type="math/tex">w</script>在接近全局最优点<script type="math/tex">w^*</script>的时候，还保持较大的梯度。这样可以跳出局部最优，也使得收敛速度变快。<br>总之，L1会趋向产生少量的特征，而其他的特征都是0，L2会产生更多地特征但都会接近于0。L1在特征选择时候非常有用，而L2就是一种规则化而已</li>
-</ul>
-<ol>
-<li>L1不可导的时候该怎么办<br>当损失函数不可导，梯度下降不再有效，可以使用坐标轴下降法。梯度下降是沿着当前点的负梯度方向进行参数更新，而坐标轴下降法是沿着坐标轴的方向。假设有m个特征个数，坐标轴下降法进行参数更新的时候，先固定m-1个值，然后再求另外一个的局部最优解，从而避免损失函数不可导问题。坐标轴下降法每轮迭代都需要O(mn)的计算，和梯度下降算法相同。</li>
-</ol>
-<h2 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h2><p>神经网络的每个神经元接受上一层神经元的输出值作为本神经元的输入值，并将输入值传递给下一层，输入神经元节点会将输入属性值直接传递给下一层（隐藏层或输出层）。上层函数的输出和下层节点的输入之间具有一个哈数关系，这个函数称为激活函数。如果不用激活函数，在这种情况下每一层节点的输入都是上一层输出的线性函数，很容易验证，无论神经网络有多少层，输出都是输入的线性组合，与没有隐藏层效果相当，这种情况就是最原始的感知机（Perceptron），那么网络的逼近能力就相当有限。我们引入非线性函数作为激励函数，这样深层神经网络表达能力就更加强大，几乎可以逼近任意函数。</p>
-<ol>
-<li>Sigmoid函数<br>Signoid是常用的非线性的激活函数，它的数学形式如下：<script type="math/tex; mode=display">f(z)=\frac{1}{1+e^{-z}}</script>Sigmoid的几何如下：<br><img src="/images/Sigmoid.png" alt="Sigmoid函数"></li>
-</ol>
+<h2 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h2><p>神经网络的每个神经元接受上一层神经元的输出值作为本神经元的输入值，并将输入值传递给下一层，输入神经元节点会将输入属性值直接传递给下一层（隐藏层或输出层）。上层函数的输出和下层节点的输入之间具有一个函数关系，这个函数称为激活函数。如果不用激活函数，在这种情况下每一层节点的输入都是上一层输出的线性函数，很容易验证，无论神经网络有多少层，输出都是输入的线性组合，与没有隐藏层效果相当，这种情况就是最原始的感知机（Perceptron），那么网络的逼近能力就相当有限。我们引入非线性函数作为激励函数，这样深层神经网络表达能力就更加强大，几乎可以逼近任意函数。</p>
+<h3 id="1-Sigmoid函数"><a href="#1-Sigmoid函数" class="headerlink" title="1. Sigmoid函数"></a>1. Sigmoid函数</h3><p>Signoid是常用的非线性的激活函数，它的数学形式如下：</p>
+<script type="math/tex; mode=display">f(z)=\frac{1}{1+e^{-z}}</script><p>Sigmoid的几何如下：<br><img src="/images/Sigmoid.png" alt="Sigmoid函数"><br>特点：它能够把输入的连续实值变换为0和1之间的输出，对于非常大的负数则输出为0，非常大的正数则输出为1.<br>缺点：1）在深度神经网络中梯度反向传递时导致梯度爆炸和梯度消失，其中梯度爆炸发生的概率非常小，而梯度消失发生的概率比较大。Sigmoid函数的倒数如下所示：<br><img src="/images/Sigmoid导数.png" alt="Sigmoid的导数"><br>如果我们初始化神经网络的权值为[0,1]之间的随机值，由反向传播算法的数学推导可知，梯度从后向前传播时，没传递一层梯度值都会减少为原来的0.25倍，如果神经网络隐藏层特别多时，那么梯度在多层传递之后就变得非常小接近于0，即出现梯度消失现象；当网络权值初始化为$(1,+\infty)$区间的值，则会出现梯度爆炸情况。<br>2）Sigmoid的输出不是0均值，这会导致后一层的神经元将上一层的神经元输出的非0均值的信号作为输入。产生的结果是：如果$x&gt;0, f=w^Tx+b$，那么对$w$求局部梯度则都为正，这样反向传播的过程中$w$要么都向正方向更新，要么都往负方向更新，使得收敛缓慢。当然，如果按batch训练，那么那个batch可能会得到不同的信号，这个问题可以缓解一下。非0均值问题虽然会产生一些不好的影响，不过跟梯度消失问题相比还是要好很多。<br>3）其解析式中含有幂运算，计算求解时相对比较耗时。对于规模较大的深度网络，这回较大地增加训练时间。</p>
+<h3 id="2-tanh函数"><a href="#2-tanh函数" class="headerlink" title="2. tanh函数"></a>2. tanh函数</h3><p>tanh函数的解析式：</p>
+<script type="math/tex; mode=display">tanh(x)=\frac{e^x-x^{-x}}{e^x+e^{-x}}</script><p>tanh函数及其导数的几何图像如下：<br><img src="/images/tanh函数.png" alt="tanh函数及其导数"><br>tanh函数解决了Sigmoid函数不是zero-centered输出的问题，然而，梯度消失的问题和幂运算的问题仍然存在。</p>
+<h3 id="3-Relu函数"><a href="#3-Relu函数" class="headerlink" title="3. Relu函数"></a>3. Relu函数</h3><p>Relu函数的解析式：</p>
+<script type="math/tex; mode=display">Relu=max(0, x)</script><p>Relu函数及其导数的图像如下图所示：<br><img src="/images/Relu函数.png" alt="Relu函数及其导数"><br>ReLU其实是一个取最大值函数，注意这并不是全区间可导的，但是我们可以取sub-gradient，如上图所示。<br>优点：1）解决了梯度消失问题(gradient vanishing)问题（在正区间）。 2）计算速度非常快，只需要判断输入是否大于0。 3）收敛速度远快于sigmoid和tanh函数。<br>ReLU也有几个需要注意的问题：<br>1）ReLU的输出不是zero-centered。 2）Dead ReLU Problem，指的是某些神经元可能永远不会被激活，导致相应的参数永远不会被更新。有两个主要原因可能会导致这种情况：参数的初始化或learning_rate太大导致训练过程中参数更新太大进入这种状态。解决的方法是采用Xavier初始化方法，以及避免将learning rate设置太大或使用adagrad等自动调节learning rate的算法。<br>Xavier初始化方法是一种很有效的神经网络初始化方法，为了使得网络中信息更好的流动，每一层输出的方法应该尽量相等。</p>
+<h3 id="4-Leaky-ReLU函数"><a href="#4-Leaky-ReLU函数" class="headerlink" title="4. Leaky ReLU函数"></a>4. Leaky ReLU函数</h3><p>函数表达式：</p>
+<script type="math/tex; mode=display">f(x)=max(\alpha x, x)</script><p>Leaky Relu函数及其导数的图像如下图所示：<br><img src="/images/LeakyRelu函数.png" alt="Leaky ReLU函数及其导数"><br>图中左半边直线斜率非常接近于0，所以看起来像是平的。为了解决Dead ReLU Problem，通过将ReLU的前半段设为$\alpha x$而不是0，通常$\alpha =0.01$。理论上讲，Leaky ReLU有ReLU的所有优点，外加不会有Dead ReLU问题，但在实际操作中，并没有完全证明Leaky ReLU总是好于ReLU。</p>
+<h3 id="5-ELU函数"><a href="#5-ELU函数" class="headerlink" title="5. ELU函数"></a>5. ELU函数</h3><p>函数表达式为：</p>
+<script type="math/tex; mode=display">
+f(x)=
+\begin{cases}
+x &\text(if\ x>0)\\
+\alpha(e^x-1) &\text{otherwise}
+\end{cases}</script><p>函数及其导数的图像如下：<br><img src="/images/ELU函数.png" alt="ELU函数及导数图像"><br>显然，ELU有ReLU的基本所有优点，以及不会有Dead ReLU问题，输出的均值接近于0，是zero-centered。它的一个小问题在于计算量稍大。</p>
 
       
     </div>
