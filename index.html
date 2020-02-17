@@ -172,7 +172,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-17 16:20:03" itemprop="dateModified" datetime="2020-02-17T16:20:03+08:00">2020-02-17</time>
+                <time title="修改时间：2020-02-17 16:25:32" itemprop="dateModified" datetime="2020-02-17T16:25:32+08:00">2020-02-17</time>
               </span>
 
           
@@ -216,24 +216,21 @@ $$G_{j,j}=\sum _{\tau=1}^{t} g_{\tau,j\cdot}^{2}</script><p>这个对角线矩�
 <script type="math/tex; mode=display">m_{w}^{t+1}=\beta_{1}m_{w}^{t}+(1-\beta_{1}) \bigtriangledown L^{t}</script><script type="math/tex; mode=display">v_{w}^{t+1}=\beta_{2}m_{w}^{t}+(1-\beta_{2}) (\bigtriangledown L^{t})^{2}</script><p>其中，m为一阶矩估计，v为二阶矩估计，然后进行估计校正，实现无偏估计</p>
 <script type="math/tex; mode=display">\hat{m}_{w}=\frac{m_{w}^{t+1}}{1-\beta_{1}^{t+1}}</script><script type="math/tex; mode=display">\hat{v}_{w}=\frac{v_{w}^{t+1}}{1-\beta_{2}^{t+1}}</script><script type="math/tex; mode=display">w^{t+1} \leftarrow=w^{t}-\eta \frac{\hat{m}_{w}}{\sqrt{\hat{v}_{w}}+\epsilon}</script><p>Adam是实际中最常用的算法</p>
 <h2 id="L1、L2范数"><a href="#L1、L2范数" class="headerlink" title="L1、L2范数"></a>L1、L2范数</h2><p>在机器学习中几乎可以看到在损失函数后面后悔添加一个额外项，常用的额外项一般有两种，称为L1正则化和L2正则化，或者L1范数和L2范数。L1范数和L2范数可以看做是损失函数的惩罚想，所谓“惩罚”是指对损失函数中的某些参数做些限制。对于现行回归模型，使用L1范数的模型叫做Lasso回归，使用L2范数的模型叫做Ridge回归（岭回归）。</p>
-<h3 id="1-L1范数"><a href="#1-L1范数" class="headerlink" title="1. L1范数"></a>1. L1范数</h3><p>L1范数是指向量中各个元素绝对值之和，也叫“稀疏规则算子”(Lasso regularization)。稀疏的意思是可以让权重矩阵的一部分值等于0。为什么L1范数会使权值稀疏？有一种回答“它是L0范数的最优凸近似”，还存在一种更优雅的回答：任何的规则算子，如果他在$w_{i}=0$处不可微，并且可以分解为一个“求和”的形式，那么这个规则化算子可以实现稀疏。</p>
-<script type="math/tex; mode=display">||x||_{1}=\sum_{i}|x_{i}|</script><p>L1范数可以实现稀疏，而实现稀疏的作用为：</p>
-<ul>
-<li>可解释性：可以看到到底是哪些特征和预测的信息有关</li>
-<li>特征选择：输入的x的大部分特征与输出y是没有关系的，如果让参数矩阵w中出现许多0，则可以直接干掉与y无关的元素，也就是选择出于y真正相关的特征。如果不这么做，那么x中本来与y无关的特征也加入到模型中，虽然会更好的减小训练误差，但是在预测新样本时会考虑到无关的信息，干扰了预测。<h3 id="2-L2范数"><a href="#2-L2范数" class="headerlink" title="2. L2范数"></a>2. L2范数</h3>L2范数是指向量中各元素的平方和然后再求平方根，也叫做“岭回归(Ridge Regression)”，或叫做“权值衰减(weight decay)”。<script type="math/tex; mode=display">||x||_{2}=\sqrt{\sum_{i}x_{i}^2}</script>L2范数与L1范数不同，它不会让参数等于0，而是让每个参数都接近于0。L2范数的优点是：</li>
-<li>防止过拟合。一般的用法是在损失函数后面加上w的L2范数，即$||x||_{2}$，这是一种规则。</li>
-<li>优化求解变得稳定快速。简单地说它可以让$w$在接近全局最优点$w^*$的时候，还保持较大的梯度。这样可以跳出局部最优，也使得收敛速度变快。<br>总之，L1会趋向产生少量的特征，而其他的特征都是0，L2会产生更多地特征但都会接近于0。L1在特征选择时候非常有用，而L2就是一种规则化而已<h3 id="3-L1不可导的时候该怎么办"><a href="#3-L1不可导的时候该怎么办" class="headerlink" title="3. L1不可导的时候该怎么办"></a>3. L1不可导的时候该怎么办</h3>当损失函数不可导，梯度下降不再有效，可以使用坐标轴下降法。梯度下降是沿着当前点的负梯度方向进行参数更新，而坐标轴下降法是沿着坐标轴的方向。假设有m个特征个数，坐标轴下降法进行参数更新的时候，先固定m-1个值，然后再求另外一个的局部最优解，从而避免损失函数不可导问题。坐标轴下降法每轮迭代都需要O(mn)的计算，和梯度下降算法相同。</li>
-</ul>
+<h3 id="L1范数"><a href="#L1范数" class="headerlink" title="L1范数"></a>L1范数</h3><p>L1范数是指向量中各个元素绝对值之和，也叫“稀疏规则算子”(Lasso regularization)。稀疏的意思是可以让权重矩阵的一部分值等于0。为什么L1范数会使权值稀疏？有一种回答“它是L0范数的最优凸近似”，还存在一种更优雅的回答：任何的规则算子，如果他在$w_{i}=0$处不可微，并且可以分解为一个“求和”的形式，那么这个规则化算子可以实现稀疏。</p>
+<script type="math/tex; mode=display">||x||_{1}=\sum_{i}|x_{i}|</script><p>L1范数可以实现稀疏，而实现稀疏的作用为：<br>1) 可解释性：可以看到到底是哪些特征和预测的信息有关<br>2) 特征选择：输入的x的大部分特征与输出y是没有关系的，如果让参数矩阵w中出现许多0，则可以直接干掉与y无关的元素，也就是选择出于y真正相关的特征。如果不这么做，那么x中本来与y无关的特征也加入到模型中，虽然会更好的减小训练误差，但是在预测新样本时会考虑到无关的信息，干扰了预测。</p>
+<h3 id="L2范数"><a href="#L2范数" class="headerlink" title="L2范数"></a>L2范数</h3><p>L2范数是指向量中各元素的平方和然后再求平方根，也叫做“岭回归(Ridge Regression)”，或叫做“权值衰减(weight decay)”。</p>
+<script type="math/tex; mode=display">||x||_{2}=\sqrt{\sum_{i}x_{i}^2}</script><p>L2范数与L1范数不同，它不会让参数等于0，而是让每个参数都接近于0。L2范数的优点是：<br>1) 防止过拟合。一般的用法是在损失函数后面加上w的L2范数，即$||x||_{2}$，这是一种规则。<br>2) 优化求解变得稳定快速。简单地说它可以让$w$在接近全局最优点$w^*$的时候，还保持较大的梯度。这样可以跳出局部最优，也使得收敛速度变快。<br>总之，L1会趋向产生少量的特征，而其他的特征都是0，L2会产生更多地特征但都会接近于0。L1在特征选择时候非常有用，而L2就是一种规则化而已</p>
+<h3 id="L1不可导的时候该怎么办"><a href="#L1不可导的时候该怎么办" class="headerlink" title="L1不可导的时候该怎么办"></a>L1不可导的时候该怎么办</h3><p>当损失函数不可导，梯度下降不再有效，可以使用坐标轴下降法。梯度下降是沿着当前点的负梯度方向进行参数更新，而坐标轴下降法是沿着坐标轴的方向。假设有m个特征个数，坐标轴下降法进行参数更新的时候，先固定m-1个值，然后再求另外一个的局部最优解，从而避免损失函数不可导问题。坐标轴下降法每轮迭代都需要O(mn)的计算，和梯度下降算法相同。</p>
 <h2 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h2><p>神经网络的每个神经元接受上一层神经元的输出值作为本神经元的输入值，并将输入值传递给下一层，输入神经元节点会将输入属性值直接传递给下一层（隐藏层或输出层）。上层函数的输出和下层节点的输入之间具有一个函数关系，这个函数称为激活函数。如果不用激活函数，在这种情况下每一层节点的输入都是上一层输出的线性函数，很容易验证，无论神经网络有多少层，输出都是输入的线性组合，与没有隐藏层效果相当，这种情况就是最原始的感知机（Perceptron），那么网络的逼近能力就相当有限。我们引入非线性函数作为激励函数，这样深层神经网络表达能力就更加强大，几乎可以逼近任意函数。</p>
-<h3 id="1-Sigmoid函数"><a href="#1-Sigmoid函数" class="headerlink" title="1. Sigmoid函数"></a>1. Sigmoid函数</h3><p>Signoid是常用的非线性的激活函数，它的数学形式如下：</p>
-<script type="math/tex; mode=display">f(z)=\frac{1}{1+e^{-z}}</script><p>Sigmoid的几何如下：<br><img src="/images/Sigmoid.png" alt="Sigmoid函数"><br>特点：它能够把输入的连续实值变换为0和1之间的输出，对于非常大的负数则输出为0，非常大的正数则输出为1.<br>缺点：1）在深度神经网络中梯度反向传递时导致梯度爆炸和梯度消失，其中梯度爆炸发生的概率非常小，而梯度消失发生的概率比较大。Sigmoid函数的倒数如下所示：<br><img src="/images/Sigmoid导数.png" alt="Sigmoid的导数"><br>如果我们初始化神经网络的权值为[0,1]之间的随机值，由反向传播算法的数学推导可知，梯度从后向前传播时，没传递一层梯度值都会减少为原来的0.25倍，如果神经网络隐藏层特别多时，那么梯度在多层传递之后就变得非常小接近于0，即出现梯度消失现象；当网络权值初始化为$(1,+\infty)$区间的值，则会出现梯度爆炸情况。<br>2）Sigmoid的输出不是0均值，这会导致后一层的神经元将上一层的神经元输出的非0均值的信号作为输入。产生的结果是：如果$x&gt;0, f=w^Tx+b$，那么对$w$求局部梯度则都为正，这样反向传播的过程中$w$要么都向正方向更新，要么都往负方向更新，使得收敛缓慢。当然，如果按batch训练，那么那个batch可能会得到不同的信号，这个问题可以缓解一下。非0均值问题虽然会产生一些不好的影响，不过跟梯度消失问题相比还是要好很多。<br>3）其解析式中含有幂运算，计算求解时相对比较耗时。对于规模较大的深度网络，这回较大地增加训练时间。</p>
-<h3 id="2-tanh函数"><a href="#2-tanh函数" class="headerlink" title="2. tanh函数"></a>2. tanh函数</h3><p>tanh函数的解析式：</p>
+<h3 id="Sigmoid函数"><a href="#Sigmoid函数" class="headerlink" title="Sigmoid函数"></a>Sigmoid函数</h3><p>Signoid是常用的非线性的激活函数，它的数学形式如下：</p>
+<script type="math/tex; mode=display">f(z)=\frac{1}{1+e^{-z}}</script><p>Sigmoid的几何如下：<br><img src="/images/Sigmoid.png" alt="Sigmoid函数"><br>特点：它能够把输入的连续实值变换为0和1之间的输出，对于非常大的负数则输出为0，非常大的正数则输出为1.<br>缺点：<br>1) 在深度神经网络中梯度反向传递时导致梯度爆炸和梯度消失，其中梯度爆炸发生的概率非常小，而梯度消失发生的概率比较大。Sigmoid函数的倒数如下所示：<br><img src="/images/Sigmoid导数.png" alt="Sigmoid的导数"><br>如果我们初始化神经网络的权值为[0,1]之间的随机值，由反向传播算法的数学推导可知，梯度从后向前传播时，没传递一层梯度值都会减少为原来的0.25倍，如果神经网络隐藏层特别多时，那么梯度在多层传递之后就变得非常小接近于0，即出现梯度消失现象；当网络权值初始化为$(1,+\infty)$区间的值，则会出现梯度爆炸情况。<br>2) Sigmoid的输出不是0均值，这会导致后一层的神经元将上一层的神经元输出的非0均值的信号作为输入。产生的结果是：如果$x&gt;0, f=w^Tx+b$，那么对$w$求局部梯度则都为正，这样反向传播的过程中$w$要么都向正方向更新，要么都往负方向更新，使得收敛缓慢。当然，如果按batch训练，那么那个batch可能会得到不同的信号，这个问题可以缓解一下。非0均值问题虽然会产生一些不好的影响，不过跟梯度消失问题相比还是要好很多。<br>3) 其解析式中含有幂运算，计算求解时相对比较耗时。对于规模较大的深度网络，这回较大地增加训练时间。</p>
+<h3 id="tanh函数"><a href="#tanh函数" class="headerlink" title="tanh函数"></a>tanh函数</h3><p>tanh函数的解析式：</p>
 <script type="math/tex; mode=display">tanh(x)=\frac{e^x-x^{-x}}{e^x+e^{-x}}</script><p>tanh函数及其导数的几何图像如下：<br><img src="/images/tanh函数.png" alt="tanh函数及其导数"><br>tanh函数解决了Sigmoid函数不是zero-centered输出的问题，然而，梯度消失的问题和幂运算的问题仍然存在。</p>
-<h3 id="3-Relu函数"><a href="#3-Relu函数" class="headerlink" title="3. Relu函数"></a>3. Relu函数</h3><p>Relu函数的解析式：</p>
-<script type="math/tex; mode=display">Relu=max(0, x)</script><p>Relu函数及其导数的图像如下图所示：<br><img src="/images/Relu函数.png" alt="Relu函数及其导数"><br>ReLU其实是一个取最大值函数，注意这并不是全区间可导的，但是我们可以取sub-gradient，如上图所示。<br>优点：1）解决了梯度消失问题(gradient vanishing)问题（在正区间）。 2）计算速度非常快，只需要判断输入是否大于0。 3）收敛速度远快于sigmoid和tanh函数。<br>ReLU也有几个需要注意的问题：<br>1）ReLU的输出不是zero-centered。 2）Dead ReLU Problem，指的是某些神经元可能永远不会被激活，导致相应的参数永远不会被更新。有两个主要原因可能会导致这种情况：参数的初始化或learning_rate太大导致训练过程中参数更新太大进入这种状态。解决的方法是采用Xavier初始化方法，以及避免将learning rate设置太大或使用adagrad等自动调节learning rate的算法。<br>Xavier初始化方法是一种很有效的神经网络初始化方法，为了使得网络中信息更好的流动，每一层输出的方法应该尽量相等。</p>
-<h3 id="4-Leaky-ReLU函数"><a href="#4-Leaky-ReLU函数" class="headerlink" title="4. Leaky ReLU函数"></a>4. Leaky ReLU函数</h3><p>函数表达式：</p>
+<h3 id="Relu函数"><a href="#Relu函数" class="headerlink" title="Relu函数"></a>Relu函数</h3><p>Relu函数的解析式：</p>
+<script type="math/tex; mode=display">Relu=max(0, x)</script><p>Relu函数及其导数的图像如下图所示：<br><img src="/images/Relu函数.png" alt="Relu函数及其导数"><br>ReLU其实是一个取最大值函数，注意这并不是全区间可导的，但是我们可以取sub-gradient，如上图所示。<br>优点：1）解决了梯度消失问题(gradient vanishing)问题（在正区间）。 2）计算速度非常快，只需要判断输入是否大于0。 3）收敛速度远快于sigmoid和tanh函数。<br>ReLU也有几个需要注意的问题：<br>1) ReLU的输出不是zero-centered。<br>2) Dead ReLU Problem，指的是某些神经元可能永远不会被激活，导致相应的参数永远不会被更新。有两个主要原因可能会导致这种情况：参数的初始化或learning_rate太大导致训练过程中参数更新太大进入这种状态。<br>解决的方法是采用Xavier初始化方法，以及避免将learning rate设置太大或使用adagrad等自动调节learning rate的算法。Xavier初始化方法是一种很有效的神经网络初始化方法，为了使得网络中信息更好的流动，每一层输出的方法应该尽量相等。</p>
+<h3 id="Leaky-ReLU函数"><a href="#Leaky-ReLU函数" class="headerlink" title="Leaky ReLU函数"></a>Leaky ReLU函数</h3><p>函数表达式：</p>
 <script type="math/tex; mode=display">f(x)=max(\alpha x, x)</script><p>Leaky Relu函数及其导数的图像如下图所示：<br><img src="/images/LeakyRelu函数.png" alt="Leaky ReLU函数及其导数"><br>图中左半边直线斜率非常接近于0，所以看起来像是平的。为了解决Dead ReLU Problem，通过将ReLU的前半段设为$\alpha x$而不是0，通常$\alpha =0.01$。理论上讲，Leaky ReLU有ReLU的所有优点，外加不会有Dead ReLU问题，但在实际操作中，并没有完全证明Leaky ReLU总是好于ReLU。</p>
-<h3 id="5-ELU函数"><a href="#5-ELU函数" class="headerlink" title="5. ELU函数"></a>5. ELU函数</h3><p>函数表达式为：</p>
+<h3 id="ELU函数"><a href="#ELU函数" class="headerlink" title="ELU函数"></a>ELU函数</h3><p>函数表达式为：</p>
 <script type="math/tex; mode=display">
 f(x)=
 \begin{cases}
