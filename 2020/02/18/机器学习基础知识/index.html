@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bassyess.github.io","root":"/","scheme":"Pisces","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="机器学习传统的机器学习算法常见的机器学习算法包括：  回归算法：回归算法是试图采用对误差的衡量来探索变量之间的关系的一类算法。回归算法是统计机器学习的利器，常见的回归算法包括：最小二乘法（Ordinary Least Square），逻辑回归（Logistic Regression）,逐步式回归（Stepwise Regression），多元自适应回归样条（Multivariate Adaptiv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习基础知识">
+<meta property="og:url" content="https://bassyess.github.io/2020/02/18/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="Home">
+<meta property="og:description" content="机器学习传统的机器学习算法常见的机器学习算法包括：  回归算法：回归算法是试图采用对误差的衡量来探索变量之间的关系的一类算法。回归算法是统计机器学习的利器，常见的回归算法包括：最小二乘法（Ordinary Least Square），逻辑回归（Logistic Regression）,逐步式回归（Stepwise Regression），多元自适应回归样条（Multivariate Adaptiv">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-18T13:13:21.000Z">
+<meta property="article:modified_time" content="2020-02-18T13:15:58.743Z">
+<meta property="article:author" content="Kay">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://bassyess.github.io/2020/02/18/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>机器学习基础知识 | Home</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/02/18/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kay">
+      <meta itemprop="description" content="越是站在浪潮之巅，越要保持清醒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          机器学习基础知识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-02-18 21:13:21 / 修改时间：21:15:58" itemprop="dateCreated datePublished" datetime="2020-02-18T21:13:21+08:00">2020-02-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="机器学习"><a href="#机器学习" class="headerlink" title="机器学习"></a>机器学习</h1><h2 id="传统的机器学习算法"><a href="#传统的机器学习算法" class="headerlink" title="传统的机器学习算法"></a>传统的机器学习算法</h2><p>常见的机器学习算法包括：</p>
+<ol>
+<li>回归算法：回归算法是试图采用对误差的衡量来探索变量之间的关系的一类算法。回归算法是统计机器学习的利器，常见的回归算法包括：最小二乘法（Ordinary Least Square），逻辑回归（Logistic Regression）,逐步式回归（Stepwise Regression），多元自适应回归样条（Multivariate Adaptive Regression Splines）以及本地散点平滑估计（Locally Estimated Scatterplot Smoothing）。</li>
+<li>基于实例的算法：基于实例的算法常常用来对决策问题建立模型，这样的模型常常先选择一批样本数据，然后根据某些近似性把新数据与样本数据进行比较通过这种方式来寻找最佳的匹配。因此，基于实例的算法也被称为“基于记忆的学习”。常见的算法包括k-Nearest Neighbor(KNN)，学习矢量量化（Learning Vector Quantization, LVQ）以及自组织映射算法（Self-Organizing Map, SOM）。</li>
+<li>决策树学习：决策树算法根据数据的属性采用树状结构建立决策模型，决策树模型常常用来解决分类和回归问题。常见的算法包括：分类及回归树（Classification And Regression Tree, CART），随机森林（Random Forest），多元自适应回归样条（MARS）以及梯度推进及（Gradient Boosting Machine, GBM）。</li>
+<li>贝叶斯方法：贝叶斯算法是基于贝叶斯定理的一类算法，主要用来解决分类和回归问题。常见算法包括：朴素贝叶斯算法，平均单依赖估计（Averaged One-Dependence Estimators, AODE）以及Bayesian Belief Network(BBN)。</li>
+<li>基于核的算法：基于核的算法中最著名的莫过于支持向量机（SVM）。基于核的算法吧输入数据映射到高阶的向量空间，在这些高阶向量空间里，有些分类或者回归问题能够更容易的解决。常见的基于核的算法包括：支持向量机（Support Vector Machine, SVM），径向基函数（Radial Basis Function, RBF）以及线性判别分析（Linear Discriminate Analysis, LDA）等。</li>
+<li>聚类算法：聚类，就像回归一样，有时候人们描述的是一类问题，有时候描述的是一类算法。聚类算法通常按照中心店或者分层的方式对输入数据进行归并。所有的聚类算法都试图找到数据的内在结构，以便按照最大的共同点进行归类。常见的聚类算法包括k-means算法以及期望最大化算法（Expectation Maximization, EM）。</li>
+<li>降低维度算法：像聚类算法一样，降低维度算法试图分析数据的内在结构，不过降低维度算法是以非监督学习的方式试图利用较少的信息来归纳或者解释数据。这类数据可以用高维数据的可视化或者用来简化数据以便监督式学习使用。常见的算法包括：主成份分析（Principle Component Analysis, PCA），偏最小二乘回归（Partial Least Square Regression, PLS），Sammon映射，多维尺度（Multi-Dimensional Scaling, MDS），投影追踪（Projection Pursuit）等。</li>
+<li>关联规则学习：关联规则学习通过寻找最能够解释数据变量之间关系的规则，来找出大量多元数据集中有用的关联规则。常见算法包括Apriori算法和Eclat算法等。</li>
+<li>集成算法：集成算法用一些相对较弱的学习模型队里地就同样的样本进行训练，然后把结果整合起来进行整体预测。集成算法的主要难点在于究竟集成哪些独立的较弱的学习模型以及如何把学习结果整合起来。常见的算法包括：Boosting，Bootstrapped Aggregation(Bagging)，AdaBoost，堆叠泛化（Stacked Generalization, Blending），梯度推进及（Gradient Boosting Machine, GBM），随机森林（Random Forest）。</li>
+<li>人工神经网络：人工神经网络算法模拟生物神经网络，是一类模式匹配算法， 通常用于解决分类和回归问题。重要的人工神经网络算法包括：感知器神经网络（Perceptron Neural Network），反向传递（Back Propagation），自组织映射（Self-Organizing Map，SOM）以及学习矢量量化（Learning Vector Quantization, LVQ）。</li>
+</ol>
+<h2 id="逻辑回归问题"><a href="#逻辑回归问题" class="headerlink" title="逻辑回归问题"></a>逻辑回归问题</h2><p>（重点）逻辑回归假设数据服从伯努利分布，通过极大似然函数的方法，运用梯度下降来求解参数，达到将数据二分类的目的。</p>
+<h3 id="逻辑回归的基本假设"><a href="#逻辑回归的基本假设" class="headerlink" title="逻辑回归的基本假设"></a>逻辑回归的基本假设</h3><p>任何的模型都有自己的假设，在这个假设下模型才是适用的。逻辑回归的第一个假设是假设服从伯努利分布。伯努利分布有一个简单地例子是抛硬币，投中正面的概率为p，抛中负面的概率为1-p。<br>在逻辑回归模型中假设$h_{\theta}(x)$为样本为正的概率，$1-h_{\theta}(x)$为样本为负的概率。那么这个模型可以描述为：</p>
+<script type="math/tex; mode=display">h_{\theta}(x;\theta)=p</script><p>逻辑回归的第二个假设是假设样本为正的概率是：</p>
+<script type="math/tex; mode=display">p=\frac{1}{1+e^{-\theta^Tx}}</script><p>所以逻辑回归的最终形式：</p>
+<script type="math/tex; mode=display">h_{\theta}(x;\theta)=\frac{1}{1+e^{-\theta^Tx}}</script><h3 id="逻辑回归的损失函数"><a href="#逻辑回归的损失函数" class="headerlink" title="逻辑回归的损失函数"></a>逻辑回归的损失函数</h3><p>逻辑回归的损失函数是它的极大似然函数：</p>
+<script type="math/tex; mode=display">L_{\theta}(x)=\prod_{i=1}^mh_{\theta}(x^i;\theta)^{yi}*(1-h_{\theta}(x^i;\theta))^{1-y^i}</script><p>逻辑回归的损失函数为什么要使用极大似然函数作为损失函数？<br>将极大似然函数取对数以后等同于对数损失函数。在逻辑回归这个模型下，对数损失函数的训练球参数的速度是比较快的。可以求得这个公式的梯度更新为：</p>
+<script type="math/tex; mode=display">\theta_j=\theta_j-(y_i-h_{\theta}(x^i;\theta))*x_{ij}</script><p>梯度的更新速度只和$x_{ij},y_i$相关，和sigmoid函数本身的梯度是无关的，这样的更新速度是可以自始至终都比较稳定。<br>为什么不选平方损失函数呢？其一是因为如果你使用平方损失函数，会发现梯度更新的速度和sigmoid函数本身的梯度是相关的。sigmoid函数在它定义域内梯度都不大于0.25，这样训练会非常慢。</p>
+<h3 id="逻辑回归的求解方法"><a href="#逻辑回归的求解方法" class="headerlink" title="逻辑回归的求解方法"></a>逻辑回归的求解方法</h3><p>由于极大似然函数无法直接求解，因此需要通过对该函数进行梯度下降来不断逼近最优解。该处的考点有批梯度下降、随机梯度下降、小批量梯度下降以及其他优化方式。要掌握每种方法的优劣以及如何选择最合适的梯度下降方式。<br>1）批梯度下降，这种方式可以获得全局最优解，缺点是更新每个参数的时候需要遍历所有的数据，计算量太大，存在冗余数据，当数据量特别大的时候，每个参数的更新会很慢。<br>2）随机梯度下降，这种方式每遍历一个样本更新一次参数，更新具有高方差。优点在于容易获得更好的局部最优解，但是收敛比较慢。<br>3）小批量梯度下降，这种方式结合了批梯度下降和随机梯度下降的优点，每遍历一小批数据更新一次参数，减少了参数更新的次数，加快了收敛。一般在深度学习中我们采用这种方式。<br>这里还有一个隐藏的更深的加分项，诸如是否了解Adam、动量法等优化方法。因为上述的方法还存在两个致命的问题。<br>a). 如何对模型选择合适的学习率。自始至终保持同样的学习率其实不太合适，因为一开始参数刚刚开始学习的时候，此时的参数和最优解隔的比较远，需要保持一个较大的学习率尽快逼近最优解。但是学习到后面的时候，参数和最优解已经隔的比较近了，还保持最初的学习率，容易越过最优点，在最优点附近来回振荡。<br>b). 如何对参数选择合适的学习率。在实际中，对每个参数都保持同样的学习率也是很不合理的。有些参数更新频繁，那么学习率可以适当小一点；有些参数更新缓慢，那么学习率就应该大一点。<br><a href="https://chenrudan.github.io/blog/2016/01/09/logisticregression.html#4.2" target="_blank" rel="noopener">其他的梯度求解方法</a><br>4）牛顿法：牛顿法的基本思想死在现有极小点估计值的附近对$f(x)$做二阶泰勒展开，进而找到极小点的一亿个估计值。这个方法需要目标函数是二阶连续可微的。<br>5）BFGS：由于牛顿法中需要求解二阶偏导，这个计算量会比较大，而且又是目标函数求出的海森矩阵无法保持正定，因此提出了拟牛顿法。拟牛顿法是一些算法的总称，它们的目的是通过某种方式来近似表示海森矩阵（或者它的逆矩阵）。BFGS就是一种拟牛顿法，是求解无约束非线性优化问题最常用的方法之一，目标时用迭代地方法逼近海森矩阵。这个更新方法很牛顿法的区别是，它在更新参数$w$之后更新一下近似海森矩阵的值，而牛顿法是在更新$w$之前完全的计算一遍海森矩阵。</p>
+<h3 id="逻辑回归的目的"><a href="#逻辑回归的目的" class="headerlink" title="逻辑回归的目的"></a>逻辑回归的目的</h3><p>目的是将数据二分类，提高准确率。<br>逻辑回归作为一个回归（也就是y值是连续的），如何应用到分类上呢。y值确实是一个连续的变量，逻辑回归的做法是划分一个阈值，y值大于这个阈值的是一类，y值小于这个阈值的是另外一类。阈值具体如何调整根据实际情况选择，一般选择0.5作为阈值来划分。</p>
+<h3 id="逻辑回归的优缺点"><a href="#逻辑回归的优缺点" class="headerlink" title="逻辑回归的优缺点"></a>逻辑回归的优缺点</h3><p>这里总结了逻辑回归应用在工业界当中的一些优点：<br>1）形式简单，模型的可解释性非常好。从特征的权重可以看到不同的特征对最后结果的影响，某个特征的权重值比较高，那么这个特征最后对结果的影响比较大。<br>2）模型效果不错。在工程上是可以接受的（作为baseline），如果特征工程做的好，效果不会太差，并且特征工程可以大家并行开发，大大加快开发的速度。<br>3）训练速度快。分类的时候，计算量仅仅只和特征的数目相关，并且逻辑回国的分布式优化sgd发展比较成熟，训练的速度可以通过对机器进一步提高，这样我们可以在短时间内迭代好几个版本的模型。<br>4）资源占用小，尤其是内存。因为只需要存储各个维度的特征值。<br>5）方便输出结果调整。逻辑回归可以很方便的得到最后的分类结果，因为输出的是每个样本的概率分数，我们可以很容易的对这些概率分数进行cutoff，也就是划分阈值（大于阈值的是一类，小于阈值的是一类）<br>当然逻辑回归本身也有很多的缺点：<br>1）准确率并不是很高。因为形式非常的简单（非常类似线性模型），很难去拟合数据的真实分布。<br>2）很难处理数据不平衡的问题。举个例子：如果我们对于一个正负样本非常不平衡的问题比如正负样本比10000：1，我们把所有样本都预测为正也能使损失函数的值比较小，但是作为一个分类器，它对正负样本的区分能力不会很好。<br>3）处理非线性数据较麻烦。逻辑回归在不引入其他方法的情况下，只能处理线性可分的数据，或者进一步说，处理二分类的问题。<br>4）逻辑回归本身无法筛选特征。有时候，我们会有GDBT来筛选特征，然后再上逻辑回归。</p>
+<h3 id="特征问题"><a href="#特征问题" class="headerlink" title="特征问题"></a>特征问题</h3><h4 id="特征相关性问题"><a href="#特征相关性问题" class="headerlink" title="特征相关性问题"></a>特征相关性问题</h4><p>逻辑回归在训练的过程当中，如果有很多特征高度相关或者说有一个特征重复了100遍，会造成怎样的影响？<br>如果在损失函数最终收敛的情况下，就算有很多特征高度相关也不会影响分类器的效果。<br>但是对特征本身来说，假设只有一个特征，在不考虑采样的情况下，你现在将它重复100遍。训练完以后，数据还是这么多，但是这个特征本身重复了100遍，实际上将原来的特征分成了100份，每一个特征都是原来特征权重值的百分之一。如果在随机采样的情况下，其实训练收敛完以后，还是可以认为这100个特征和原来那一个特征扮演的效果一样，只是可能中间很多特征的值正负相消了。<br>为什么我们还是会在训练的过程当中将高度相关的特征去除？1）去掉高度相关的特征会让模型的可解释性更好；2）可以大大提高训练的速度。如果模型当中有很多特征高度相关的话，就算损失函数本身收敛了，但实际上参数是没有收敛的，这样会拉低训练的速度。其次是特征多了，本身就会增大训练的时间。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/16/%E9%9D%A2%E7%BB%8F/" rel="prev" title="面经">
+      <i class="fa fa-chevron-left"></i> 面经
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/18/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="next" title="深度学习基础知识">
+      深度学习基础知识 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#机器学习"><span class="nav-number">1.</span> <span class="nav-text">机器学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#传统的机器学习算法"><span class="nav-number">1.1.</span> <span class="nav-text">传统的机器学习算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑回归问题"><span class="nav-number">1.2.</span> <span class="nav-text">逻辑回归问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑回归的基本假设"><span class="nav-number">1.2.1.</span> <span class="nav-text">逻辑回归的基本假设</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑回归的损失函数"><span class="nav-number">1.2.2.</span> <span class="nav-text">逻辑回归的损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑回归的求解方法"><span class="nav-number">1.2.3.</span> <span class="nav-text">逻辑回归的求解方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑回归的目的"><span class="nav-number">1.2.4.</span> <span class="nav-text">逻辑回归的目的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑回归的优缺点"><span class="nav-number">1.2.5.</span> <span class="nav-text">逻辑回归的优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征问题"><span class="nav-number">1.2.6.</span> <span class="nav-text">特征问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#特征相关性问题"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">特征相关性问题</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Kay</p>
+  <div class="site-description" itemprop="description">越是站在浪潮之巅，越要保持清醒</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kay</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
