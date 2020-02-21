@@ -141,6 +141,63 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/02/21/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kay">
+      <meta itemprop="description" content="越是站在浪潮之巅，越要保持清醒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/21/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">排序算法</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-21 19:41:40" itemprop="dateCreated datePublished" datetime="2020-02-21T19:41:40+08:00">2020-02-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/02/18/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -172,7 +229,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-19 19:59:38" itemprop="dateModified" datetime="2020-02-19T19:59:38+08:00">2020-02-19</time>
+                <time title="修改时间：2020-02-21 19:44:50" itemprop="dateModified" datetime="2020-02-21T19:44:50+08:00">2020-02-21</time>
               </span>
 
           
@@ -251,6 +308,16 @@ L(y, f(x))=
 <script type="math/tex; mode=display">H(p,q)=-\frac{1}{N}\sum_{i=1}^Np(x^{(i)})log(x^{(-i)})</script><p>交叉熵是用来评估当前训练得到的概率分布于真实分布的差异情况，减少交叉熵损失就是在提高模型的预测准确率。其中p(x)是指真实分布的概率，q(x)是模型通过数据计算出来的概率估计。<br>对于二分类模型的交叉熵代价函数：</p>
 <script type="math/tex; mode=display">L(w,b)=-\frac{1}{N}\sum_{i=1}^N(y^{(i)}logf(x^{(i)})+(1-y^{(i)})log(1-f(x^{(i)})))</script><p>其中f(x)可以是sigmoid函数或深度学习中的其他激活函数，而$y{(i)}\in 0,1$。<br>交叉熵通常用作分类问题的代价函数。</p>
 <h2 id="Batch-Normalization原理"><a href="#Batch-Normalization原理" class="headerlink" title="Batch Normalization原理"></a>Batch Normalization原理</h2><p>Batch Normalization就是在训练过程中使得每一层神经网络的输入保持相同分布的。BN的基本思想相当直观：因为深层神经网络在做非线性变换前的激活输入值随着网络深度加深或者在训练过程中，其分布逐渐发生偏移或变动，做所以训练收敛慢，一般是整体分布逐渐往非线性函数的取值区域的上下限两端靠近，所以这导致反向传播时低层神经网络的梯度消失，这是训练深层神经网络收敛越来越慢的本质原因。而BN就是通过一定的规范化手段，吧把层神经网络任意神经元这个输入值的分布强行拉回到均值为0方差为1的标准正态分布，其实就是把越来越偏的分布强制拉回到标准的分布，这样使得激活输入值落在非线性函数对输入比较敏感的区域，这样输入的小变化就是导致损失函数较大的变化。即这样使得梯度变大，避免梯度消失问题产生，而且梯度变大意味着学习收敛速度快，能大大加快训练速度。<br>如果都通过BN，那么不就跟把非线性函数替换成线性函数效果相同吗？这意味着什么？我们知道，如果是多层的线性函数变换其实这个深层网络就没有意义，因为多层线性网络跟一层线性网络是等价的。这意味着网络的表达能力又下降了。所以BN为了保证非线性的获得，对变换后的满足均值为0方差为1的$x$又进行了scale加上shift操作($y=scale*x+shift$)，每个神经元增加了两个参数scale和shift参数，这两个参数是通过训练学习到的，意思是通过scale和shift把输入值从标准正太分布左移或右移一点并拉伸或缩短一点，每个实例的挪动情况不一样，这样等价于非线性函数的值从正中心的线性区域往非线性区域动了动。核心思想是想找到一个线性核非线性的较好平衡点，既能享受非线性的较强表达能力的好处，又避免太靠近非线性区两头使得网络的收敛速度太慢。<br>BatchNorm在网络中的作用：BN层添加在激活函数前，对输入激活函数的输入进行归一化，这样解决了输入数据发生偏移和增大的影响。<br>BatchNorm的优点：1）极大提升了训练速度，使得收敛过程大大加快；2）还能增加分类效果，一种解释是这类似于Dropout的一种防止过拟合的正则化表达方式，所以不用Dropout也能达到相当的效果；3）调参过程也简单了，对于初始化要求没那么高，可以使用大的学习率。</p>
+<h1 id="卷积神经网络模型"><a href="#卷积神经网络模型" class="headerlink" title="卷积神经网络模型"></a>卷积神经网络模型</h1><h2 id="卷积神经网络"><a href="#卷积神经网络" class="headerlink" title="卷积神经网络"></a>卷积神经网络</h2><h3 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h3><p>输入图像的位数通常很高，例如，1000x1000大小的彩色图像对应于三百万维特征。因此，继续沿用多层感知机中全连接层会导致庞大的参数量。大参数量需要繁重的计算，而更重要的是大参数量会有更高的过拟合风险。卷积是局部连接、共享参数的全连接层。这两个特征使参数量大大降低。卷积层中的权值通常被称为滤波器(filter)或卷积核(convolution kernel)。<br><strong>局部连接</strong>：所谓局部连接，就是卷积层的节点仅仅和前一层的部分节点相连接，只用来学习局部特征，而全连接层中，每个输出通过权值(weight)和所有输入相连。在计算机视觉中，图像中的某一块区域中，像素之间的相关性与像素之间的距离同样相关，距离较近的像素之间相关性强，距离较远则相关性比较弱，所以局部相关性理论同样适用于计算机视觉的图像处理领域。在卷积层中，每个输出神经元在通道方向保持全连接，在空间方向上只和上一层一部分输入神经元相连。局部感知采用部分神经元接收图像信息，再通过综合全部的图像信息达到增强图像信息的目的。这种局部连接的方式大大减少了参数数量，加快了学习速率，同时也在一定程度上减少过拟合的可能。<br><strong>共享参数</strong>：如果一组权值可以在图像中某个区域提取出有效的表示，那么它们也能在图像中的另外区域提取出有效的表示。也就是说，如果一个模式(pattern)出现在图像中的某个区域，那么它们也可以出现在图像中的其他任何区域。因此，卷积层不同空间位置的神经元共享权值，用于发现图像中不同空间位置的模式。权值共享其实就是整张图片在使用同一个卷积核内的参数提取特征，但是不同的卷积核提取的是不同特征，因此不同卷积核间的神经元权值是不共享的。卷积层在空间方向共享参数，而循环神经网络在时间方向共享参数。<br><strong>描述卷积的四个量</strong>：一个卷积层的配置由如下四个量确定。1）卷积核个数。使用一个卷积核进行卷积可以得到一个二维的特征图(feature map)。使用多个卷积核进行卷积，可以得到不同特征的feature map。2）感受野（receptive field）F，即卷积核的大小。3）零填充(zero-padding)P，随着卷积的进行，图像的大小将缩小，图像边缘的信息将逐渐丢失，因此再卷积前，我们在图像上下左右填补一些0，使得我们可以控制输出特征图的大小。4）步长(stride)S，卷积核在输入图像上每移动S个位置计算一个输出神经元。<br>假设输入图片大小为$I\times I$，卷积核大小为$K\times K$，步长为S，填充的像素为P，则卷积层输出的特征图大小为：</p>
+<script type="math/tex; mode=display">O=(I-K+2P)/S+1</script><h3 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h3><p>池化层根据特征图上的局部统计信息进行下采样，在保留有用信息的同是减少特征图的大小。和卷积层不同，池化层不包含需要学习的参数，最大池化层(max-pooling)在一个局部区域选最大值输出，而平均池化(average pooling)计算一个区域的均值作为输出。<br><img src="/images/pooling.png" alt="池化层"><br><strong>池化层的作用</strong>：1）增加特征平移不变性，池化可以提高网络对微小位移的容忍能力。2）减小特征图大小，池化层对空间局部区域进行下采样，使下一层需要的参数量和计算量减少，并降低过拟合风险。3）最大池化可以带来非线性，这是目前最大池化更常使用的原因。</p>
+<h2 id="图像分类"><a href="#图像分类" class="headerlink" title="图像分类"></a>图像分类</h2><p>给定一张图像，图像分类任务旨在判断该图像所属类别。</p>
+<h3 id="LeNet-5"><a href="#LeNet-5" class="headerlink" title="LeNet-5"></a>LeNet-5</h3><p>LeCun等将BP算法应用到多层神经网络中，提出了LeNet5模型，并将其用于手写数字识别，卷积神经网络才算正式提出。<br><img src="/images/LeNet5.png" alt="LeNet5网络模型"><br><img src="/images/LeNet5参数.png" alt="LeNet5网络模型参数"><br>网络输入32*32的手写字体图片，这些手写字体包含0~9数字，也就是相当于10个类别的图片；输出：分类结果在0~9之间。LeNet的网络结构十分简单且单一，卷积层C1、C3和C5除了输出维数外采用的是相同的参数，池化层S2和S4采用的也是相同的参数。</p>
+<h3 id="AlexNet"><a href="#AlexNet" class="headerlink" title="AlexNet"></a>AlexNet</h3><p>2012年Krizhevsky使用卷积神经网络在ILSRC 2012图像分类大赛上夺冠，提出了AlexNet模型。AlexNet网络的提出对于卷积神经网络具有里程碑式的意义，相较于LeNet5的改进有以下几点：<br>1）数据增强：水平翻转、随机裁剪（平移变换）、颜色光照变换<br>2）Dropout:Dropout方法和数据增强一样，都是防止过拟合。dropout能按照一定的概率将神经元从网络中丢弃，dropout能在一定程度上防止过拟合，并且加快网络的训练速度。<br>3）ReLU激活函数：ReLU具有一些优良的特性，在为网络引入非线性的同时，也能引入稀疏性。稀疏性可以选择性激活和分布式激活神经元，能学习到相对稀疏的特征，起到自动化解离的效果。此外，ReLU的导数曲线在输入大于0时，函数的导数为1，这种特性能保证在其输入大于0时梯度不衰减，从而避免或抑制网络训练时梯度消失现象，网络模型的收敛速度会相对稳定。4）Local Response Normalization:局部响应归一化，简称LRN，实际就是利用临近的数据做归一化。5）Overlapping Pooling：即Pooling的步长比Pooling Kernel对应边要小。6）多GPU并行：极大加快网络训练。<br><img src="/images/AlexNet.png" alt="AlexNet网络模型"><br><img src="/images/AlexNet.png" alt="AlexNet网络模型参数"></p>
+<h3 id="VGGNet"><a href="#VGGNet" class="headerlink" title="VGGNet"></a>VGGNet</h3><p>VGGNet是由牛津大学计算机视觉组合Google DeepMind项目的研究员共同研发的卷积神经网络模型，包含VGG16和VGG19两种模型。<br><img src="/images/VGG16.png" alt="VGG16网络模型"><br>从网络模型中可以看出，VGG16相比于AlexNet类的模型具有较深的深度，通过反复堆叠$3\times 3$的卷积层和$2\times 2$的池化层，VGG16构建了较深层次的网络结构。与AlexNet主要有以下不同：<br>1）Vgg16有16层网络，AlexNet只有8层；<br>2）在训练和测试时使用了多尺度做数据增强。</p>
+<h3 id="GoogleNet-22层"><a href="#GoogleNet-22层" class="headerlink" title="GoogleNet(22层)"></a>GoogleNet(22层)</h3><p>GoogleNet进一步增加了网络模型的深度，但是单纯的在VGG16的基础上增加网络的宽度会带来以下的缺陷：1）过多的参数容易引起过拟合；2）层数的过深，容易引起梯度消息现象。<br>GoogleNet的提出受到论文Network in Network(NIN)的启发，NIN有两个贡献：1）提出多层感知卷积层，使用卷积层后加上多层感知机，增强网络提取特征的能力。普通的卷积层和多层感知卷积层结构如图所示，Mlpconv相当于在一般卷积层后加一个1*1的卷积层。2）提出了全局平均池化代替全连接层，全连接层具有大量的参数，使用全局平均池化代替全连接层，能很大程度减少参数空间，便于加深网络，还能防止过拟合。<br><img src="/images/多层感知卷积层.png" alt="普通卷积层和多层感知卷积层结构图"><br>GoogleNet根据Mlpconv的思想提出了Inception结构，该结构有两个版本，下图是Inception的naive版，该结构巧妙的将$1\times 1$、$3\times 3$和$5\times 5$三种卷积核和最大池化层结合起来作为一层结构。<br><img src="/images/Inception(native" alt="Inception结构的native版">.png)<br>而Inception的native版中$5\times 5$的卷积核会带来很大的计算量，因此采用了与NIN类似的结构，在原始的卷积层之后加上$1\times 1$卷积层，最终版本的Inception如下图所示：<br><img src="/images/Inception.png" alt="降维后的Inception模块"></p>
+<h3 id="Inception-v3-v4"><a href="#Inception-v3-v4" class="headerlink" title="Inception v3/v4"></a>Inception v3/v4</h3><p>在GoogleNet的基础上进一步降低参数，其和GoogleNet有相似的Inception模块，但将$7\times 7$和$5\times 5$卷积分解为若干等效$3\times 3$卷积，并在网络中后部分把$3\times 3$卷积分解为$1\times 3$和$3\times 1$卷积，这使得在相似的网络参数下网络可以部署到42层。此外，Inception v3使用了批量归一化层。Inception v3是GoogleNet计算量的2.5倍，而错误率较后者下降了3%。Inception v4在Inception模块基础上结合residual模块，进一步降低了0.4%的错误率。<br><img src="/images/Inceptionv3.png" alt="Inceptionv3模块"></p>
+<h3 id="ResNet"><a href="#ResNet" class="headerlink" title="ResNet"></a>ResNet</h3><p>卷积神经网络模型的发展历程一次次证明加深网络的深度和宽度能得到更好的效果，但是后来的研究发现，网络层次较深的网络模型的效果反而不如较浅层的网络，称为“退化”现象。退化现象产生的原因在于当模型的结构变得复杂随机梯度下降的优化变得更加困难，导致网络模型的效果反而不如浅层网络。针对这个问题，MSRA何凯明团队提出Residual Network，该网络具有Residual结构如下所示：<br><img src="/images/Residual.png" alt="Residual结构"><br>ResNet的基本思想是引入了能够跳过一层或多层的“shortcut connection”，即增加一个identity mapping（恒等映射），将原始所需要学的函数H(x)转换为F(x)+x，作者认为这两种表达的效果相同，但是优化的难度却并不相同。这个Residual block通过将shortcut connection实现，通过shortcut将这个block的输入和输出进行一个element-wise的叠加，这个简单地加法并不会给网络增加额外的参数和计算量，同时却可以大大增加模型的训练速度，提高训练效果，并且当模型的层数加深时，这个简单的结构能够很好的解决退化问题。对于shortcut的方式，作者提出了三个策略：1）使用恒等映射，如果residual block的输入和输出维度不一致，对增加的维度用0来填充；2）在block输入输出维度一致时使用恒等映射，不一致时使用线性投影以保证维度一致；3）对于所有的block使用线性投影。论文最后用三个$1\times 1,3\times 3, 1\times 1$的卷积层代替前面说的两个$3\times 3$卷积层，第一个$1\times 1$用来降低维度，第三个$1\times 1$用来增加维度，这样可以保证中间的$3\times 3$卷积层拥有比较小的输入输出维度。<br><img src="/images/bottleneck.png" alt="更深的residual block"></p>
+<h3 id="DenseNet"><a href="#DenseNet" class="headerlink" title="DenseNet"></a>DenseNet</h3><p>DenseNet脱离了加深网络层数(ResNet)和旁路网络结构(Inception)来提升网络性能的定式思维，从特征的家督考虑，通过特征重用和旁路（Bypass）设置，既大幅度减少了网络的参数量，又在一定程度上缓解了gradient vanishing问题的产生。DenseNet作为另一种较深层数的卷积神经网络，具有如下优点：<br>1）相比于ResNet拥有更少的参数数量；2）旁路加强了特征的重用；3）网络更容易训练，并具有一定的正则效果；4）缓解了gradient vanishing和model degradation的问题。<br><img src="/images/DenseNet.jpg" alt="DenseNet网络结构图"><br>如图所示，第i层的输入不仅与i-1层的输出相关，还与所有之前层的输出相关。记作：<br>$X_l=H_l([X_0,X_1,…,X_{l-1}])$<br>其中[]代表concatenation（拼接），既将$X_0$到$X_{l-1}$层的所有输出feature map按Channel组合在一起，这里所用到的非线性变换H为BN+ReLU+Conv(3x3)的组合。<br>由于在DenseNet中需要对不同层的feature map进行cat操作，所以需要不同层的feature map保持相同的feature size，这就限制了网络中的down sampling的实现。为了使用down sampling在实验中transition layer由BN+Conv(1x1)+average-pooling(2x2)组成。<br><img src="/images/Denseblock.jpg" alt="Denseblock网络图"></p>
 
       
     </div>
@@ -301,7 +368,7 @@ L(y, f(x))=
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-19 19:59:36" itemprop="dateModified" datetime="2020-02-19T19:59:36+08:00">2020-02-19</time>
+                <time title="修改时间：2020-02-21 19:44:58" itemprop="dateModified" datetime="2020-02-21T19:44:58+08:00">2020-02-21</time>
               </span>
 
           
@@ -354,13 +421,31 @@ L(y, f(x))=
 <h3 id="SVM与逻辑回归"><a href="#SVM与逻辑回归" class="headerlink" title="SVM与逻辑回归"></a>SVM与逻辑回归</h3><p>这两个模型应用广泛且有很多相同点，所以把SVM和LR放在一起比较。<br>相同点：<br>1）都是线性分类器，本质上都是求一个最佳分类超平面<br>2）都是监督学习算法。<br>3）都是判别模型。通过决策函数，判别输入特征之间的差别来进行分类。<br>常见的判别模型：KNN、SVM、LR。<br>常见的生成模型：朴素贝叶斯、隐马尔科夫模型。<br>不同点：<br>1）本质上的损失函数不同<br>LR的损失函数是交叉熵：</p>
 <script type="math/tex; mode=display">J(\theta)=-\frac{1}{m}\sum_{i=1}^m(y^{(i)}logh_{\theta}(x^{(i)})+(1-y^{(i)})log(1-h_{\theta}(x^{(i)})))</script><p>SVM的目标函数是hinge loss：</p>
 <script type="math/tex; mode=display">L(w,b,\alpha)=\frac{1}{2}||w||^2-\sum_{i=1}^n\alpha_i(y_i(w^Tx_i+b)-1)</script><p>逻辑回归基于概率理论，假设样本为正样本的概率可以用sigmoid函数来表示极大似然估计的方法估计出参数的值。支持向量机基于几何间隔最大化原理，认为存在最大间隔的分类面为最优分类面。<br>2）两个模型对数据和参数的敏感程度不同<br>SVM考虑分类边界线附近的样本（决定分类超平面的样本），在支持向量外添加或减少任何样本点对分类决策面没有任何影响。LR受所有数据点的影响，每个样本点都会影响决策面的结果。如果训练数据不同类别严重不平衡，则一般需要先对数据做平衡处理，让不同类别的样本尽量平衡。<br>3）SVM基于距离分类，LR基于概率分类<br>SVM依赖数据表达的距离测度，所以需要先对数据先做normalization；LR不受其影响。<br>4）逻辑回归是处理经验风险最小化，SVM是结构风险最小化。这点体现在SVM自带L2正则化项，而逻辑回归需要在损失函数之外添加正则项。<br>5）逻辑回归通过非线性变换减弱分离平面较远点的影响，SVM则只支持向量从而小区较远点的影响。</p>
-<h2 id="支持向量机SVM"><a href="#支持向量机SVM" class="headerlink" title="支持向量机SVM"></a>支持向量机SVM</h2><p>SVM是一种二分类模型，其基本思想是在特征空间中寻找间隔最大的分离超平面使数据得到高效的二分类，具体来讲有三种情况（不加核函数的话就是个线性模型，加了之后会升级为一个非线性模型）：</p>
-<ul>
-<li>当训练样本线性可分时，通过硬间隔最大化，学习一个线性分类器，即线性可分支持向量机；</li>
-<li>当训练函数近似线性可分时，引入松弛变量，通过软间隔最大化，学习一个线性分类器，即线性支持向量机；</li>
-<li>当训练数据线性不可分时，通过使用核技巧及软间隔最大化，学习非线性支持向量机。<h3 id="一句话介绍SVM"><a href="#一句话介绍SVM" class="headerlink" title="一句话介绍SVM"></a>一句话介绍SVM</h3>SVM是一种二分类模型，它的基本模型是定义在特征空间上的间隔最大的线性分类器，间隔大使它有别于普通的感知机，通过核技巧隐式的在输入空间直接求解映射空间中特征向量的内积，使其成为一个非线性分类器。SVM的学习策略是间隔最大化，可形式化为一个求解凸二次规划问题。<h3 id="SVM推导"><a href="#SVM推导" class="headerlink" title="SVM推导"></a>SVM推导</h3>（重点）<a href="https://blog.csdn.net/cppjava_/article/details/68060439" target="_blank" rel="noopener">SVM算法推导过程</a><h3 id="SVM为什么采用间隔最大化（与感知机的区别）"><a href="#SVM为什么采用间隔最大化（与感知机的区别）" class="headerlink" title="SVM为什么采用间隔最大化（与感知机的区别）"></a>SVM为什么采用间隔最大化（与感知机的区别）</h3>当训练数据线性可分时，存在无穷个分离超平面可以将两类数据正确分开。感知机利用误分类最小策略，求得分离超平面，不过此时的解有无穷多个。线性可分支持向量机利用间隔最大化求得最优分离超平面，这是解释唯一的。另一方面，此时的间隔超平面所产生的分类结果是最鲁棒的，对未知实例的泛化能力最强。<h3 id="SVM的目标（硬间隔）"><a href="#SVM的目标（硬间隔）" class="headerlink" title="SVM的目标（硬间隔）"></a>SVM的目标（硬间隔）</h3>有两个目标：第一是使间隔最大化，第二是使样本正确分类，由此推出目标函数：<script type="math/tex; mode=display">\mathop{min}\limits_{w,b}\frac{1}{2}||w||^2</script></li>
-</ul>
-
+<h2 id="支持向量机SVM"><a href="#支持向量机SVM" class="headerlink" title="支持向量机SVM"></a>支持向量机SVM</h2><p>SVM是一种二分类模型，其基本思想是在特征空间中寻找间隔最大的分离超平面使数据得到高效的二分类，具体来讲有三种情况（不加核函数的话就是个线性模型，加了之后会升级为一个非线性模型）：<br>当训练样本线性可分时，通过硬间隔最大化，学习一个线性分类器，即线性可分支持向量机；<br>当训练函数近似线性可分时，引入松弛变量，通过软间隔最大化，学习一个线性分类器，即线性支持向量机；<br>当训练数据线性不可分时，通过使用核技巧及软间隔最大化，学习非线性支持向量机。</p>
+<h3 id="一句话介绍SVM"><a href="#一句话介绍SVM" class="headerlink" title="一句话介绍SVM"></a>一句话介绍SVM</h3><p>SVM是一种二分类模型，它的基本模型是定义在特征空间上的间隔最大的线性分类器，间隔大使它有别于普通的感知机，通过核技巧隐式的在输入空间直接求解映射空间中特征向量的内积，使其成为一个非线性分类器。SVM的学习策略是间隔最大化，可形式化为一个求解凸二次规划问题。</p>
+<h3 id="SVM的几个核心概念"><a href="#SVM的几个核心概念" class="headerlink" title="SVM的几个核心概念"></a>SVM的几个核心概念</h3><h4 id="确定超平面及函数间隔"><a href="#确定超平面及函数间隔" class="headerlink" title="确定超平面及函数间隔"></a>确定超平面及函数间隔</h4><p>由空间上的平面公式确定超平面$wx+b=0$，且$|wx+b|$表示点$x$到平面上的距离。正例负例位于分割平面两侧，因此$y(wx+b)$可同时表示分类正确性以及距离置信度。这也就是函数间隔，其被定义为训练集中所有点到超平面距离的最小值。</p>
+<h4 id="几何间隔"><a href="#几何间隔" class="headerlink" title="几何间隔"></a>几何间隔</h4><p>由于成比例地缩放$w$和$b$会使得$|wx+b|$跟着成比例缩放，因此需要对法向量w加上约束，使得间隔是确定的，也就是函数间隔整体除以$||w||$，也就得到了几何间隔。</p>
+<h4 id="间隔最大化"><a href="#间隔最大化" class="headerlink" title="间隔最大化"></a>间隔最大化</h4><p>分为硬间隔最大和软间隔最大<br>SVM的基本思想就是求解可以正确划分数据集并且几何间隔最大的分离超平面，其原因是线性可分超平面有无数个，但是间隔最大超平面使唯一的。</p>
+<h4 id="支持向量"><a href="#支持向量" class="headerlink" title="支持向量"></a>支持向量</h4><p>与超平面最近的点被称为支持向量，也就是使得原始问题约束项成立的点。</p>
+<h4 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h4><p>核函数本质不是将特征映射到高维空间，而是找到一种直接在低维空间对高维空间中向量做点积运算的简便方法。</p>
+<h3 id="SVM推导"><a href="#SVM推导" class="headerlink" title="SVM推导"></a>SVM推导</h3><p>（重点）<a href="https://blog.csdn.net/cppjava_/article/details/68060439" target="_blank" rel="noopener">SVM算法推导过程</a></p>
+<h3 id="SVM为什么采用间隔最大化（与感知机的区别）"><a href="#SVM为什么采用间隔最大化（与感知机的区别）" class="headerlink" title="SVM为什么采用间隔最大化（与感知机的区别）"></a>SVM为什么采用间隔最大化（与感知机的区别）</h3><p>当训练数据线性可分时，存在无穷个分离超平面可以将两类数据正确分开。感知机利用误分类最小策略，求得分离超平面，不过此时的解有无穷多个。线性可分支持向量机利用间隔最大化求得最优分离超平面，这是解释唯一的。另一方面，此时的间隔超平面所产生的分类结果是最鲁棒的，对未知实例的泛化能力最强。</p>
+<h3 id="SVM的目标（硬间隔）"><a href="#SVM的目标（硬间隔）" class="headerlink" title="SVM的目标（硬间隔）"></a>SVM的目标（硬间隔）</h3><p>有两个目标：第一是使间隔最大化，第二是使样本正确分类，由此推出目标函数：</p>
+<script type="math/tex; mode=display">\mathop{min}\limits_{w,b}\frac{1}{2}||w||^2\quad s.t. y_i(w^Tx_i+b)\ge 1,\forall i</script><p>目标以是从点到面的距离公式简化来的，目标二相当于感知机，只是把大于等于0进行缩放变成了大于等于1，方便后面的推导。</p>
+<h3 id="将原始问题转化为对偶问题"><a href="#将原始问题转化为对偶问题" class="headerlink" title="将原始问题转化为对偶问题"></a>将原始问题转化为对偶问题</h3><p>做所以说对偶问题更容易求解，其原因在于降低了算法的计算复杂度。在原问题下，算法的复杂度与样本维度相关，即等于权重w的维度，而在对偶问题下，算法复杂度与样本数量相关，即为拉格朗日算子的个数。<br>因此，如果你是做线性分类，且样本维度低于样本数量的话，在原问题下求解就好了，Liblinear之类的线性SVM默认都是这样的；但如果你是做非线性分类，那就会涉及到升维（比如使用高斯核做核函数，其实是将样本升到无穷维），升维后的样本维度往往会远大于样本数量，此时显然在对偶问题下求解会更好。</p>
+<h3 id="软间隔"><a href="#软间隔" class="headerlink" title="软间隔"></a>软间隔</h3><p>不管在源特征空间，还是在映射的高维空间，我们都假设样本是线性可分的。虽然理论上我们总能找到一个高维映射使数据线性可分，但在实际任务中，寻找一个合适的核函数很困难。此外，由于数据通常有噪声存在，一味追求数据线性可分可能会使模型陷入过拟合，因此我们放宽对样本的要求，允许少量样本分类错误。这样的想法就意味着对目标函数的改变，之前推导的目标函数里不允许任何错误，并且让间隔最大，现在给之前的目标函数加上一个误差，就相当于允许原先的目标出错，引入松弛变量，公式变为：</p>
+<script type="math/tex; mode=display">\mathop{min}\limits_{w,b,\xi}\frac{1}{2}||w||^2+\sum_{i=1}^n\xi_i</script><p>在松弛变量中引入合页损失(hinge loss):</p>
+<script type="math/tex; mode=display">l_{hinge}(z)=max(0,1-z)</script><p>但是这个代价需要一个控制的因子，引入C&gt;0，惩罚参数。C越大说明吧错误放的越大，说明对错误地容忍度就小，反之亦然。当C无穷大时，就变成一点错误都不能容忍，即变成硬间隔。实际应用时我们要合理选取C，C越小越容易欠拟合，C越大越容易过拟合。<br>所以软间隔的目标函数为：</p>
+<script type="math/tex; mode=display">\mathop{min}\limits_{w,b,\xi}\frac{1}{2}||w||^2+C\sum_{i=1}^n\xi_i</script><script type="math/tex; mode=display">s.t.\ y_i(w_i^Tw+b)\ge 1-\xi_i\quad \xi_i\ge 0, i=1,2,...,n</script><p>其中：$\xi_i=max(0,1-y_i(w^Tx_i+b))$</p>
+<h3 id="核函数-1"><a href="#核函数-1" class="headerlink" title="核函数"></a>核函数</h3><p>为什么要引入核函数？<br>当样本在原始空间线性不可分时，可将样本从原始空间映射到一个更高维的特征空间，使得样本在这个特征空间内线性可分。而引入这样的映射后，所要求解的对偶问题中，无需求解真正的映射函数，而只需要知道其核函数。核函数的定义：$K(x,y)=&lt;(x),(y)&gt;$，即在特征空间的内积等于它们在原始样本空间中通过核函数K计算的结果。一方面数据变成高维空间中线性可分的数据，另一方面不需要求解具体的映射函数，只需要给定具体的核函数即可，这样使得求解的难度大大降低。因为核函数求得的值等于将两个低位空间找那个的向量映射到高维空间后的内积。<br>常用的核函数：<br>1）线性核函数；2）多项式核；3）径向基核（RBF）；4）傅里叶核；5）样条核；6）Sigmoid核函数。<br>其中Gauss径向基函数则是局部性强的核函数，其外推能力随着参数的增大而减弱；多项式形式的核函数具有良好的全局性质，局部性差。<br>如何选择和函数呢？<br>1）当特征维数远远大于样本数的情况下，使用线性核就可以<br>2）当特征维数和样本数都很大，例如文本分类，一般使用线性核<br>3）当特征维数远小于样本数，一般使用RBF。</p>
+<h3 id="为什么SVM对确实数据敏感？"><a href="#为什么SVM对确实数据敏感？" class="headerlink" title="为什么SVM对确实数据敏感？"></a>为什么SVM对确实数据敏感？</h3><p>这里说的缺失数据是指缺失某些特征数据，向量数据不完整。SVM没有处理缺失值的策略。而SVM希望样本在特征空间中线性可分，所以特征空间的好坏对SVM的性能很重要，确实特征数据将影响训练结果的好坏。</p>
+<h3 id="SVM的优缺点"><a href="#SVM的优缺点" class="headerlink" title="SVM的优缺点"></a>SVM的优缺点</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>1）由于SVM是一个凸优化问题，所以求得的解一定是全局最优而不是局部最优。<br>2）不仅适用于线性问题还适用于非线性问题（用核技巧）<br>3）同游高维样本空间的数据也能用SVM，这是因为数据集的复杂度只取决于支持向量而不是数据集的维度，这在某种意义上避免了“维数灾难”。<br>4）理论基础比较完善</p>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p>1）二次规划问题求解将涉及m阶矩阵的计算（m为样本的个数），因此SVM不适用于超大数据集。（SMO算法可以缓解这个问题）<br>2）只适用于二分类问题。（SVM的退岗SVR也适用于回归问题；可以通过多个SVM的组合来解决多分类问题）</p>
+<h2 id="常用的距离公式"><a href="#常用的距离公式" class="headerlink" title="常用的距离公式"></a>常用的距离公式</h2><h3 id="曼哈顿距离"><a href="#曼哈顿距离" class="headerlink" title="曼哈顿距离"></a>曼哈顿距离</h3><p>点$P_1(x_1,y_1)$和点$P_2(x_2,y_2)$的距离为：</p>
+<script type="math/tex; mode=display">distance(P_1,P_2)=|x_2-x_1|+|y_2-y_1|</script><h3 id="欧式距离"><a href="#欧式距离" class="headerlink" title="欧式距离"></a>欧式距离</h3><p>欧式空间中两点的距离。点$P_1(x_1,x_2,…,x_n)$和点$P_2(y_1,y_2,…,y_n)$的距离如下：</p>
+<script type="math/tex; mode=display">distance=\sqrt{\sum_1^n(x_i-y_i)^2}</script><h3 id="切比雪夫距离"><a href="#切比雪夫距离" class="headerlink" title="切比雪夫距离"></a>切比雪夫距离</h3><p>两点之间的距离定义为其各坐标数值差的最大值。点$P_1(x_1,x_2,…,x_n)$和点$P_2(y_1,y_2,…,y_n)$的距离如下：</p>
+<script type="math/tex; mode=display">distance=(P_1,P_2)=max(|x_1-y_1|,|x_2-y_2|,...,|x_n-y_n|)</script><h3 id="余弦相似度"><a href="#余弦相似度" class="headerlink" title="余弦相似度"></a>余弦相似度</h3><p>余弦相似度是通过测量两个向量夹角的度数来度量他们之间的相似度。对于A和B的距离是：</p>
+<script type="math/tex; mode=display">cos(\theta)=\frac{A\cdot B}{||A||\cdot||B||}=\frac{\sum_1^n(A_i\times B_i)}{\sqrt{\sum_i^n(A_i)^2}\times\sqrt{\sum_i^n(B_i)^2}}</script><h2 id="贝叶斯算法"><a href="#贝叶斯算法" class="headerlink" title="贝叶斯算法"></a>贝叶斯算法</h2><h2 id="Kmeans算法"><a href="#Kmeans算法" class="headerlink" title="Kmeans算法"></a>Kmeans算法</h2>
       
     </div>
 
@@ -538,7 +623,7 @@ L(y, f(x))=
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-16 09:05:55" itemprop="dateModified" datetime="2020-02-16T09:05:55+08:00">2020-02-16</time>
+                <time title="修改时间：2020-02-20 20:18:46" itemprop="dateModified" datetime="2020-02-20T20:18:46+08:00">2020-02-20</time>
               </span>
 
           
@@ -554,7 +639,7 @@ L(y, f(x))=
       
           <h1 id="人体辅助健身及康复训练平台"><a href="#人体辅助健身及康复训练平台" class="headerlink" title="人体辅助健身及康复训练平台"></a>人体辅助健身及康复训练平台</h1><h2 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h2><p>本项目搭建一个远程在线辅助健身及康复训练的平台，通过2D摄像头获取视频帧，利用平台后端提供的姿态估计和行为识别算法，辅助用户在家完成健身及康复训练。</p>
 <h2 id="项目架构"><a href="#项目架构" class="headerlink" title="项目架构"></a>项目架构</h2><p>本项目是分层设计的，最上层是应用层，包括健康医疗系统和健身指导系统。算法层基于Python实现，主要包括一些基于计算机视觉的算法实现，包括了2D/3D人体姿态估计算法和行为识别算法，人脸识别算法等。负责连接这两个部分是中间的能力开放平台，该层负责将算法封装成各种能力API的形式，提供基于图片和视频的服务，供上层应用层使用。</p>
-<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><p>项目的能力开放层是基于java的SpringBoot+Mybatis框架的含前后端的web系统，上层应用也是基于javaWeb搭建的。算法层大多基于python实现，主要完成2D的人体姿态估计和基于关键点的行为识别算法。利用openpose获取人体关键点，然后将17个关键点的帧序列构建伪图像，使用VGG16网络进行行为分类。</p>
+<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><p>项目的能力开放层是基于java的SpringBoot+Mybatis框架的含前后端的web系统，上层应用也是基于javaWeb搭建的。算法层大多基于python实现，主要完成2D的人体姿态估计和基于关键点的行为识别算法。利用openpose获取人体关键点，然后将17个关键点的帧序列构建伪图像，使用Resnet50网络进行行为分类，若动作类别正确，采用DTW算法判断该段时间内锻炼动作和正确指导视频进行匹配。</p>
 <h2 id="亮点"><a href="#亮点" class="headerlink" title="亮点"></a>亮点</h2><p>（1）结合openpose和基于骨骼的行为识别算法，实现了真实场景下具有较高准确性的动作分类。（2）算法层与平台之间的视频通信采用redis的消息中间件，采用发布/订阅模式为不同的任务订阅不同channel，实行并行的任务处理。</p>
 <h1 id="国家电网能力开放平台（项目核心成员）"><a href="#国家电网能力开放平台（项目核心成员）" class="headerlink" title="国家电网能力开放平台（项目核心成员）"></a>国家电网能力开放平台（项目核心成员）</h1><h2 id="项目介绍-1"><a href="#项目介绍-1" class="headerlink" title="项目介绍"></a>项目介绍</h2><p>北邮与国家电网合作的，面向ISP和ISV设计开发的能力开放平台，能有效整合服务资源，通过能力开放的形式吸引服务提供商在平台完成注册、发布API，并与应用开发方建立商业联系。平台则需完成对ISP、ISV的服务监管和计量计费。</p>
 <h2 id="项目架构-1"><a href="#项目架构-1" class="headerlink" title="项目架构"></a>项目架构</h2><p>基于微服务架构设计，分为协议转换模块、控制接入模块和平台管理模块。</p>
@@ -620,7 +705,7 @@ L(y, f(x))=
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-16 11:04:15" itemprop="dateModified" datetime="2020-02-16T11:04:15+08:00">2020-02-16</time>
+                <time title="修改时间：2020-02-20 19:56:19" itemprop="dateModified" datetime="2020-02-20T19:56:19+08:00">2020-02-20</time>
               </span>
 
           
@@ -654,7 +739,7 @@ L(y, f(x))=
 <li>ActiveMQ<br>ActiveMQ支持两种消息队列模型为点对点（Point To Point）模型和发布-订阅（Publisher To Subscriber）模型。其中，点对点模型以queue作为消息的承载，消息生产者发送消息到queue中，然后消费者获取消息。对于已经被消费过的信息，queue中不再存储，虽然支持多个消费者，但一个消息只能被消费一次。发布-订阅模型，以topic承载消息，生产者发布消息到topic中，订阅该topic的多个消费者能同时接收到该消息。消息的两种传送机制为推送和拉取。推送的方式有消息中间件主动将消息发送给消费者，能处理快速即时的消息，但如果消费者处理消息能力较弱，消息推送不断，则有可能造成缓冲区的溢出；拉取的方式由消费者主动向消息中间件拉取信息，会造成消息的部分延迟。</li>
 <li>Redis<br>Redis作为key-value内存型存储系统，一般作为缓存中间件使用，在某些场景下也可以作为消息中间件进行数据的缓存和传输。Redis具有基于内存的高速读写特性，支持String、List、Hash、Set、Zset五种类型的操作，支持原子性事务，还具有较为丰富的特性。将Redis作为消息中间件使用，一般利用其列表的数据结构，生产者通过Ipush来发布消息，消费者通过brpop来获取消息。此种实现方式，在Redis宕机且数据没有持久化的情况下可能造成数据的丢失，对于数据可靠性要求不是太高的场景中适用。</li>
 </ol>
-<h2 id="算法模块"><a href="#算法模块" class="headerlink" title="算法模块"></a>算法模块</h2><h3 id="2D姿态估计"><a href="#2D姿态估计" class="headerlink" title="2D姿态估计"></a>2D姿态估计</h3><p><a href="https://blog.csdn.net/htt789/article/details/80283370" target="_blank" rel="noopener">openpose姿态估计</a><br><a href="https://blog.csdn.net/young__fan/article/details/90719285" target="_blank" rel="noopener">匈牙利算法</a></p>
+<h2 id="算法模块"><a href="#算法模块" class="headerlink" title="算法模块"></a>算法模块</h2><h3 id="2D姿态估计"><a href="#2D姿态估计" class="headerlink" title="2D姿态估计"></a>2D姿态估计</h3><p><a href="https://blog.csdn.net/htt789/article/details/80283370" target="_blank" rel="noopener">openpose姿态估计</a><br><a href="https://blog.csdn.net/young__fan/article/details/90719285" target="_blank" rel="noopener">匈牙利算法</a><br>使用openpose获得人体的17个关键点坐标，将17个关键点排列成行，将时间序列作为列构建动作序列的人体关键点的伪图像（第一列是第一帧，第二列是第二帧，…），利用resnet51网络进行分类。时间划分采用滑动窗口的思想，一次选取1分钟的视频进行动作分类。为了考虑实时需求，每30s滑动一次窗口。<br>数据集：公司给的康复动作视频，每段视频是5~6分钟，是单一康复动作的指导视频。由于视频中只有单一的参与者指导动作，训练数据背景单一，估考虑采用基于骨骼关键点的行为识别。<br>算法流程：<br>1.从redis中读取图片，将base64编码转为矩阵数据<br>2.输入openpose算法，得到人体的17个关键点。<br>BODY_PARTS = { “Nose”: 0, “Neck”: 1, “RShoulder”: 2, “RElbow”:3, “RWrist”: 4, “LShoulder”: 5, “LElbow”: 6, “LWrist”: 7, “RHip”: 8, “RKnee”: 9, “RAnkle”: 10, “LHip”: 11, “LKnee”: 12, “LAnkle”: 13, “REye”: 14, “LEye”: 15, “REar”: 16, “LEar”: 17, “Background”: 18 }<br>3.将得到的17个关键点构造为伪图像，17个关键点排列为行，帧序列作为列，构建2D图像，然后采用颜色增强技术（即自适应直方图均衡化AHE）对彩色图像的局部纹理信息进行增强，输入到Resnet50网络中进行动作分类。<br>关键点：在训练动作分类网络时，可以对关键点信息进行数据增强。<br>图像中的数据增强方式：水平翻转、随机裁剪、角裁剪、尺度抖动<br>时间序列中为了减少冗余信息，1s20帧信息随机抽取5帧，采用滑动窗口，方法整个窗口将近1分钟大小，构建的2D图像尺寸为(17,300)，每隔30s滑动一次窗口，判断该窗口动作是否符合，作为下一步动作匹配的起点。<br>4.动作匹配，采用动态时间规划（DTW）算法，判断用户的运动视频和标准动作是否匹配。</p>
 
       
     </div>
@@ -803,7 +888,7 @@ L(y, f(x))=
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

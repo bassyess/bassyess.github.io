@@ -28,7 +28,7 @@
 <meta property="og:description" content="人体辅助健身及康复训练平台项目介绍本项目搭建一个远程在线辅助健身及康复训练的平台，通过2D摄像头获取视频帧，利用平台后端提供的姿态估计和行为识别算法，辅助用户在家完成健身及康复训练。 项目架构本项目是分层设计的，最上层是应用层，包括健康医疗系统和健身指导系统。算法层基于Python实现，主要包括一些基于计算机视觉的算法实现，包括了2D&#x2F;3D人体姿态估计算法和行为识别算法，人脸识别算法等。负责连接这">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-12T08:02:14.000Z">
-<meta property="article:modified_time" content="2020-02-16T01:05:55.722Z">
+<meta property="article:modified_time" content="2020-02-20T12:18:46.351Z">
 <meta property="article:author" content="Kay">
 <meta name="twitter:card" content="summary">
 
@@ -173,7 +173,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-16 09:05:55" itemprop="dateModified" datetime="2020-02-16T09:05:55+08:00">2020-02-16</time>
+                <time title="修改时间：2020-02-20 20:18:46" itemprop="dateModified" datetime="2020-02-20T20:18:46+08:00">2020-02-20</time>
               </span>
 
           
@@ -189,7 +189,7 @@
       
         <h1 id="人体辅助健身及康复训练平台"><a href="#人体辅助健身及康复训练平台" class="headerlink" title="人体辅助健身及康复训练平台"></a>人体辅助健身及康复训练平台</h1><h2 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h2><p>本项目搭建一个远程在线辅助健身及康复训练的平台，通过2D摄像头获取视频帧，利用平台后端提供的姿态估计和行为识别算法，辅助用户在家完成健身及康复训练。</p>
 <h2 id="项目架构"><a href="#项目架构" class="headerlink" title="项目架构"></a>项目架构</h2><p>本项目是分层设计的，最上层是应用层，包括健康医疗系统和健身指导系统。算法层基于Python实现，主要包括一些基于计算机视觉的算法实现，包括了2D/3D人体姿态估计算法和行为识别算法，人脸识别算法等。负责连接这两个部分是中间的能力开放平台，该层负责将算法封装成各种能力API的形式，提供基于图片和视频的服务，供上层应用层使用。</p>
-<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><p>项目的能力开放层是基于java的SpringBoot+Mybatis框架的含前后端的web系统，上层应用也是基于javaWeb搭建的。算法层大多基于python实现，主要完成2D的人体姿态估计和基于关键点的行为识别算法。利用openpose获取人体关键点，然后将17个关键点的帧序列构建伪图像，使用VGG16网络进行行为分类。</p>
+<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><p>项目的能力开放层是基于java的SpringBoot+Mybatis框架的含前后端的web系统，上层应用也是基于javaWeb搭建的。算法层大多基于python实现，主要完成2D的人体姿态估计和基于关键点的行为识别算法。利用openpose获取人体关键点，然后将17个关键点的帧序列构建伪图像，使用Resnet50网络进行行为分类，若动作类别正确，采用DTW算法判断该段时间内锻炼动作和正确指导视频进行匹配。</p>
 <h2 id="亮点"><a href="#亮点" class="headerlink" title="亮点"></a>亮点</h2><p>（1）结合openpose和基于骨骼的行为识别算法，实现了真实场景下具有较高准确性的动作分类。（2）算法层与平台之间的视频通信采用redis的消息中间件，采用发布/订阅模式为不同的任务订阅不同channel，实行并行的任务处理。</p>
 <h1 id="国家电网能力开放平台（项目核心成员）"><a href="#国家电网能力开放平台（项目核心成员）" class="headerlink" title="国家电网能力开放平台（项目核心成员）"></a>国家电网能力开放平台（项目核心成员）</h1><h2 id="项目介绍-1"><a href="#项目介绍-1" class="headerlink" title="项目介绍"></a>项目介绍</h2><p>北邮与国家电网合作的，面向ISP和ISV设计开发的能力开放平台，能有效整合服务资源，通过能力开放的形式吸引服务提供商在平台完成注册、发布API，并与应用开发方建立商业联系。平台则需完成对ISP、ISV的服务监管和计量计费。</p>
 <h2 id="项目架构-1"><a href="#项目架构-1" class="headerlink" title="项目架构"></a>项目架构</h2><p>基于微服务架构设计，分为协议转换模块、控制接入模块和平台管理模块。</p>
@@ -300,7 +300,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

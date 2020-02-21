@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://bassyess.github.io/images/system.jpg">
 <meta property="article:published_time" content="2020-02-11T01:07:30.000Z">
-<meta property="article:modified_time" content="2020-02-16T03:04:15.359Z">
+<meta property="article:modified_time" content="2020-02-20T11:56:19.502Z">
 <meta property="article:author" content="Kay">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://bassyess.github.io/images/system.jpg">
@@ -175,7 +175,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-16 11:04:15" itemprop="dateModified" datetime="2020-02-16T11:04:15+08:00">2020-02-16</time>
+                <time title="修改时间：2020-02-20 19:56:19" itemprop="dateModified" datetime="2020-02-20T19:56:19+08:00">2020-02-20</time>
               </span>
 
           
@@ -209,7 +209,7 @@
 <li>ActiveMQ<br>ActiveMQ支持两种消息队列模型为点对点（Point To Point）模型和发布-订阅（Publisher To Subscriber）模型。其中，点对点模型以queue作为消息的承载，消息生产者发送消息到queue中，然后消费者获取消息。对于已经被消费过的信息，queue中不再存储，虽然支持多个消费者，但一个消息只能被消费一次。发布-订阅模型，以topic承载消息，生产者发布消息到topic中，订阅该topic的多个消费者能同时接收到该消息。消息的两种传送机制为推送和拉取。推送的方式有消息中间件主动将消息发送给消费者，能处理快速即时的消息，但如果消费者处理消息能力较弱，消息推送不断，则有可能造成缓冲区的溢出；拉取的方式由消费者主动向消息中间件拉取信息，会造成消息的部分延迟。</li>
 <li>Redis<br>Redis作为key-value内存型存储系统，一般作为缓存中间件使用，在某些场景下也可以作为消息中间件进行数据的缓存和传输。Redis具有基于内存的高速读写特性，支持String、List、Hash、Set、Zset五种类型的操作，支持原子性事务，还具有较为丰富的特性。将Redis作为消息中间件使用，一般利用其列表的数据结构，生产者通过Ipush来发布消息，消费者通过brpop来获取消息。此种实现方式，在Redis宕机且数据没有持久化的情况下可能造成数据的丢失，对于数据可靠性要求不是太高的场景中适用。</li>
 </ol>
-<h2 id="算法模块"><a href="#算法模块" class="headerlink" title="算法模块"></a>算法模块</h2><h3 id="2D姿态估计"><a href="#2D姿态估计" class="headerlink" title="2D姿态估计"></a>2D姿态估计</h3><p><a href="https://blog.csdn.net/htt789/article/details/80283370" target="_blank" rel="noopener">openpose姿态估计</a><br><a href="https://blog.csdn.net/young__fan/article/details/90719285" target="_blank" rel="noopener">匈牙利算法</a></p>
+<h2 id="算法模块"><a href="#算法模块" class="headerlink" title="算法模块"></a>算法模块</h2><h3 id="2D姿态估计"><a href="#2D姿态估计" class="headerlink" title="2D姿态估计"></a>2D姿态估计</h3><p><a href="https://blog.csdn.net/htt789/article/details/80283370" target="_blank" rel="noopener">openpose姿态估计</a><br><a href="https://blog.csdn.net/young__fan/article/details/90719285" target="_blank" rel="noopener">匈牙利算法</a><br>使用openpose获得人体的17个关键点坐标，将17个关键点排列成行，将时间序列作为列构建动作序列的人体关键点的伪图像（第一列是第一帧，第二列是第二帧，…），利用resnet51网络进行分类。时间划分采用滑动窗口的思想，一次选取1分钟的视频进行动作分类。为了考虑实时需求，每30s滑动一次窗口。<br>数据集：公司给的康复动作视频，每段视频是5~6分钟，是单一康复动作的指导视频。由于视频中只有单一的参与者指导动作，训练数据背景单一，估考虑采用基于骨骼关键点的行为识别。<br>算法流程：<br>1.从redis中读取图片，将base64编码转为矩阵数据<br>2.输入openpose算法，得到人体的17个关键点。<br>BODY_PARTS = { “Nose”: 0, “Neck”: 1, “RShoulder”: 2, “RElbow”:3, “RWrist”: 4, “LShoulder”: 5, “LElbow”: 6, “LWrist”: 7, “RHip”: 8, “RKnee”: 9, “RAnkle”: 10, “LHip”: 11, “LKnee”: 12, “LAnkle”: 13, “REye”: 14, “LEye”: 15, “REar”: 16, “LEar”: 17, “Background”: 18 }<br>3.将得到的17个关键点构造为伪图像，17个关键点排列为行，帧序列作为列，构建2D图像，然后采用颜色增强技术（即自适应直方图均衡化AHE）对彩色图像的局部纹理信息进行增强，输入到Resnet50网络中进行动作分类。<br>关键点：在训练动作分类网络时，可以对关键点信息进行数据增强。<br>图像中的数据增强方式：水平翻转、随机裁剪、角裁剪、尺度抖动<br>时间序列中为了减少冗余信息，1s20帧信息随机抽取5帧，采用滑动窗口，方法整个窗口将近1分钟大小，构建的2D图像尺寸为(17,300)，每隔30s滑动一次窗口，判断该窗口动作是否符合，作为下一步动作匹配的起点。<br>4.动作匹配，采用动态时间规划（DTW）算法，判断用户的运动视频和标准动作是否匹配。</p>
 
     </div>
 
@@ -305,7 +305,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
