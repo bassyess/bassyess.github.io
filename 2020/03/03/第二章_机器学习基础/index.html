@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"bassyess.github.io","root":"/","scheme":"Pisces","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="[TOC] 第二章 机器学习基础​    机器学习起源于上世纪50年代，1959年在IBM工作的Arthur Samuel设计了一个下棋程序，这个程序具有学习的能力，它可以在不断的对弈中提高自己。由此提出了“机器学习”这个概念，它是一个结合了多个学科如概率论，优化理论，统计等，最终在计算机上实现自我获取新知识，学习改善自己的这样一个研究领域。机器学习是人工智能的一个子集，目前已经发展出许多有用的方">
+  <meta name="description" content="第二章 机器学习基础​    机器学习起源于上世纪50年代，1959年在IBM工作的Arthur Samuel设计了一个下棋程序，这个程序具有学习的能力，它可以在不断的对弈中提高自己。由此提出了“机器学习”这个概念，它是一个结合了多个学科如概率论，优化理论，统计等，最终在计算机上实现自我获取新知识，学习改善自己的这样一个研究领域。机器学习是人工智能的一个子集，目前已经发展出许多有用的方法，比如支持">
 <meta property="og:type" content="article">
-<meta property="og:title" content="第二章_机器学习基础">
+<meta property="og:title" content="第二章_机器学习基础知识">
 <meta property="og:url" content="https://bassyess.github.io/2020/03/03/%E7%AC%AC%E4%BA%8C%E7%AB%A0_%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Home">
-<meta property="og:description" content="[TOC] 第二章 机器学习基础​    机器学习起源于上世纪50年代，1959年在IBM工作的Arthur Samuel设计了一个下棋程序，这个程序具有学习的能力，它可以在不断的对弈中提高自己。由此提出了“机器学习”这个概念，它是一个结合了多个学科如概率论，优化理论，统计等，最终在计算机上实现自我获取新知识，学习改善自己的这样一个研究领域。机器学习是人工智能的一个子集，目前已经发展出许多有用的方">
+<meta property="og:description" content="第二章 机器学习基础​    机器学习起源于上世纪50年代，1959年在IBM工作的Arthur Samuel设计了一个下棋程序，这个程序具有学习的能力，它可以在不断的对弈中提高自己。由此提出了“机器学习”这个概念，它是一个结合了多个学科如概率论，优化理论，统计等，最终在计算机上实现自我获取新知识，学习改善自己的这样一个研究领域。机器学习是人工智能的一个子集，目前已经发展出许多有用的方法，比如支持">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://bassyess.github.io/img/ch2/2.5.1.png">
 <meta property="og:image" content="https://bassyess.github.io/img/ch2/2.1/1.jpg">
@@ -74,8 +74,8 @@
 <meta property="og:image" content="https://bassyess.github.io/img/ch2/2.21.1.7.png">
 <meta property="og:image" content="https://bassyess.github.io/img/ch2/2.21.3.1.png">
 <meta property="og:image" content="https://bassyess.github.io/img/ch2/2-19.jpg">
-<meta property="article:published_time" content="2020-03-03T03:38:56.410Z">
-<meta property="article:modified_time" content="2020-03-03T04:14:56.078Z">
+<meta property="article:published_time" content="2020-03-03T04:13:21.000Z">
+<meta property="article:modified_time" content="2020-03-03T06:38:56.239Z">
 <meta property="article:author" content="Kay">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://bassyess.github.io/img/ch2/2.5.1.png">
@@ -92,7 +92,7 @@
   };
 </script>
 
-  <title>第二章_机器学习基础 | Home</title>
+  <title>第二章_机器学习基础知识 | Home</title>
   
 
 
@@ -204,7 +204,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          第二章_机器学习基础
+          第二章_机器学习基础知识
         </h1>
 
         <div class="post-meta">
@@ -215,7 +215,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-03-03 11:38:56 / 修改时间：12:14:56" itemprop="dateCreated datePublished" datetime="2020-03-03T11:38:56+08:00">2020-03-03</time>
+              <time title="创建时间：2020-03-03 12:13:21 / 修改时间：14:38:56" itemprop="dateCreated datePublished" datetime="2020-03-03T12:13:21+08:00">2020-03-03</time>
             </span>
 
           
@@ -229,8 +229,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>[TOC]</p>
-<h1 id="第二章-机器学习基础"><a href="#第二章-机器学习基础" class="headerlink" title="第二章 机器学习基础"></a>第二章 机器学习基础</h1><p>​    机器学习起源于上世纪50年代，1959年在IBM工作的Arthur Samuel设计了一个下棋程序，这个程序具有学习的能力，它可以在不断的对弈中提高自己。由此提出了“机器学习”这个概念，它是一个结合了多个学科如概率论，优化理论，统计等，最终在计算机上实现自我获取新知识，学习改善自己的这样一个研究领域。机器学习是人工智能的一个子集，目前已经发展出许多有用的方法，比如支持向量机，回归，决策树，随机森林，强化方法，集成学习，深度学习等等，一定程度上可以帮助人们完成一些数据预测，自动化，自动决策，最优化等初步替代脑力的任务。本章我们主要介绍下机器学习的基本概念、监督学习、分类算法、逻辑回归、代价函数、损失函数、LDA、PCA、决策树、支持向量机、EM算法、聚类和降维以及模型评估有哪些方法、指标等等。</p>
+        <h1 id="第二章-机器学习基础"><a href="#第二章-机器学习基础" class="headerlink" title="第二章 机器学习基础"></a>第二章 机器学习基础</h1><p>​    机器学习起源于上世纪50年代，1959年在IBM工作的Arthur Samuel设计了一个下棋程序，这个程序具有学习的能力，它可以在不断的对弈中提高自己。由此提出了“机器学习”这个概念，它是一个结合了多个学科如概率论，优化理论，统计等，最终在计算机上实现自我获取新知识，学习改善自己的这样一个研究领域。机器学习是人工智能的一个子集，目前已经发展出许多有用的方法，比如支持向量机，回归，决策树，随机森林，强化方法，集成学习，深度学习等等，一定程度上可以帮助人们完成一些数据预测，自动化，自动决策，最优化等初步替代脑力的任务。本章我们主要介绍下机器学习的基本概念、监督学习、分类算法、逻辑回归、代价函数、损失函数、LDA、PCA、决策树、支持向量机、EM算法、聚类和降维以及模型评估有哪些方法、指标等等。</p>
 <h2 id="2-1-基本概念"><a href="#2-1-基本概念" class="headerlink" title="2.1 基本概念"></a>2.1 基本概念</h2><h3 id="2-1-1-大话理解机器学习本质"><a href="#2-1-1-大话理解机器学习本质" class="headerlink" title="2.1.1 大话理解机器学习本质"></a>2.1.1 大话理解机器学习本质</h3><p>​    机器学习(Machine Learning, ML)，顾名思义，让机器去学习。这里，机器指的是计算机，是算法运行的物理载体，你也可以把各种算法本身当做一个有输入和输出的机器。那么到底让计算机去学习什么呢？对于一个任务及其表现的度量方法，设计一种算法，让算法能够提取中数据所蕴含的规律，这就叫机器学习。如果输入机器的数据是带有标签的，就称作有监督学习。如果数据是无标签的，就是无监督学习。</p>
 <h3 id="2-1-2-什么是神经网络"><a href="#2-1-2-什么是神经网络" class="headerlink" title="2.1.2 什么是神经网络"></a>2.1.2 什么是神经网络</h3><p>​    神经网络就是按照一定规则将多个神经元连接起来的网络。不同的神经网络，具有不同的连接规则。例如全连接(Full Connected, FC)神经网络，它的规则包括：</p>
 <p>（1）有三种层：输入层，输出层，隐藏层。</p>
@@ -2389,6 +2388,53 @@ E=\sum_{i=1}^{k}\sum_{p\in C_i}\left\|p-m_i\right\|^2</script><p>　这里E是�
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
