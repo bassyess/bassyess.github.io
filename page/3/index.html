@@ -141,6 +141,136 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/02/18/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kay">
+      <meta itemprop="description" content="千里之行，始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/18/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">机器学习基础知识</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-18 21:13:21" itemprop="dateCreated datePublished" datetime="2020-02-18T21:13:21+08:00">2020-02-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-03 14:24:26" itemprop="dateModified" datetime="2020-03-03T14:24:26+08:00">2020-03-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="机器学习"><a href="#机器学习" class="headerlink" title="机器学习"></a>机器学习</h1><h2 id="传统的机器学习算法"><a href="#传统的机器学习算法" class="headerlink" title="传统的机器学习算法"></a>传统的机器学习算法</h2><p>常见的机器学习算法包括：</p>
+<ol>
+<li>回归算法：回归算法是试图采用对误差的衡量来探索变量之间的关系的一类算法。回归算法是统计机器学习的利器，常见的回归算法包括：最小二乘法（Ordinary Least Square），逻辑回归（Logistic Regression）,逐步式回归（Stepwise Regression），多元自适应回归样条（Multivariate Adaptive Regression Splines）以及本地散点平滑估计（Locally Estimated Scatterplot Smoothing）。</li>
+<li>基于实例的算法：基于实例的算法常常用来对决策问题建立模型，这样的模型常常先选择一批样本数据，然后根据某些近似性把新数据与样本数据进行比较通过这种方式来寻找最佳的匹配。因此，基于实例的算法也被称为“基于记忆的学习”。常见的算法包括k-Nearest Neighbor(KNN)，学习矢量量化（Learning Vector Quantization, LVQ）以及自组织映射算法（Self-Organizing Map, SOM）。</li>
+<li>决策树学习：决策树算法根据数据的属性采用树状结构建立决策模型，决策树模型常常用来解决分类和回归问题。常见的算法包括：分类及回归树（Classification And Regression Tree, CART），随机森林（Random Forest），多元自适应回归样条（MARS）以及梯度推进及（Gradient Boosting Machine, GBM）。</li>
+<li>贝叶斯方法：贝叶斯算法是基于贝叶斯定理的一类算法，主要用来解决分类和回归问题。常见算法包括：朴素贝叶斯算法，平均单依赖估计（Averaged One-Dependence Estimators, AODE）以及Bayesian Belief Network(BBN)。</li>
+<li>基于核的算法：基于核的算法中最著名的莫过于支持向量机（SVM）。基于核的算法吧输入数据映射到高阶的向量空间，在这些高阶向量空间里，有些分类或者回归问题能够更容易的解决。常见的基于核的算法包括：支持向量机（Support Vector Machine, SVM），径向基函数（Radial Basis Function, RBF）以及线性判别分析（Linear Discriminate Analysis, LDA）等。</li>
+<li>聚类算法：聚类，就像回归一样，有时候人们描述的是一类问题，有时候描述的是一类算法。聚类算法通常按照中心店或者分层的方式对输入数据进行归并。所有的聚类算法都试图找到数据的内在结构，以便按照最大的共同点进行归类。常见的聚类算法包括k-means算法以及期望最大化算法（Expectation Maximization, EM）。</li>
+<li>降低维度算法：像聚类算法一样，降低维度算法试图分析数据的内在结构，不过降低维度算法是以非监督学习的方式试图利用较少的信息来归纳或者解释数据。这类数据可以用高维数据的可视化或者用来简化数据以便监督式学习使用。常见的算法包括：主成份分析（Principle Component Analysis, PCA），偏最小二乘回归（Partial Least Square Regression, PLS），Sammon映射，多维尺度（Multi-Dimensional Scaling, MDS），投影追踪（Projection Pursuit）等。</li>
+<li>关联规则学习：关联规则学习通过寻找最能够解释数据变量之间关系的规则，来找出大量多元数据集中有用的关联规则。常见算法包括Apriori算法和Eclat算法等。</li>
+<li>集成算法：集成算法用一些相对较弱的学习模型队里地就同样的样本进行训练，然后把结果整合起来进行整体预测。集成算法的主要难点在于究竟集成哪些独立的较弱的学习模型以及如何把学习结果整合起来。常见的算法包括：Boosting，Bootstrapped Aggregation(Bagging)，AdaBoost，堆叠泛化（Stacked Generalization, Blending），梯度推进及（Gradient Boosting Machine, GBM），随机森林（Random Forest）。</li>
+<li>人工神经网络：人工神经网络算法模拟生物神经网络，是一类模式匹配算法， 通常用于解决分类和回归问题。重要的人工神经网络算法包括：感知器神经网络（Perceptron Neural Network），反向传递（Back Propagation），自组织映射（Self-Organizing Map，SOM）以及学习矢量量化（Learning Vector Quantization, LVQ）。</li>
+</ol>
+<h2 id="逻辑回归问题"><a href="#逻辑回归问题" class="headerlink" title="逻辑回归问题"></a>逻辑回归问题</h2><p>（重点）逻辑回归假设数据服从伯努利分布，通过极大似然函数的方法，运用梯度下降来求解参数，达到将数据二分类的目的。</p>
+<h3 id="逻辑回归的基本假设"><a href="#逻辑回归的基本假设" class="headerlink" title="逻辑回归的基本假设"></a>逻辑回归的基本假设</h3><p>任何的模型都有自己的假设，在这个假设下模型才是适用的。逻辑回归的第一个假设是假设服从伯努利分布。伯努利分布有一个简单地例子是抛硬币，投中正面的概率为p，抛中负面的概率为1-p。<br>在逻辑回归模型中假设$h_{\theta}(x)$为样本为正的概率，$1-h_{\theta}(x)$为样本为负的概率。那么这个模型可以描述为：</p>
+<script type="math/tex; mode=display">h_{\theta}(x;\theta)=p</script><p>逻辑回归的第二个假设是假设样本为正的概率是：</p>
+<script type="math/tex; mode=display">p=\frac{1}{1+e^{-\theta^Tx}}</script><p>所以逻辑回归的最终形式：</p>
+<script type="math/tex; mode=display">h_{\theta}(x;\theta)=\frac{1}{1+e^{-\theta^Tx}}</script><h3 id="逻辑回归的损失函数"><a href="#逻辑回归的损失函数" class="headerlink" title="逻辑回归的损失函数"></a>逻辑回归的损失函数</h3><p>逻辑回归的损失函数是它的极大似然函数：</p>
+<script type="math/tex; mode=display">L_{\theta}(x)=\prod_{i=1}^mh_{\theta}(x^i;\theta)^{yi}*(1-h_{\theta}(x^i;\theta))^{1-y^i}</script><p>逻辑回归的损失函数为什么要使用极大似然函数作为损失函数？<br>将极大似然函数取对数以后等同于对数损失函数。在逻辑回归这个模型下，对数损失函数的训练求参数的速度是比较快的。可以求得这个公式的梯度更新为：</p>
+<script type="math/tex; mode=display">\theta_j=\theta_j-(y_i-h_{\theta}(x^i;\theta))*x_{ij}</script><p>梯度的更新速度只和$x_{ij},y_i$相关，和sigmoid函数本身的梯度是无关的，这样的更新速度是可以自始至终都比较稳定。<br>为什么不选平方损失函数呢？其一是因为如果你使用平方损失函数，会发现梯度更新的速度和sigmoid函数本身的梯度是相关的。sigmoid函数在它定义域内梯度都不大于0.25，这样训练会非常慢。</p>
+<h3 id="逻辑回归的求解方法"><a href="#逻辑回归的求解方法" class="headerlink" title="逻辑回归的求解方法"></a>逻辑回归的求解方法</h3><p>由于极大似然函数无法直接求解，因此需要通过对该函数进行梯度下降来不断逼近最优解。该处的考点有批梯度下降、随机梯度下降、小批量梯度下降以及其他优化方式。要掌握每种方法的优劣以及如何选择最合适的梯度下降方式。<br>1）批梯度下降，这种方式可以获得全局最优解，缺点是更新每个参数的时候需要遍历所有的数据，计算量太大，存在冗余数据，当数据量特别大的时候，每个参数的更新会很慢。<br>2）随机梯度下降，这种方式每遍历一个样本更新一次参数，更新具有高方差。缺点点在于容易获得更好的局部最优解，但是收敛比较快。<br>3）小批量梯度下降，这种方式结合了批梯度下降和随机梯度下降的优点，每遍历一小批数据更新一次参数，减少了参数更新的次数，加快了收敛。一般在深度学习中我们采用这种方式。<br>这里还有一个隐藏的更深的加分项，诸如是否了解Adam、动量法等优化方法。因为上述的方法还存在两个致命的问题。<br>a). 如何对模型选择合适的学习率。自始至终保持同样的学习率其实不太合适，因为一开始参数刚刚开始学习的时候，此时的参数和最优解隔的比较远，需要保持一个较大的学习率尽快逼近最优解。但是学习到后面的时候，参数和最优解已经隔的比较近了，还保持最初的学习率，容易越过最优点，在最优点附近来回振荡。<br>b). 如何对参数选择合适的学习率。在实际中，对每个参数都保持同样的学习率也是很不合理的。有些参数更新频繁，那么学习率可以适当小一点；有些参数更新缓慢，那么学习率就应该大一点。<br><a href="https://chenrudan.github.io/blog/2016/01/09/logisticregression.html#4.2" target="_blank" rel="noopener">其他的梯度求解方法</a><br>4）牛顿法：牛顿法的基本思想是在现有极小点估计值的附近对$f(x)$做二阶泰勒展开，进而找到极小点的一个估计值。这个方法需要目标函数是二阶连续可微的。<br>5）BFGS：由于牛顿法中需要求解二阶偏导，这个计算量会比较大，而且又是目标函数求出的海森矩阵无法保持正定，因此提出了拟牛顿法。拟牛顿法是一些算法的总称，它们的目的是通过某种方式来近似表示海森矩阵（或者它的逆矩阵）。BFGS就是一种拟牛顿法，是求解无约束非线性优化问题最常用的方法之一，目标时用迭代地方法逼近海森矩阵。这个更新方法很牛顿法的区别是，它在更新参数$w$之后更新一下近似海森矩阵的值，而牛顿法是在更新$w$之前完全的计算一遍海森矩阵。</p>
+<h3 id="逻辑回归的目的"><a href="#逻辑回归的目的" class="headerlink" title="逻辑回归的目的"></a>逻辑回归的目的</h3><p>目的是将数据二分类，提高准确率。<br>逻辑回归作为一个回归（也就是y值是连续的），如何应用到分类上呢。y值确实是一个连续的变量，逻辑回归的做法是划分一个阈值，y值大于这个阈值的是一类，y值小于这个阈值的是另外一类。阈值具体如何调整根据实际情况选择，一般选择0.5作为阈值来划分。</p>
+<h3 id="逻辑回归的优缺点"><a href="#逻辑回归的优缺点" class="headerlink" title="逻辑回归的优缺点"></a>逻辑回归的优缺点</h3><p>这里总结了逻辑回归应用在工业界当中的一些优点：<br>1）形式简单，模型的可解释性非常好。从特征的权重可以看到不同的特征对最后结果的影响，某个特征的权重值比较高，那么这个特征最后对结果的影响比较大。<br>2）模型效果不错。在工程上是可以接受的（作为baseline），如果特征工程做的好，效果不会太差，并且特征工程可以大家并行开发，大大加快开发的速度。<br>3）训练速度快。分类的时候，计算量仅仅只和特征的数目相关，并且逻辑回归的分布式优化sgd发展比较成熟，训练的速度可以通过对机器进一步提高，这样我们可以在短时间内迭代好几个版本的模型。<br>4）资源占用小，尤其是内存。因为只需要存储各个维度的特征值。<br>5）方便输出结果调整。逻辑回归可以很方便的得到最后的分类结果，因为输出的是每个样本的概率分数，我们可以很容易的对这些概率分数进行cutoff，也就是划分阈值（大于阈值的是一类，小于阈值的是一类）<br>当然逻辑回归本身也有很多的缺点：<br>1）准确率并不是很高。因为形式非常的简单（非常类似线性模型），很难去拟合数据的真实分布。<br>2）很难处理数据不平衡的问题。举个例子：如果我们对于一个正负样本非常不平衡的问题比如正负样本比10000：1，我们把所有样本都预测为正也能使损失函数的值比较小，但是作为一个分类器，它对正负样本的区分能力不会很好。<br>3）处理非线性数据较麻烦。逻辑回归在不引入其他方法的情况下，只能处理线性可分的数据，或者进一步说，处理二分类的问题。<br>4）逻辑回归本身无法筛选特征。有时候，我们会有GDBT来筛选特征，然后再上逻辑回归。</p>
+<h3 id="特征问题"><a href="#特征问题" class="headerlink" title="特征问题"></a>特征问题</h3><h4 id="特征相关性问题"><a href="#特征相关性问题" class="headerlink" title="特征相关性问题"></a>特征相关性问题</h4><p>逻辑回归在训练的过程当中，如果有很多特征高度相关或者说有一个特征重复了100遍，会造成怎样的影响？<br>如果在损失函数最终收敛的情况下，就算有很多特征高度相关也不会影响分类器的效果。<br>但是对特征本身来说，假设只有一个特征，在不考虑采样的情况下，你现在将它重复100遍。训练完以后，数据还是这么多，但是这个特征本身重复了100遍，实际上将原来的特征分成了100份，每一个特征都是原来特征权重值的百分之一。如果在随机采样的情况下，其实训练收敛完以后，还是可以认为这100个特征和原来那一个特征扮演的效果一样，只是可能中间很多特征的值正负相消了。<br>为什么我们还是会在训练的过程当中将高度相关的特征去除？1）去掉高度相关的特征会让模型的可解释性更好；2）可以大大提高训练的速度。如果模型当中有很多特征高度相关的话，就算损失函数本身收敛了，但实际上参数是没有收敛的，这样会拉低训练的速度。其次是特征多了，本身就会增大训练的时间。</p>
+<h4 id="特征离散化"><a href="#特征离散化" class="headerlink" title="特征离散化"></a>特征离散化</h4><p>逻辑回归为什么要对特征进行离散化？<br>在工业界，很少直接将连续值作为特征送入逻辑回归模型，而是将连续特征离散化为一系列0、1特征交给逻辑回归模型，这样做的优势有以下几点：<br>1）稀疏向量内积乘法运算速度快，计算结果方便存储，容易扩展。<br>2）离散化后的特征对异常数据由很强的鲁棒性，如果特征没有离散化，一个异常数据会给模型造成很大的干扰。<br>3）逻辑回归属于广义线性模型，表达能力受限；单变量离散化为N个后，每个变量有单独的权重，相当于为模型引入了非线性，能够提升模型表达能力，加大拟合。<br>4）离散化后可以进行特征交叉，由M+N个变量变为M*N个变量，进一步引入非线性，提升表达能力。<br>5）特征离散化后，模型会更稳定。<br>李沐少帅指出，模型是使用离散特征还是连续特征，其实是一个“海量离散特征+简单模型”同“少量连续特征+复杂模型”的权衡。既可以离散化用线性模型，也可以用连续特征加深学习。</p>
+<h4 id="特征交叉"><a href="#特征交叉" class="headerlink" title="特征交叉"></a>特征交叉</h4><p>在逻辑回国模型中，为什么常常要做特征组合（特征交叉）？<br>逻辑回归模型属于线性模型，线性模型不能很好处理非线性特征，特征组合可以引入非线性特征，提升模型的表达能力。另外，基本特征可以认为是全局建模，组合特征更加精细，是个性化建模，但对全局建模会对部分样本有偏，对每一个样本建模又会导致数据爆炸，过拟合，所以基本特征+特征组合兼顾了全局和个性化。</p>
+<h3 id="逻辑回归是线性模型吗？"><a href="#逻辑回归是线性模型吗？" class="headerlink" title="逻辑回归是线性模型吗？"></a>逻辑回归是线性模型吗？</h3><p>1）逻辑回归是一种广义线性模型，它引入了Sigmoid函数，是非线性模型，但本质上还是一个线性回归模型，因为除去Sigmoid函数映射关系，其他的算法原理、步骤都是线性回归的。<br>2）逻辑回归和线性回归首先都是广义的线性回归，区别在于逻辑回归多了个Sigmoid函数，使样本映射到[0,1]之间的数值，从而来处理分类问题。另外逻辑回归是假设变量服从伯努利分布，线性回归假设变量服从高斯分布。逻辑回归输出的是离散型变量，用于分类，线性回归输出的是连续值，用于预测。逻辑回归是用最大似然法去计算预测函数中最优参数值，而线性回归是用最小二乘法去对自变量因变量关系进行拟合。</p>
+<h3 id="逻辑回归输出值的意义"><a href="#逻辑回归输出值的意义" class="headerlink" title="逻辑回归输出值的意义"></a>逻辑回归输出值的意义</h3><p>逻辑回归输出的值是0到1之间的值，这个值是真实的概率吗？<br><a href="https://blog.csdn.net/tunghao/article/details/86480040" target="_blank" rel="noopener">推导过程</a><br>结论：逻辑回归模型之所以是sigmoid的形式，源于我们假设y服从伯努利分布，伯努利分布又属于指数分布族，经过推导，将伯努利分布变为指数分布族的形式后。我们发现伯努利分布的唯一参数$\Phi$与指数分布族中的参数$\eta$具有sigmoid函数关系，于是我们转而求$\eta$与$x$的关系，此时，我们又假设$\eta$与$x$具有线性关系。至此找到了我们要用的模型的样子，也就是逻辑回归。即只有在满足：$y$服从伯努利分布；$n$和$x$之间存在线性关系时，输出值才是概率值。不满足的情况下，得到的输出值，只是置信度。</p>
+<h3 id="欠拟合和过拟合"><a href="#欠拟合和过拟合" class="headerlink" title="欠拟合和过拟合"></a>欠拟合和过拟合</h3><p>过拟合：其实就是所建的机器学习模型或者深度学习模型在训练样本中表现过于优越，导致在验证数据集以及测试数据集中表现不佳。<br>欠拟合：由于训练样本被提取的特征比较少，导致训练出来的模型不能很好地匹配，表现很差。<br>判断方法是从训练集中随机选一部分作为验证集，采用K折交叉验证的方式，用训练集训练的同时在验证集上测试算法效果。在缺少有效预防欠拟合和过拟合措施的情况下，随着模型拟合能力的增强，错误率在训练集上逐渐减小，而在验证集上先减小后增大；当两者的误差率都较大时，处于欠拟合状态；当验证集误差率达到最低点，说明拟合效果最好，有最低点增大时，处于过拟合状态。<br>![误差率曲线图])(/images/拟合状态.png)</p>
+<h4 id="解决模型欠拟合与过拟合常用方法"><a href="#解决模型欠拟合与过拟合常用方法" class="headerlink" title="解决模型欠拟合与过拟合常用方法"></a>解决模型欠拟合与过拟合常用方法</h4><p>欠拟合：欠拟合的原因大多是模型不够复杂、拟合函数的能力不够。<br>因此，从数据层面考虑，可以增加新特征，例如：组合、泛化、相关性、高次特征等；从模型层面考虑，可以增加模型的复杂度，例如SVM的核函数、DNN等更复杂模型，去掉正则化或减少正则化参数，加深训练轮数等。<br>过拟合：成因是给定的数据集相对过于简单，使得模型在拟合函数时过分考虑了噪声等不必要的数据间关联。<br>解决方法：<br>1）数据扩增：人为增加数据量，可以用重采样、上采样、增加随机噪声、GAN、图像数据的空间变换（平移旋转镜像）、尺度变换（缩放裁剪）、颜色变换、改变分辨率、对比度、亮度等。<br>2）针对神经网络，采用dropout的方法：dropout的思想是当一组参数经过某一层神经元的时候，去掉这一层上的部分神经元，让参数只经过一部分神经元进行计算。这里的去掉不是真正意义上的去除，只是让参数不经过一部分神经元计算，从而减少了神经网络的规模（深度）。<br>3）提前停止训练<br>也就是减少训练的迭代次数。从上面的误差率曲线图，理论上可以找到有个训练程度，此时验证集误差率最低，视为拟合效果最好的点。<br>4）正则化<br>在所定义的损失函数后面加入一项永不为0的部分，那么经过不断优化损失函数还是会存在的。<br>L0正则化：损失函数后面加入L0范数，也就是权重向量中非零参数的个数。特点是可以实现参数的稀疏性，使尽可能多的参数都为0；缺点是在优化时是NP难问题，很难优化。<br>L1正则化：在损失函数后面加入权重向量的L1范数。L1范数是L0范数的最优凸近似，比L0范数容易优化，也可以很好地实现参数稀疏性。<br>L2正则化：在损失函数后面加入参数L2范数的平方项。与L0、L1不同的是，L2很难使某些参数达到0，它只能是参数接近0。<br>5）针对DNN，采用batch normalization：即BN，既能提高泛化能力，又大大提高训练速度，现被广泛应用于DNN的激活层之前。主要优势：减少了梯度对参数大小和初始值的依赖，将参数值（特征）缩放在[0,1]区间（若针对Relu还限制了输出的范围），这样反向传播时梯度控制在1左右，使得网络在较高的学习率之下也不易发生梯度爆炸或弥散（也防止了在使用sigmoid作为激活函数时训练容易陷入梯度极小饱和或极大的极端情况）。</p>
+<h3 id="多分类问题"><a href="#多分类问题" class="headerlink" title="多分类问题"></a>多分类问题</h3><p>在上面，我们主要使用逻辑回归解决二分类的问题，那对于多分类的问题，也可以用逻辑回归来解决吗？</p>
+<h4 id="one-vs-rest"><a href="#one-vs-rest" class="headerlink" title="one vs rest"></a>one vs rest</h4><p>由于概率函数$h_{\theta}(x)$所表示的是样本标记为某一类型的概率，但可以将一对一（二分类）扩展为一对多(one vs rest)：<br>1）将类型$class_1$看作正样本，其他类型全部看作负样本，然后我们就可以得到样本类型为该类型的概率$p_1$；<br>2）然后再讲另外类型$class_2$看作正样本，其他类型全部看作负样本，同理得到$p_2$；<br>3）以此循环，我们可以得到该待预测样本的标记类型分别为类型$class_i$时的概率$p_i$，最后我们取$p_i$中最大的那个概率对应的样本标记类型为我们的待预测样本类型。</p>
+<h4 id="softmax函数"><a href="#softmax函数" class="headerlink" title="softmax函数"></a>softmax函数</h4><p>使用softmax函数构造模型解决多分类问题，与logistic回归不同的是，softmax回归分类模型会有多个的输出，且输出个数与类别个数相等，输出为样本$X$的各个类别的概率，最后对样本进行预测的类型为概率最高的那个类别。</p>
+<h4 id="选择方案"><a href="#选择方案" class="headerlink" title="选择方案"></a>选择方案</h4><p>当标签类别之间是互斥时，适合选择softmax回归分类器；当标签类别之间不完全互斥时，适合选择建立多个独立的logistic回归分类器。</p>
+<h2 id="模型之间的对比"><a href="#模型之间的对比" class="headerlink" title="模型之间的对比"></a>模型之间的对比</h2><h3 id="线性回归与逻辑回归"><a href="#线性回归与逻辑回归" class="headerlink" title="线性回归与逻辑回归"></a>线性回归与逻辑回归</h3><p>逻辑回归和线性回归首先都是广义的线性回归，其次经典线性模型的优化目标函数是最小二乘，二逻辑回归则是似然函数。另外线性回归在整个实数域范围内进行预测，敏感度一致，而分类范围则需要在[0,1]；逻辑回归就是一种减小预测范围，将预测值限定在[0,1]间的一种回归模型，因而对于这类问题来说，逻辑回归的鲁棒性比线性回归好。<br>逻辑回归的模型本质是一个线性回归模型，逻辑回归都是以线性回归为理论支持的。但线性回归模型无法做到sigmoid的非线性形式，sigmoid可以轻松处理0/1分类问题。逻辑回归在线性回归的实数范围输出值上施加sigmoid函数将值收敛到0~1范围，其目标函数也因此从差平方和变为对数损失函数，以提供最优化所需导数（sigmoid函数是softmax函数的二元特例）。注意，逻辑回归玩玩是解决二元0/1分类问题，只是它和线性回归耦合太紧，也被冠以回归的名字。若要求多分类，就要把sigmoid换成softmax。</p>
+<h3 id="最大熵与逻辑回归"><a href="#最大熵与逻辑回归" class="headerlink" title="最大熵与逻辑回归"></a>最大熵与逻辑回归</h3><p>最大熵原理是概率模型学习的一个准则，最大熵认为，学习概率模型时，在所有可能分布中，熵最大的模型是最好的模型。<br><a href="https://www.jianshu.com/p/504b8d09c23e" target="_blank" rel="noopener">最大熵推导过程</a><br>最大熵在解决二分类问题时就是逻辑回归，在解决多分类问题时就是多项逻辑回归。此外，最大熵与逻辑回归都称为对数线性模型。</p>
+<h3 id="SVM与逻辑回归"><a href="#SVM与逻辑回归" class="headerlink" title="SVM与逻辑回归"></a>SVM与逻辑回归</h3><p>这两个模型应用广泛且有很多相同点，所以把SVM和LR放在一起比较。<br>相同点：<br>1）都是线性分类器，本质上都是求一个最佳分类超平面<br>2）都是监督学习算法。<br>3）都是判别模型。通过决策函数，判别输入特征之间的差别来进行分类。<br>常见的判别模型：KNN、SVM、LR。<br>常见的生成模型：朴素贝叶斯、隐马尔科夫模型。<br>不同点：<br>1）本质上的损失函数不同<br>LR的损失函数是交叉熵：</p>
+<script type="math/tex; mode=display">J(\theta)=-\frac{1}{m}\sum_{i=1}^m(y^{(i)}logh_{\theta}(x^{(i)})+(1-y^{(i)})log(1-h_{\theta}(x^{(i)})))</script><p>SVM的目标函数是hinge loss：</p>
+<script type="math/tex; mode=display">L(w,b,\alpha)=\frac{1}{2}||w||^2-\sum_{i=1}^n\alpha_i(y_i(w^Tx_i+b)-1)</script><p>逻辑回归基于概率理论，假设样本为正样本的概率可以用sigmoid函数来表示极大似然估计的方法估计出参数的值。支持向量机基于几何间隔最大化原理，认为存在最大间隔的分类面为最优分类面。<br>2）两个模型对数据和参数的敏感程度不同<br>SVM考虑分类边界线附近的样本（决定分类超平面的样本），在支持向量外添加或减少任何样本点对分类决策面没有任何影响。LR受所有数据点的影响，每个样本点都会影响决策面的结果。如果训练数据不同类别严重不平衡，则一般需要先对数据做平衡处理，让不同类别的样本尽量平衡。<br>3）SVM基于距离分类，LR基于概率分类<br>SVM依赖数据表达的距离测度，所以需要先对数据先做normalization；LR不受其影响。<br>4）逻辑回归是处理经验风险最小化，SVM是结构风险最小化。这点体现在SVM自带L2正则化项，而逻辑回归需要在损失函数之外添加正则项。<br>5）逻辑回归通过非线性变换减弱分离平面较远点的影响，SVM则只支持向量从而消去较远点的影响。</p>
+<h2 id="支持向量机SVM"><a href="#支持向量机SVM" class="headerlink" title="支持向量机SVM"></a>支持向量机SVM</h2><p>SVM是一种二分类模型，其基本思想是在特征空间中寻找间隔最大的分离超平面使数据得到高效的二分类，具体来讲有三种情况（不加核函数的话就是个线性模型，加了之后会升级为一个非线性模型）：<br>当训练样本线性可分时，通过硬间隔最大化，学习一个线性分类器，即线性可分支持向量机；<br>当训练函数近似线性可分时，引入松弛变量，通过软间隔最大化，学习一个线性分类器，即线性支持向量机；<br>当训练数据线性不可分时，通过使用核技巧及软间隔最大化，学习非线性支持向量机。</p>
+<h3 id="一句话介绍SVM"><a href="#一句话介绍SVM" class="headerlink" title="一句话介绍SVM"></a>一句话介绍SVM</h3><p>SVM是一种二分类模型，它的基本模型是定义在特征空间上的间隔最大的线性分类器，间隔大使它有别于普通的感知机，通过核技巧隐式的在输入空间直接求解映射空间中特征向量的内积，使其成为一个非线性分类器。SVM的学习策略是间隔最大化，可形式化为一个求解凸二次规划问题。</p>
+<h3 id="SVM的几个核心概念"><a href="#SVM的几个核心概念" class="headerlink" title="SVM的几个核心概念"></a>SVM的几个核心概念</h3><h4 id="确定超平面及函数间隔"><a href="#确定超平面及函数间隔" class="headerlink" title="确定超平面及函数间隔"></a>确定超平面及函数间隔</h4><p>由空间上的平面公式确定超平面$wx+b=0$，且$|wx+b|$表示点$x$到平面上的距离。正例负例位于分割平面两侧，因此$y(wx+b)$可同时表示分类正确性以及距离置信度。这也就是函数间隔，其被定义为训练集中所有点到超平面距离的最小值。</p>
+<h4 id="几何间隔"><a href="#几何间隔" class="headerlink" title="几何间隔"></a>几何间隔</h4><p>由于成比例地缩放$w$和$b$会使得$|wx+b|$跟着成比例缩放，因此需要对法向量w加上约束，使得间隔是确定的，也就是函数间隔整体除以$||w||$，也就得到了几何间隔。</p>
+<h4 id="间隔最大化"><a href="#间隔最大化" class="headerlink" title="间隔最大化"></a>间隔最大化</h4><p>分为硬间隔最大和软间隔最大<br>SVM的基本思想就是求解可以正确划分数据集并且几何间隔最大的分离超平面，其原因是线性可分超平面有无数个，但是间隔最大超平面使唯一的。</p>
+<h4 id="支持向量"><a href="#支持向量" class="headerlink" title="支持向量"></a>支持向量</h4><p>与超平面最近的点被称为支持向量，也就是使得原始问题约束项成立的点。</p>
+<h4 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h4><p>核函数本质不是将特征映射到高维空间，而是找到一种直接在低维空间对高维空间中向量做点积运算的简便方法。</p>
+<h3 id="SVM推导"><a href="#SVM推导" class="headerlink" title="SVM推导"></a>SVM推导</h3><p>（重点）<a href="https://zhuanlan.zhihu.com/p/45444502" target="_blank" rel="noopener">SVM算法推导过程</a><br><a href="https://blog.csdn.net/szlcw1/article/details/52259668?depth_1-utm_source=distribute.pc_relevant.none-task&amp;utm_source=distribute.pc_relevant.none-task" target="_blank" rel="noopener">SVM常考问题</a></p>
+<h3 id="SVM为什么采用间隔最大化（与感知机的区别）"><a href="#SVM为什么采用间隔最大化（与感知机的区别）" class="headerlink" title="SVM为什么采用间隔最大化（与感知机的区别）"></a>SVM为什么采用间隔最大化（与感知机的区别）</h3><p>当训练数据线性可分时，存在无穷个分离超平面可以将两类数据正确分开。感知机利用误分类最小策略，求得分离超平面，不过此时的解有无穷多个。线性可分支持向量机利用间隔最大化求得最优分离超平面，这个解是唯一的。另一方面，此时的间隔超平面所产生的分类结果是最鲁棒的，对未知实例的泛化能力最强。</p>
+<h3 id="SVM的目标（硬间隔）"><a href="#SVM的目标（硬间隔）" class="headerlink" title="SVM的目标（硬间隔）"></a>SVM的目标（硬间隔）</h3><p>有两个目标：第一是使间隔最大化，第二是使样本正确分类，由此推出目标函数：</p>
+<script type="math/tex; mode=display">\mathop{min}\limits_{w,b}\frac{1}{2}||w||^2\quad s.t. y_i(w^Tx_i+b)\ge 1,\forall i</script><p>目标以是从点到面的距离公式简化来的，目标二相当于感知机，只是把大于等于0进行缩放变成了大于等于1，方便后面的推导。</p>
+<h3 id="将原始问题转化为对偶问题"><a href="#将原始问题转化为对偶问题" class="headerlink" title="将原始问题转化为对偶问题"></a>将原始问题转化为对偶问题</h3><p>做所以说对偶问题更容易求解，其原因在于降低了算法的计算复杂度。在原问题下，算法的复杂度与样本维度相关，即等于权重w的维度，而在对偶问题下，算法复杂度与样本数量相关，即为拉格朗日算子的个数。<br>因此，如果你是做线性分类，且样本维度低于样本数量的话，在原问题下求解就好了，Liblinear之类的线性SVM默认都是这样的；但如果你是做非线性分类，那就会涉及到升维（比如使用高斯核做核函数，其实是将样本升到无穷维），升维后的样本维度往往会远大于样本数量，此时显然在对偶问题下求解会更好。</p>
+<h3 id="软间隔"><a href="#软间隔" class="headerlink" title="软间隔"></a>软间隔</h3><p>不管在原特征空间，还是在映射的高维空间，我们都假设样本是线性可分的。虽然理论上我们总能找到一个高维映射使数据线性可分，但在实际任务中，寻找一个合适的核函数很困难。此外，由于数据通常有噪声存在，一味追求数据线性可分可能会使模型陷入过拟合，因此我们放宽对样本的要求，允许少量样本分类错误。这样的想法就意味着对目标函数的改变，之前推导的目标函数里不允许任何错误，并且让间隔最大，现在给之前的目标函数加上一个误差，就相当于允许原先的目标出错，引入松弛变量，公式变为：</p>
+<script type="math/tex; mode=display">\mathop{min}\limits_{w,b,\xi}\frac{1}{2}||w||^2+\sum_{i=1}^n\xi_i</script><p>在松弛变量中引入合页损失(hinge loss):</p>
+<script type="math/tex; mode=display">l_{hinge}(z)=max(0,1-z)</script><p>但是这个代价需要一个控制的因子，引入C&gt;0，惩罚参数。C越大说明把错误放的越大，说明对错误地容忍度就小，反之亦然。当C无穷大时，就变成一点错误都不能容忍，即变成硬间隔。实际应用时我们要合理选取C，C越小越容易欠拟合，C越大越容易过拟合。<br>所以软间隔的目标函数为：</p>
+<script type="math/tex; mode=display">\mathop{min}\limits_{w,b,\xi}\frac{1}{2}||w||^2+C\sum_{i=1}^n\xi_i</script><script type="math/tex; mode=display">s.t.\ y_i(w_i^Tx+b)\ge 1-\xi_i\quad \xi_i\ge 0, i=1,2,...,n</script><p>其中：$\xi_i=max(0,1-y_i(w^Tx_i+b))$</p>
+<h3 id="核函数-1"><a href="#核函数-1" class="headerlink" title="核函数"></a>核函数</h3><p>为什么要引入核函数？<br>当样本在原始空间线性不可分时，可将样本从原始空间映射到一个更高维的特征空间，使得样本在这个特征空间内线性可分。而引入这样的映射后，所要求解的对偶问题中，无需求解真正的映射函数，而只需要知道其核函数。核函数的定义：$K(x,y)=&lt;(x),(y)&gt;$，即在特征空间的内积等于它们在原始样本空间中通过核函数K计算的结果。一方面数据变成高维空间中线性可分的数据，另一方面不需要求解具体的映射函数，只需要给定具体的核函数即可，这样使得求解的难度大大降低。因为核函数求得的值等于将两个低维空间找那个的向量映射到高维空间后的内积。<br>常用的核函数：<br>1）线性核函数；2）多项式核；3）径向基核（RBF）；4）傅里叶核；5）样条核；6）Sigmoid核函数。<br>其中Gauss径向基函数则是局部性强的核函数，其外推能力随着参数的增大而减弱；多项式形式的核函数具有良好的全局性质，局部性差。<br>如何选择和函数呢？<br>1）当特征维数远远大于样本数的情况下，使用线性核就可以<br>2）当特征维数和样本数都很大，例如文本分类，一般使用线性核<br>3）当特征维数远小于样本数，一般使用RBF。</p>
+<h3 id="为什么SVM对缺失数据敏感？"><a href="#为什么SVM对缺失数据敏感？" class="headerlink" title="为什么SVM对缺失数据敏感？"></a>为什么SVM对缺失数据敏感？</h3><p>这里说的缺失数据是指缺失某些特征数据，向量数据不完整。SVM没有处理缺失值的策略。而SVM希望样本在特征空间中线性可分，所以特征空间的好坏对SVM的性能很重要，缺失特征数据将影响训练结果的好坏。</p>
+<h3 id="SVM的优缺点"><a href="#SVM的优缺点" class="headerlink" title="SVM的优缺点"></a>SVM的优缺点</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>1）由于SVM是一个凸优化问题，所以求得的解一定是全局最优而不是局部最优。<br>2）不仅适用于线性问题还适用于非线性问题（用核技巧）<br>3）同游高维样本空间的数据也能用SVM，这是因为数据集的复杂度只取决于支持向量而不是数据集的维度，这在某种意义上避免了“维数灾难”。<br>4）理论基础比较完善</p>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p>1）二次规划问题求解将涉及m阶矩阵的计算（m为样本的个数），因此SVM不适用于超大数据集。（SMO算法可以缓解这个问题）<br>2）只适用于二分类问题。（SVM的退岗SVR也适用于回归问题；可以通过多个SVM的组合来解决多分类问题）</p>
+<h2 id="常用的距离公式"><a href="#常用的距离公式" class="headerlink" title="常用的距离公式"></a>常用的距离公式</h2><h3 id="曼哈顿距离"><a href="#曼哈顿距离" class="headerlink" title="曼哈顿距离"></a>曼哈顿距离</h3><p>点$P_1(x_1,y_1)$和点$P_2(x_2,y_2)$的距离为：</p>
+<script type="math/tex; mode=display">distance(P_1,P_2)=|x_2-x_1|+|y_2-y_1|</script><h3 id="欧式距离"><a href="#欧式距离" class="headerlink" title="欧式距离"></a>欧式距离</h3><p>欧式空间中两点的距离。点$P_1(x_1,x_2,…,x_n)$和点$P_2(y_1,y_2,…,y_n)$的距离如下：</p>
+<script type="math/tex; mode=display">distance=\sqrt{\sum_1^n(x_i-y_i)^2}</script><h3 id="切比雪夫距离"><a href="#切比雪夫距离" class="headerlink" title="切比雪夫距离"></a>切比雪夫距离</h3><p>两点之间的距离定义为其各坐标数值差的最大值。点$P_1(x_1,x_2,…,x_n)$和点$P_2(y_1,y_2,…,y_n)$的距离如下：</p>
+<script type="math/tex; mode=display">distance=(P_1,P_2)=max(|x_1-y_1|,|x_2-y_2|,...,|x_n-y_n|)</script><h3 id="余弦相似度"><a href="#余弦相似度" class="headerlink" title="余弦相似度"></a>余弦相似度</h3><p>余弦相似度是通过测量两个向量夹角的度数来度量他们之间的相似度。对于A和B的距离是：</p>
+<script type="math/tex; mode=display">cos(\theta)=\frac{A\cdot B}{||A||\cdot||B||}=\frac{\sum_1^n(A_i\times B_i)}{\sqrt{\sum_i^n(A_i)^2}\times\sqrt{\sum_i^n(B_i)^2}}</script><h2 id="数据降维"><a href="#数据降维" class="headerlink" title="数据降维"></a>数据降维</h2><h3 id="数据降维原理"><a href="#数据降维原理" class="headerlink" title="数据降维原理"></a>数据降维原理</h3><p>降维就是一种对高维度特征数据预处理方法。降维是将高维度的数据保留下最重要的一些特征，去除噪声和不重要的特征，从而实现提升数据处理速度的目的。在实际的生产和应用中，降维在一定的信息损失范围内，可以为我们节省大量的时间和成本。<br>降维具有如下一些优点：<br>1) 使得数据集更易使用。<br>2) 降低算法的计算开销。<br>3) 去除噪声。<br>4) 使得结果容易理解。<br>降维的算法有很多，比如奇异值分解(SVD)、主成分分析(PCA)、因子分析(FA)、独立成分分析(ICA)。</p>
+<h3 id="线性判别分析LDA"><a href="#线性判别分析LDA" class="headerlink" title="线性判别分析LDA"></a>线性判别分析LDA</h3><h3 id="PCA原理"><a href="#PCA原理" class="headerlink" title="PCA原理"></a>PCA原理</h3><p><a href="https://blog.csdn.net/program_developer/article/details/80632779?depth_1-utm_source=distribute.pc_relevant.none-task&amp;utm_source=distribute.pc_relevant.none-task" target="_blank" rel="noopener">PCA介绍</a><br>PCA(Principal Component Analysis)，即主成分分析方法，是一种使用最广泛的数据降维算法。PCA的主要思想是将n维特征映射到k维上，这k维是全新的正交特征也被称为主成分，是在原有n维特征的基础上重新构造出来的k维特征。PCA的工作就是从原始的空间中顺序地找一组相互正交的坐标轴，新的坐标轴的选择与数据本身是密切相关的。其中，第一个新坐标轴选择是原始数据中方差最大的方向，第二个新坐标轴选取是与第一个坐标轴正交的平面中使得方差最大的，第三个轴是与第1,2个轴正交的平面中方差最大的。依次类推，可以得到n个这样的坐标轴。通过这种方式获得的新的坐标轴，我们发现，大部分方差都包含在前面k个坐标轴中，后面的坐标轴所含的方差几乎为0。于是，我们可以忽略余下的坐标轴，只保留前面k个含有绝大部分方差的坐标轴。事实上，这相当于只保留包含绝大部分方差的维度特征，而忽略包含方差几乎为0的特征维度，实现对数据特征的降维处理。<br>思考：我们如何得到这些包含最大差异性的主成分方向呢？<br>答案：事实上，通过计算数据矩阵的协方差矩阵，然后得到协方差矩阵的特征值特征向量，选择特征值最大(即方差最大)的k个特征所对应的特征向量组成的矩阵。这样就可以将数据矩阵转换到新的空间当中，实现数据特征的降维。<br>由于得到协方差矩阵的特征值特征向量有两种方法：特征值分解协方差矩阵、奇异值分解协方差矩阵，所以PCA算法有两种实现方法：基于特征值分解协方差矩阵实现PCA算法、基于SVD分解协方差矩阵实现PCA算法。<br>（推导过程）</p>
+<h3 id="SVD奇异值分解"><a href="#SVD奇异值分解" class="headerlink" title="SVD奇异值分解"></a>SVD奇异值分解</h3><h3 id="LDA、PCA、SVD推导过程"><a href="#LDA、PCA、SVD推导过程" class="headerlink" title="LDA、PCA、SVD推导过程"></a>LDA、PCA、SVD推导过程</h3><p><a href="https://blog.csdn.net/Recall_Tomorrow/article/details/79408355" target="_blank" rel="noopener">简述LDA、PCA、SVD推导过程</a></p>
+<h2 id="贝叶斯算法"><a href="#贝叶斯算法" class="headerlink" title="贝叶斯算法"></a>贝叶斯算法</h2><h2 id="Kmeans算法"><a href="#Kmeans算法" class="headerlink" title="Kmeans算法"></a>Kmeans算法</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/02/12/%E7%AE%80%E5%8E%86%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -449,7 +579,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -537,6 +667,53 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
