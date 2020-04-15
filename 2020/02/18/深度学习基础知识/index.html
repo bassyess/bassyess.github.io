@@ -35,6 +35,7 @@
 <meta property="og:image" content="https://bassyess.github.io/images/LeakyRelu%E5%87%BD%E6%95%B0.png">
 <meta property="og:image" content="https://bassyess.github.io/images/ELU%E5%87%BD%E6%95%B0.png">
 <meta property="og:image" content="https://bassyess.github.io/images/%E5%BD%92%E4%B8%80%E5%8C%96%E5%8C%BA%E5%88%AB.png">
+<meta property="og:image" content="https://bassyess.github.io/images/softmax.jpg">
 <meta property="og:image" content="https://bassyess.github.io/images/ROC.png">
 <meta property="og:image" content="https://bassyess.github.io/images/PR.png">
 <meta property="og:image" content="https://bassyess.github.io/images/pooling.png">
@@ -100,7 +101,7 @@
 <meta property="og:image" content="https://bassyess.github.io/images/dilatedConv.jpg">
 <meta property="og:image" content="https://bassyess.github.io/images/residualConnection.jpg">
 <meta property="article:published_time" content="2020-02-18T13:13:44.000Z">
-<meta property="article:modified_time" content="2020-04-15T00:56:39.833Z">
+<meta property="article:modified_time" content="2020-04-15T00:58:57.590Z">
 <meta property="article:author" content="Kay">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://bassyess.github.io/images/L1%E8%8C%83%E6%95%B0%E6%B1%82%E5%AF%BC.png">
@@ -246,7 +247,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-15 08:56:39" itemprop="dateModified" datetime="2020-04-15T08:56:39+08:00">2020-04-15</time>
+                <time title="修改时间：2020-04-15 08:58:57" itemprop="dateModified" datetime="2020-04-15T08:58:57+08:00">2020-04-15</time>
               </span>
 
           
@@ -342,7 +343,7 @@ L(y, f(x))=
 <h2 id="解决模型欠拟合与过拟合常用方法"><a href="#解决模型欠拟合与过拟合常用方法" class="headerlink" title="解决模型欠拟合与过拟合常用方法"></a>解决模型欠拟合与过拟合常用方法</h2><h3 id="欠拟合"><a href="#欠拟合" class="headerlink" title="欠拟合"></a>欠拟合</h3><p>欠拟合：欠拟合的原因大多是模型不够复杂、拟合函数的能力不够。<br>因此，从数据层面考虑，可以增加新特征，例如：组合、泛化、相关性、高次特征等；从模型层面考虑，可以增加模型的复杂度，例如SVM的核函数、DNN等更复杂模型，去掉正则化或减少正则化参数，加深训练轮数等。</p>
 <h3 id="过拟合"><a href="#过拟合" class="headerlink" title="过拟合"></a>过拟合</h3><p>过拟合：成因是给定的数据集相对过于简单，使得模型在拟合函数时过分考虑了噪声等不必要的数据间关联。<br>解决方法：<br>1）数据扩增：人为增加数据量，可以用重采样、上采样、增加随机噪声、GAN、图像数据的空间变换（平移旋转镜像）、尺度变换（缩放裁剪）、颜色变换、改变分辨率、对比度、亮度等。<br>2）针对神经网络，采用dropout的方法：dropout的思想是当一组参数经过某一层神经元的时候，去掉这一层上的部分神经元，让参数只经过一部分神经元进行计算。这里的去掉不是真正意义上的去除，只是让参数不经过一部分神经元计算，从而减少了神经网络的规模（深度）。<br>3）提前停止训练<br>也就是减少训练的迭代次数。从上面的误差率曲线图，理论上可以找到有个训练程度，此时验证集误差率最低，视为拟合效果最好的点。<br>4）正则化<br>在所定义的损失函数后面加入一项永不为0的部分，那么经过不断优化损失函数还是会存在的。<br>L0正则化：损失函数后面加入L0范数，也就是权重向量中非零参数的个数。特点是可以实现参数的稀疏性，使尽可能多的参数都为0；缺点是在优化时是NP难问题，很难优化。<br>L1正则化：在损失函数后面加入权重向量的L1范数。L1范数是L0范数的最优凸近似，比L0范数容易优化，也可以很好地实现参数稀疏性。<br>L2正则化：在损失函数后面加入参数L2范数的平方项。与L0、L1不同的是，L2很难使某些参数达到0，它只能是参数接近0。<br>5）针对DNN，采用batch normalization：即BN，既能提高泛化能力，又大大提高训练速度，现被广泛应用于DNN的激活层之前。主要优势：减少了梯度对参数大小和初始值的依赖，将参数值（特征）缩放在[0,1]区间（若针对Relu还限制了输出的范围），这样反向传播时梯度控制在1左右，使得网络在较高的学习率之下也不易发生梯度爆炸或弥散（也防止了在使用sigmoid作为激活函数时训练容易陷入梯度极小饱和或极大的极端情况）。</p>
 <h2 id="多分类问题"><a href="#多分类问题" class="headerlink" title="多分类问题"></a>多分类问题</h2><h3 id="one-vs-rest"><a href="#one-vs-rest" class="headerlink" title="one vs rest"></a>one vs rest</h3><p>由于概率函数$h_{\theta}(x)$所表示的是样本标记为某一类型的概率，但可以将一对一（二分类）扩展为一对多(one vs rest)：<br>1）将类型$class_1$看作正样本，其他类型全部看作负样本，然后我们就可以得到样本类型为该类型的概率$p_1$；<br>2）然后再讲另外类型$class_2$看作正样本，其他类型全部看作负样本，同理得到$p_2$；<br>3）以此循环，我们可以得到该待预测样本的标记类型分别为类型$class_i$时的概率$p_i$，最后我们取$p_i$中最大的那个概率对应的样本标记类型为我们的待预测样本类型。</p>
-<h3 id="softmax函数"><a href="#softmax函数" class="headerlink" title="softmax函数"></a>softmax函数</h3><p>使用softmax函数构造模型解决多分类问题，与logistic回归不同的是，softmax回归分类模型会有多个的输出，且输出个数与类别个数相等，输出为样本$X$的各个类别的概率，最后对样本进行预测的类型为概率最高的那个类别。<br><a href="https://zhuanlan.zhihu.com/p/27313383" target="_blank" rel="noopener">softmax反向传播推导</a></p>
+<h3 id="softmax函数"><a href="#softmax函数" class="headerlink" title="softmax函数"></a>softmax函数</h3><p>使用softmax函数构造模型解决多分类问题，与logistic回归不同的是，softmax回归分类模型会有多个的输出，且输出个数与类别个数相等，输出为样本$X$的各个类别的概率，最后对样本进行预测的类型为概率最高的那个类别。<br><img src="/images/softmax.jpg" alt="softmax反向传播推导"></p>
 <h2 id="反向传播原理"><a href="#反向传播原理" class="headerlink" title="反向传播原理"></a>反向传播原理</h2><p>反向传播过程：将训练集的数据输入到神经网络的输入层，经过隐藏层最终到达输出层输出结果，这是神经网络的前向传播过程；由于神经网络的输出结果和实际结果存在误差，计算估计值和实际值之间的误差，并将误差从输出层向隐藏层反向传播，直至传播至输入层；在反向传播过程中，根据误差调整各种参数的值，不断迭代上述的过程，直至收敛。<br><a href="https://blog.csdn.net/u014313009/article/details/51039334?depth_1-utm_source=distribute.pc_relevant.none-task&amp;utm_source=distribute.pc_relevant.none-task" target="_blank" rel="noopener">推导过程</a></p>
 <h3 id="什么是梯度消失和梯度爆炸"><a href="#什么是梯度消失和梯度爆炸" class="headerlink" title="什么是梯度消失和梯度爆炸"></a>什么是梯度消失和梯度爆炸</h3><p>在反向传播过程中需要对激活函数进行求导，如果导数大于1，那么随着网络层数的增加梯度更新将会朝着指数爆炸的方式增加这就是梯度爆炸。同样如果导数小于1，那么随着网络层数的增加梯度更新信息会朝着指数衰减的方式减少这就是梯度消失。因此，梯度消失、爆炸，其根本原因在于反向传播训练法则，属于先天不足。</p>
 <h3 id="梯度消失的原因"><a href="#梯度消失的原因" class="headerlink" title="梯度消失的原因"></a>梯度消失的原因</h3><p>1）在反向传播过程中梯度呈指数衰减，随着网络层数的加深，梯度减小为0；2）在反向传播过程中，神经元的输入值位于激活函数的非线性区域的上下限两端，使得梯度消失。<br>而梯度爆炸一般出现在深层网络和权值初始化太大的情况下。</p>
