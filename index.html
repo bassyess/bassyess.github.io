@@ -141,6 +141,162 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/06/01/%E5%BF%AB%E6%89%8B%E5%AE%9E%E4%B9%A0%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kay">
+      <meta itemprop="description" content="千里之行，始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/01/%E5%BF%AB%E6%89%8B%E5%AE%9E%E4%B9%A0%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">快手实习记录</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-01 20:19:11 / 修改时间：21:44:48" itemprop="dateCreated datePublished" datetime="2020-06-01T20:19:11+08:00">2020-06-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="实习内容"><a href="#实习内容" class="headerlink" title="实习内容"></a>实习内容</h1><p>2020-04-20至2020-06-01，参与快手的“蝴蝶消失”特效的算法研究，主要是去除用户上传的照片中人像区域部分，在蝴蝶飞舞的特效场景下，还原图片中被人体遮挡的区域。算法实现是通过人像分割算法，先找出区域中人体的mask区域，然后利用图像修复算法，脑补遮挡区域的信息，实现“蝴蝶消失”特效。</p>
+<h1 id="参考论文"><a href="#参考论文" class="headerlink" title="参考论文"></a>参考论文</h1><h2 id="Image-Inpainting-with-Learnable-Bidirectional-Attention-Maps"><a href="#Image-Inpainting-with-Learnable-Bidirectional-Attention-Maps" class="headerlink" title="Image Inpainting with Learnable Bidirectional Attention Maps"></a>Image Inpainting with Learnable Bidirectional Attention Maps</h2><p><img src="https://github.com/Vious/LBAM_Pytorch" alt="github链接"><br>模型测试结果：该模型在简单场景下，人像mask修复区域还不错，但在稍微复杂点的场景（图片颜色变化较大）容易出现伪影，不合理的纹理信息等等。</p>
+<h2 id="EdgeConnect-Structure-Guided-Image-Inpainting-using-Edge-Prediction"><a href="#EdgeConnect-Structure-Guided-Image-Inpainting-using-Edge-Prediction" class="headerlink" title="EdgeConnect: Structure Guided Image Inpainting using Edge Prediction"></a>EdgeConnect: Structure Guided Image Inpainting using Edge Prediction</h2><p><img src="https://github.com/knazeri/edge-connect" alt="github链接"><br>模型测试结果：该模型效果并未达到论文中的修复结果，在稍微复杂点的场景中也会出现伪影和不合理的纹理信息等。</p>
+<h2 id="Free-Form-Image-Inpainting-with-Gated-Convolution-Deepfill-V2"><a href="#Free-Form-Image-Inpainting-with-Gated-Convolution-Deepfill-V2" class="headerlink" title="Free-Form Image Inpainting with Gated Convolution(Deepfill V2)"></a>Free-Form Image Inpainting with Gated Convolution(Deepfill V2)</h2><p><img src="https://github.com/JiahuiYu/generative_inpainting" alt="github链接"><br>测试结果：模型修复效果较好，在添加感知损失后，修复效果达到预期效果。</p>
+<h1 id="工作记录"><a href="#工作记录" class="headerlink" title="工作记录"></a>工作记录</h1><h2 id="模型loss修改"><a href="#模型loss修改" class="headerlink" title="模型loss修改"></a>模型loss修改</h2><h3 id="GAN各类Loss整理"><a href="#GAN各类Loss整理" class="headerlink" title="GAN各类Loss整理"></a>GAN各类Loss整理</h3><p><img src="http://www.twistedwg.com/2018/10/05/GAN_loss_summary.html" alt="常见的loss函数"><br>不同loss损失的分析：<br>a.hinge-loss生成的纹理信息比较ok，偶然会出现块状，比较频繁; b.log-loss以及ls-loss的生成纹理信息相对来说比较差，可以避免斑块问题； c.relgan-loss也会出现块状， 通过对比来看，说明了损失会对生成的结果有很大的影响。<br>在原有的损失函数中引入perceptual loss和style loss，通过VGG16计算全图区域的perceptual loss能有效平滑修复区域的斑块信息，减少伪影现象。而添加style loss计算修复图像的风格变化，并没有带来有效的提升。故模型最终选择hinge loss和perceptual loss。</p>
+<h2 id="问题整理"><a href="#问题整理" class="headerlink" title="问题整理"></a>问题整理</h2><h3 id="图像处理-255-0和127-5-1"><a href="#图像处理-255-0和127-5-1" class="headerlink" title="图像处理/255.0和127.5-1"></a>图像处理/255.0和127.5-1</h3><p>在代码中看到图像的2种处理方式：<br>1) img/255.0<br>2) img/127.5 - 1<br>第一种是对图像进行归一化，范围为[0, 1]，第二种也是对图像进行归一化，范围为[-1, 1]，这两种只是归一化范围不同，为了直观的看出2种区别，分别对图像进行两种处理：</p>
+<ol>
+<li>图像质量评估指标SSIM/PSNR<br>计算图像degrade后的质量，最 direct 的思路即比较degrade后的图像与真实图像（distortion-free）之间的差剖面，即可视误差，通过 visibility of errors 评价图像质量。<br>PSNR（Peak Signal to Noise Ratio），峰值信噪比，即峰值信号的能量与噪声的平均能量之比，通常表示的时候取 log 变成分贝（dB），由于 MSE 为真实图像与含噪图像之差的能量均值，而两者的差即为噪声，因此 PSNR 即峰值信号能量与 MSE 之比。定义式如下：</li>
+</ol>
+<p>一般地，针对 uint8 数据，最大像素值为 255,；针对浮点型数据，最大像素值为 1。<br>上面是针对灰度图像的计算方法，如果是彩色图像，通常有三种方法来计算。<br>（1）分别计算 RGB 三个通道的 PSNR，然后取平均值。<br>（2）计算 RGB 三通道的 MSE ，然后再除以 3 。<br>（3）将图片转化为 YCbCr 格式，然后只计算 Y 分量也就是亮度分量的 PSNR。</p>
+<p>SSIM：Structural Similarity，结构相似性，也是一种全参考的图像质量评价指标，它分别从亮度、对比度、结构三方面度量图像相似性。SSIM取值范围[0,1]，值越大，表示图像失真越小。SSIM在图像去噪、图像相似度评价上是优于PSNR的。</p>
+<p>每次计算的时候都从图片上取一个NxN的窗口，然后不断滑动窗口进行计算，最后取平均值作为全局的 SSIM。</p>
+<ol>
+<li>衡量GAN的两个指标IS和FID<br>我们使用IS（inception score）和FID（Fréchet Inception Distance）这两个指标来评价不同的GAN模型，来衡量生成的图片的质量和多样性。<br>IS（Inception score）<br>IS用来衡量GAN网络的两个指标：生成图片的质量和多样性。<br>熵（entropy）可以用来描述随机性：如果一个随机变量是高度可预测的，那么它就有较低的熵；相反，如果它是高度不可预测，那么它就用较高的熵。<br>在GAN中，我们希望条件概率 P(y∣x) 可以被高度预测（x 表示给定的图片，y 表示这个图片包含的主要物体），也就是希望它的熵值较低。<br>因此，我们使用inception network（可以理解这是一个固定的分类网络）来对生成的图像进行分类。（这里都是针对ImageNet数据集而言）然后预测 P(y∣x)， 这里的 y 就是标签。用这个概率来反应图片的质量。综上，我们知道概率 P(y∣x) 代表了图片的质量，概率越大，质量则越高。<br>1）图片质量：针对每一张生成的图片，已知的分类器应该很确信的知道它属于哪一类。而这可以用条件概率p(y∣x)来表示，它越大越好。而p(y∣x) 熵应该是越小越好。<br>2）图片的多样性：我们这时候考虑的是标签的分布情况，我们希望标签分布均与，而不希望模型生成的都是某一类图片。这时候我们考虑的不是条件概率了，而是边缘概率，也就是p(y)，展开来写应该是p(y1),p(y2),…,p(yn) , 这里的n就是原训练数据的类数。我们希望p(y1)=p(y2)=…=p(yn)=1/n。 从熵的角度来说，我们希望p(y) 的熵越大越好。</li>
+</ol>
+<p>IS缺点：当只产生一种物体的图像时，我们仍会认为这是均匀分布，而导致评价不正确。当模型坍塌时，结果就可能产生同样的图片。<br>FID（Fréchet Inception Distance ）<br>在计算FID中我们也同样使用inception network网络。它就是一个特征提取的深度网络，最后一层是一个pooling层，然后可以输出一张图像的类别。在计算FID时，我们去掉这个最后一层pooling层，得到的是一个2048维的高层特征，以下简称n维特征。我们继续简化一下，那么这个n维特征是一个向量。则有：对于我们已经拥有的真实图像，这个向量是服从一个分布的，（我们可以假设它是服从一个高斯分布）；对于那些用GAN来生成的n维特征它也是一个分布；我们应该立马能够知道了，GAN的目标就是使得两个分布尽量相同。假如两个分布相同，那么生成图像的真实性和多样性就和训练数据相同了。于是，现在的问题就是，怎么计算两个分布之间的距离呢？我们需要注意到这两个分布是多变量的，也就是前面提到的n维特征。也就是说我们计算的是两个多维变量分布之间的距离，数学上可以用Wasserstein-2 distance或者Frechet distance来进行计算。<br>假如一个随机变量服从高斯分布，这个分布可以用一个均值和方差来确定。那么两个分布只要均值和方差相同，则两个分布相同。我们就利用这个均值和方差来计算这两个单变量高斯分布之间的距离。但我们这里是多维的分布，我们知道协方差矩阵可以用来衡量两个维度之间的相关性。所以，我们使用均值和协方差矩阵来计算两个分布之间的距离。均值的维度就是前面n维特征的维度，也就是n维；协方差矩阵则是n*n的矩阵。</p>
+<p>较低的FID意味着两个分布之间更接近，也就意味着生成图片的质量较高、多样性较好。FID对模型坍塌更加敏感。相比较IS来说，FID对噪声有更好的鲁棒性。因为假如只有一种图片时，FID这个距离将会相当的高。因此，FID更适合描述GAN网络的多样性。<br>FID和IS都是基于特征提取，也就是依赖于某些特征的出现或者不出现。但是他们都无法描述这些特征的空间关系。</p>
+<ol>
+<li>Perceptual loss感知损失<br>Perceptual loss将真实图片卷积得到的feature与生成图片卷积得到的feature作比较，使得高层信息（内容和全局结构）接近，也就是感知的意思。</li>
+</ol>
+<p>注意看蓝线加黑线，它就是内容损失，而且它作用在较低层特征层上的。然后同样看红线和黑线，它是风格损失，他是作用在从低到高所有特征层上。<br>上图左边是图像转移网络，右边是损失网络。这里对风格迁移变换yc相当于输入图像X，ys就是输入的风格图片，y算是content Target和Style Target的基本结合。在风格重建时，高层特征，全局结构，纹理明显。内容重建时，底层特征，边缘，颜色，细节信息多，效果越好。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/04/20/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kay">
+      <meta itemprop="description" content="千里之行，始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/20/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">生成对抗网络</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-20 14:28:47 / 修改时间：15:55:44" itemprop="dateCreated datePublished" datetime="2020-04-20T14:28:47+08:00">2020-04-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="什么是GAN"><a href="#什么是GAN" class="headerlink" title="什么是GAN"></a>什么是GAN</h1><p>GAN是一种由生成网络和判别网络组成的深度神经网络架构。通过在生成和判别之间多次循环，两个网络相互对抗，试图胜过对方，从而训练了彼此。</p>
+<h2 id="生成网络"><a href="#生成网络" class="headerlink" title="生成网络"></a>生成网络</h2><p>生成网络使用现有数据生成新数据，比如使用现有图像来生成新图像。生成网络的核心任务是从随机生成的由数字构成的向量（称为“潜在空间”， latent space）中生成数据（比如图像、视频、音频或文本）。在构建生成网络时需要明确该网络的目标，例如生成图像、文本、音频、视频，等等。</p>
+<h2 id="判别网络"><a href="#判别网络" class="headerlink" title="判别网络"></a>判别网络</h2><p>判别网络试图区分真实数据和由生成网络生成的数据。对于输入的数据，判别网络需要基于事先定义的类别对其分类。这可能是多分类或二分类。通常，GAN 中进行的是二分类。</p>
+<h2 id="GAN中重要的概念"><a href="#GAN中重要的概念" class="headerlink" title="GAN中重要的概念"></a>GAN中重要的概念</h2><h3 id="KL散度"><a href="#KL散度" class="headerlink" title="KL散度"></a>KL散度</h3><p>KL 散度，也称相对熵，用于判定两个概率分布之间的相似度。它可以测量一个概率分布 p相对于另一个概率分布 q 的偏离。</p>
+<script type="math/tex; mode=display">D_{KL}(p||q)=\int_xp(x)log\frac{p(x)}{q(x)}</script><p>如果 p(x)和 q(x)处处相等，则此时 KL 散度为 0，达到最小值。<br>由于 KL 散度具有不对称性，因此不用于测量两个概率分布之间的距离，因此也不用作距离的度量（metric）。</p>
+<h3 id="JS散度"><a href="#JS散度" class="headerlink" title="JS散度"></a>JS散度</h3><p>JS 散度，也称信息半径（information radius， IRaD）或者平均值总偏离（total divergence to the average），是测量两个概率分布之间相似度的另一种方法。它基于 KL 散度，但具有对称性，可用于测量两个概率分布之间的距离。对 JS 散度开平方即可得到 JS 距离， 所以它是一种距离度量。<br>计算两个概率分布p和q之间JS散度的公式如下。</p>
+<script type="math/tex; mode=display">D_{JS}(p||q)=frac{1}{2}D_{KL}(p||frac{p+q}{2})+frac{1}{2}D_{KL}(q||frac{p+q}{2})</script><p>其中，$frac{p+q}{2}$是p和q的中点测度，$D_{KL}$是KL散度。</p>
+<h3 id="纳什均衡"><a href="#纳什均衡" class="headerlink" title="纳什均衡"></a>纳什均衡</h3><p>博弈论中的纳什均衡描述了一种在非合作博弈中可以达到的特殊状态。其中每个参与者都试图基于对其他参与者行为的预判，选择使自己获益最多的最佳策略。最终形成的局面是，所有参与者都基于其他参与者的选择，采取了对自己来说最佳的策略，此时已经无法通过改变策略获益了。这种状态就称为纳什均衡。</p>
+<h3 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h3><p>为了使生成网络生成的图像能以假乱真，应尽量提高生成网络所生成数据和真实数据之间的相似度。可使用目标函数测量这种相似度。生成网络和判别网络各有目标函数，训练过程中也分别试图最小化各自的目标函数。 GAN 最终的目标函数如下所示。<br><img src="/images/gan_loss.png" alt=""><br>其中， D(x)是判别网络模型， G(z)是生成网络模型， p(x)是真实数据分布， p(z)是生成网络生成的数据分布， E 是期望输出。<br>在训练过程中， D（判别网络， discriminator）试图最大化公式的最终取值，而 G（生成网络，generator）试图最小化该值。如此训练出来的 GAN 中，生成网络和判别网络之间会达到一种平衡，此时模型即“收敛”了。这种平衡状态就是纳什均衡。训练完成之后，就得到了一个可以生成逼真图像的生成网络。</p>
+<h3 id="评分算法"><a href="#评分算法" class="headerlink" title="评分算法"></a>评分算法</h3><p>GAN 的目标函数不是均方误差（mean-square error）或者交叉熵（cross entropy）这样确定的函数，而是在训练过程中习得的。研究者们提出了多种可以测量模型准确度的评分算法，下面介绍其中几个。</p>
+<h4 id="Inception分数"><a href="#Inception分数" class="headerlink" title="Inception分数"></a>Inception分数</h4><p>Inception 分数（IS）是应用最广泛的 GAN 评分算法。它使用一个在 Imagenet 上预训练过的Inception V3 网络分别提取真实图像和生成图像的特征。IS 测量生成图片的质量和多样性。计算 IS 的公式如下。</p>
+<script type="math/tex; mode=display">IS(G)=exp(E_{\chi \sim p_g}D_{KL}(p(y|\chi)||p(y)))</script><p>其中，$p_g$表示一个概率分布，$\chi \sim p_g$表示$\chi$是该概率分布中的一个抽样。$p(y|\chi)$是条件类别分布，$p(y)$是边缘类别分布。<br>计算Inception分数的步骤如下：<br>1）首先从模型生成的图像中抽取N个样本，记为（$\chi^i$）。<br>2）然后使用如下公式构建边缘类别分布。</p>
+<script type="math/tex; mode=display">p(y)=\int_{\chi}p(y|\chi)p_g(\chi)</script><p>3）接着使用如下公式计算KL散度以及期望值。<br>$IS(G)=exp(E_{\chi \sim p_g}D_{KL}(p(y|\chi)||p(y)))$<br>4）最后计算上述结果的指数，即可得到IS。<br>IS 越高，说明模型质量越好。 IS 虽然是重要的测度（measure），却也存在一些问题。比如模型对于每个类别只生成一张图像，其 IS 仍然可以很高，但这样的模型缺乏多样性。</p>
+<h2 id="GAN的优势"><a href="#GAN的优势" class="headerlink" title="GAN的优势"></a>GAN的优势</h2><p>1）GAN 是无监督学习方法。带标注数据需要人工制作，非常耗时。 GAN 不需要带标注数据，而可以通过无标注数据进行训练，学习数据的内在表现形式。<br>2）GAN 可以生成数据。 GAN 可以生成能跟真实数据媲美的数据，应用潜力巨大。 GAN 可以生成图像、文本、音频和视频等，并且和真实数据相差无几。用 GAN 生成图像可应用于市场营销、电子商务、游戏、广告等很多行业。<br>3）GAN 可以学习数据的概率密度分布。 GAN 可以学习数据的内在表现形式。前面提到了GAN 可以学习混乱而复杂的数据概率分布，有助于解决机器学习领域的很多问题。<br>4）训练后的判别网络是分类器。 GAN 训练完成之后会得到一个判别网络和一个生成网络，而判别网络可用作分类器。</p>
+<h2 id="训练GAN的问题"><a href="#训练GAN的问题" class="headerlink" title="训练GAN的问题"></a>训练GAN的问题</h2><p>GAN 也存在一些问题。这些问题通常与训练过程有关，包括模式塌陷、内部协变量转移以及梯度消失等。</p>
+<h3 id="模式塌陷"><a href="#模式塌陷" class="headerlink" title="模式塌陷"></a>模式塌陷</h3><p>模式塌陷问题指的是生成网络所生成的样本之间差异不大，有时甚至始终只生成同样的图像。有一些概率分布是多峰的（multimodal），构造十分复杂。数据可能是通过不同类型的观测得来的，因此样本中可能会暗含一些细类，每个细类下的样本之间比较相似。这样会导致数据的概率分布出现多个“峰”，每个峰对应一个细类。如果数据的概率分布是多峰的， GAN 有时就会出现模式塌陷问题，无法成功构建模型。如果生成的所有样本几乎都相同，这种情况就被称为“完全塌陷”。<br>解决模式坍塌问题有多种方法，例如：<br>1）针对不同的峰训练不同的GAN模型；<br>2）使用多样化的数据训练GAN。</p>
+<h3 id="内部协变量转移"><a href="#内部协变量转移" class="headerlink" title="内部协变量转移"></a>内部协变量转移</h3><p>内部协变量转移问题之所以产生，是因为神经网络输入数据的概率分布发生了变化。输入数据的概率分布改变之后，隐藏层会试图适应新的概率分布，训练速度因此放缓，需要很长时间才会收敛到全局最小值。神经网络输入数据的概率分布和该网络之前接触的数据概率分布之间差异过大是问题根源。解决方法包括批归一化以及其他归一化技术。</p>
+<h2 id="解决GAN训练稳定性问题"><a href="#解决GAN训练稳定性问题" class="headerlink" title="解决GAN训练稳定性问题"></a>解决GAN训练稳定性问题</h2><p>GAN 可能出现训练不稳定的问题，严重时会导致 GAN 永远无法在某些数据集上收敛。</p>
+<h3 id="特征匹配"><a href="#特征匹配" class="headerlink" title="特征匹配"></a>特征匹配</h3><p>在 GAN 的训练过程中，判别网络的目标函数需要最大化，而生成网络的目标函数需要最小化。这样的目标函数存在一些严重的缺陷，比如没有考虑生成数据和真实数据的分布特征。<br>特征匹配是引入一种新的目标函数来提高GAN的收敛能力。使用新的目标函数，便于生成网络生成在分布特征上和真实数据更为接近的数据。<br>在特征映射技术中，判别网络不再输出二元标签，而改为输出某个中间层对于输入数据的“激活映射”，也称“特征映射”。这样可以训练判别网络学习真实数据的分布特征，并且使用这些特征来区分真实数据和虚假数据。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/03/09/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -172,7 +328,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-15 08:49:15" itemprop="dateModified" datetime="2020-04-15T08:49:15+08:00">2020-04-15</time>
+                <time title="修改时间：2020-04-20 09:34:35" itemprop="dateModified" datetime="2020-04-20T09:34:35+08:00">2020-04-20</time>
               </span>
 
           
@@ -194,6 +350,7 @@
 <h1 id="阿里"><a href="#阿里" class="headerlink" title="阿里"></a>阿里</h1><h2 id="一面-20200408"><a href="#一面-20200408" class="headerlink" title="一面 20200408"></a>一面 20200408</h2><p>项目介绍<br>算法的评估模块是如何实现的？<br>每一帧的相似度是如何计算的？采用的欧式距离是计算哪些对象的空间距离？<br>不同的姿态和不同的角度是如何处理的？<br>不同远近，不同角度、大人和小孩等进行测试的时候出现什么具体的问题，如何解决的，问题的指标是哪些？<br>用户的动作时间不匹配是如何解决的？<br>通信机制的设计和解决方案的目的是什么，为什么这么设计？<br>消息中间件还有哪些？其功能是什么？<br>服务器的系统架构是怎样的？分布式系统要如何部署？多服务器多人同时在线该如何解决？<br>hashset的原理及内部实现的细节？<br>HashSet实现自set接口，set集合中元素无序且不能重复。<br>因为HashSet底层是基于HashMap实现的，当你new一个HashSet时候，实际上是new了一个map，执行add方法时，实际上调用map的put方法，value始终是PRESENT，所以根据HashMap的一个特性: 将一个key-value对放入HashMap中时，首先根据key的hashCode()返回值决定该Entry的存储位置，如果两个key的hash值相同，那么它们的存储位置相同。如果这个两个key的equalus比较返回true。那么新添加的Entry的value会覆盖原来的Entry的value，key不会覆盖。因此,如果向HashSet中添加一个已经存在的元素，新添加的集合元素不会覆盖原来已有的集合元素。</p>
 <h2 id="二面-1"><a href="#二面-1" class="headerlink" title="二面"></a>二面</h2><p>一个1亿行的文本文件（文件内容为人民日报真实语料），每行有大约100个汉字。计算如下：<br>1）计算每个汉字出现次数<br>2）计算出现频率最高的连续10个字符（包含标点符号）<br>限制：<br>1）使用多线程实现<br>2）系统资源：4core，8g内存<br>3）指标1需要完整代码，指标2计算为开放性问题，伪代码描述思路即可。<br>4）使用Java实现</p>
 <h1 id="腾讯优图"><a href="#腾讯优图" class="headerlink" title="腾讯优图"></a>腾讯优图</h1><h2 id="一面-2"><a href="#一面-2" class="headerlink" title="一面"></a>一面</h2><p>算法题：快排、最长公共子序列、c++创建和删除二维数组<br>常见的激活函数？<br>ResNet和DenseNet的区别？<br>过拟合解决的方法？<br>Dropout的原理？<br>R-CNN的实现原理？<br>Softmax反向传播的推导？<br>项目介绍。</p>
+<h1 id="微软"><a href="#微软" class="headerlink" title="微软"></a>微软</h1><h2 id="一面-3"><a href="#一面-3" class="headerlink" title="一面"></a>一面</h2><p>项目介绍<br>你知道哪些距离计算方法？为什么采用欧式距离来评估？<br>比赛的评价指标是什么？是比赛的mAP?mAP是如何计算的？其原理是什么？<br>什么是NMS?什么是softer NMS？<br>算法题：<br>第K大的数？时间复杂度是多少？<br>两个很大的文件，每一行是url地址，找到一个url地址既在A文件又在B文件中？<br>在操作系统中，进程和线程的区别？<br>在python语言中，什么时候会用多进程，什么时候会用多线程？</p>
 
       
     </div>
@@ -4212,400 +4369,6 @@ E(g-f)^2&=E(g^2-2gf+f^2)
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/03/03/%E7%AC%AC%E5%8D%81%E7%AB%A0_%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Kay">
-      <meta itemprop="description" content="千里之行，始于足下">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Home">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/03/%E7%AC%AC%E5%8D%81%E7%AB%A0_%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">第十章_强化学习</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-03 12:28:54 / 修改时间：12:29:13" itemprop="dateCreated datePublished" datetime="2020-03-03T12:28:54+08:00">2020-03-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>[TOC]</p>
-<p><a href="https://morvanzhou.github.io/tutorials/machine-learning/reinforcement-learning/" target="_blank" rel="noopener">https://morvanzhou.github.io/tutorials/machine-learning/reinforcement-learning/</a></p>
-<h1 id="第十章-强化学习"><a href="#第十章-强化学习" class="headerlink" title="第十章 强化学习"></a>第十章 强化学习</h1><h2 id="10-1-强化学习的主要特点？"><a href="#10-1-强化学习的主要特点？" class="headerlink" title="10.1 强化学习的主要特点？"></a>10.1 强化学习的主要特点？</h2><p>其他许多机器学习算法中学习器都是学得怎样做，而RL是在尝试的过程中学习到在特定的情境下选择哪种行动可以得到最大的回报。在很多场景中，当前的行动不仅会影响当前的rewards，还会影响之后的状态和一系列的rewards。RL最重要的3个特定在于：<br>(1)    基本是以一种闭环的形式；<br>(2)    不会直接指示选择哪种行动（actions）；<br>(3)    一系列的actions和奖励信号（reward signals）都会影响之后较长的时间。 </p>
-<h3 id="10-1-1-定义"><a href="#10-1-1-定义" class="headerlink" title="10.1.1 定义"></a>10.1.1 定义</h3><p>强化学习是机器学习的一个重要分支，是多学科多领域交叉的一个产物，它的本质是解决 decision making 问题，即自动进行决策，并且可以做连续决策。<br>它主要包含四个元素，agent，环境状态，行动，奖励, 强化学习的目标就是获得最多的累计奖励。<br>我们列举几个形象的例子：<br>小孩想要走路，但在这之前，他需要先站起来，站起来之后还要保持平衡，接下来还要先迈出一条腿，是左腿还是右腿，迈出一步后还要迈出下一步。<br>小孩就是 agent，他试图通过采取行动（即行走）来操纵环境（行走的表面），并且从一个状态转变到另一个状态（即他走的每一步），当他完成任务的子任务（即走了几步）时，孩子得到奖励（给巧克力吃），并且当他不能走路时，就不会给巧克力。</p>
-<p><img src="/img/ch10/10-1.png" alt=""></p>
-<p>上图中agent代表自身，如果是自动驾驶，agent就是车；如果你玩游戏它就是你当前控制的游戏角色，如马里奥，马里奥往前走时环境就一直在发生变化，有小怪物或者障碍物出现，它需要通过跳跃来进行躲避，就是要做action（如向前走和跳起的动作）；无人驾驶的action就是车左转、右转或刹车等等，它无时无刻都在与环境产生交互，action会反馈给环境，进而改变环境，如果自动驾驶的车行驶目标是100米，它向前开了10米，那环境就发生了变化，所以每次产生action都会导致环境改变，环境的改变会反馈给自身（agent），就是这样的一个循环；反馈又两种方式：1、做的好（reward）即正反馈，2、做得不好（punishment惩罚）即负反馈。Agent可能做得好，也可能做的不好，环境始终都会给它反馈，agent会尽量去做对自身有利的决策，通过反反复复这样的一个循环，agent会越来越做的好，就像孩子在成长过程中会逐渐明辨是非，这就是强化学习。</p>
-<h2 id="10-2-强化学习应用实例"><a href="#10-2-强化学习应用实例" class="headerlink" title="10.2 强化学习应用实例"></a>10.2 强化学习应用实例</h2><p>（1）Manufacturing</p>
-<p>例如一家日本公司 Fanuc，工厂机器人在拿起一个物体时，会捕捉这个过程的视频，记住它每次操作的行动，操作成功还是失败了，积累经验，下一次可以更快更准地采取行动。</p>
-<p><img src="/img/ch10/10-2.png" alt=""></p>
-<p>（2）Inventory Management</p>
-<p>在库存管理中，因为库存量大，库存需求波动较大，库存补货速度缓慢等阻碍使得管理是个比较难的问题，可以通过建立强化学习算法来减少库存周转时间，提高空间利用率。</p>
-<p>（3）Dynamic pricing</p>
-<p>强化学习中的 Q-learning 可以用来处理动态定价问题。</p>
-<p>（4）Customer Delivery</p>
-<p>制造商在向各个客户运输时，想要在满足客户的所有需求的同时降低车队总成本。通过 multi-agents 系统和 Q-learning，可以降低时间，减少车辆数量。</p>
-<p>（5）ECommerce Personalization</p>
-<p>在电商中，也可以用强化学习算法来学习和分析顾客行为，定制产品和服务以满足客户的个性化需求。</p>
-<p>（6）Ad Serving</p>
-<p>例如算法 LinUCB （属于强化学习算法 bandit 的一种算法），会尝试投放更广范围的广告，尽管过去还没有被浏览很多，能够更好地估计真实的点击率。<br>再如双 11 推荐场景中，阿里巴巴使用了深度强化学习与自适应在线学习，通过持续机器学习和模型优化建立决策引擎，对海量用户行为以及百亿级商品特征进行实时分析，帮助每一个用户迅速发现宝贝，提高人和商品的配对效率。还有，利用强化学习将手机用户点击率提升了 10-20%。</p>
-<p>（7）Financial Investment Decisions</p>
-<p>例如这家公司 Pit.ai，应用强化学习来评价交易策略，可以帮助用户建立交易策略，并帮助他们实现其投资目标。</p>
-<p>（8）Medical Industry</p>
-<p>动态治疗方案（DTR）是医学研究的一个主题，是为了给患者找到有效的治疗方法。 例如癌症这种需要长期施药的治疗，强化学习算法可以将患者的各种临床指标作为输入 来制定治疗策略。</p>
-<h2 id="10-3-强化学习和监督式学习、非监督式学习的区别"><a href="#10-3-强化学习和监督式学习、非监督式学习的区别" class="headerlink" title="10.3 强化学习和监督式学习、非监督式学习的区别"></a>10.3 强化学习和监督式学习、非监督式学习的区别</h2><p>在机器学习中，我们比较熟知的是监督式学习，非监督学习，此外还有一个大类就是强化学习：<br>当前的机器学习算法可以分为3种：有监督的学习（Supervised Learning）、无监督的学习（Unsupervised Learning）和强化学习（Reinforcement Learning），结构图如下所示：</p>
-<p> <img src="/img/ch10/10-3.png" alt=""></p>
-<h3 id="10-3-1-强化学习和监督式学习的区别："><a href="#10-3-1-强化学习和监督式学习的区别：" class="headerlink" title="10.3.1 强化学习和监督式学习的区别："></a>10.3.1 强化学习和监督式学习的区别：</h3><p>监督式学习就好比你在学习的时候，有一个导师在旁边指点，他知道怎么是对的怎么是错的，但在很多实际问题中，例如 chess，go，这种有成千上万种组合方式的情况，不可能有一个导师知道所有可能的结果。</p>
-<p>而这时，强化学习会在没有任何标签的情况下，通过先尝试做出一些行为得到一个结果，通过这个结果是对还是错的反馈，调整之前的行为，就这样不断的调整，算法能够学习到在什么样的情况下选择什么样的行为可以得到最好的结果。</p>
-<p>就好比你有一只还没有训练好的小狗，每当它把屋子弄乱后，就减少美味食物的数量（惩罚），每次表现不错时，就加倍美味食物的数量（奖励），那么小狗最终会学到一个知识，就是把客厅弄乱是不好的行为。</p>
-<p>两种学习方式都会学习出输入到输出的一个映射，监督式学习出的是之间的关系，可以告诉算法什么样的输入对应着什么样的输出，强化学习出的是给机器的反馈 reward function，即用来判断这个行为是好是坏。<br>另外强化学习的结果反馈有延时，有时候可能需要走了很多步以后才知道以前的某一步的选择是好还是坏，而监督学习做了比较坏的选择会立刻反馈给算法。</p>
-<p>而且强化学习面对的输入总是在变化，每当算法做出一个行为，它影响下一次决策的输入，而监督学习的输入是独立同分布的。</p>
-<p>通过强化学习，一个 agent 可以在探索和开发（exploration and exploitation）之间做权衡，并且选择一个最大的回报。 </p>
-<p>exploration 会尝试很多不同的事情，看它们是否比以前尝试过的更好。 </p>
-<p>exploitation 会尝试过去经验中最有效的行为。</p>
-<p>一般的监督学习算法不考虑这种平衡，就只是是 exploitative。</p>
-<h3 id="10-3-2-强化学习和非监督式学习的区别："><a href="#10-3-2-强化学习和非监督式学习的区别：" class="headerlink" title="10.3.2 强化学习和非监督式学习的区别："></a>10.3.2 强化学习和非监督式学习的区别：</h3><p>非监督式不是学习输入到输出的映射，而是模式。例如在向用户推荐新闻文章的任务中，非监督式会找到用户先前已经阅读过类似的文章并向他们推荐其一，而强化学习将通过向用户先推荐少量的新闻，并不断获得来自用户的反馈，最后构建用户可能会喜欢的文章的“知识图”。</p>
-<p>对非监督学习来说，它通过对没有概念标记的训练例进行学习，以发现训练例中隐藏的结构性知识。这里的训练例的概念标记是不知道的，因此训练样本的歧义性最高。对强化学习来说，它通过对没有概念标记、但与一个延迟奖赏或效用（可视为延迟的概念标记）相关联的训练例进行学习，以获得某种从状态到行动的映射。这里本来没有概念标记的概<br>念，但延迟奖赏可被视为一种延迟概念标记，因此其训练样本的歧义性介于监督学习和非监督学习之间。</p>
-<p>需要注意的是，监督学习和非监督学习从一开始就是相对的，而强化学习在提出时并没有从训练样本歧义性的角度考虑其与监督学习和非监督学习的区别，因此，一些早期的研究中把强化学习视为一种特殊的非监督学习。事实上，对强化学习的定位到目前仍然是有争议的，有的学者甚至认为它是与“从例子中学习”同一级别的概念。</p>
-<p>从训练样本歧义性角度进行的分类体系，在近几年可望有一些扩展，例如多示例学习（multi-instancelearning）等从训练样本歧义性方面来看很特殊的新的学习框架有可能会进入该体系。但到目前为止，没有任何新的框架得到了公认的地位。另外，半监督学习（semi-supervisedlearning）也有一定希望，它的障碍是半监督学习中的歧义性并不是与生俱来的，而是人为的，即用户期望用未标记的样本来辅助对已标记样本的学习。这与监督学习、非监督学习、强化学习等天生的歧义性完全不同。半监督学习中人为的歧义性在解决工程问题上是需要的、有用的（对大量样本进行标记的代价可能是极为昂贵的），但可能不太会导致方法学或对学习问题视点的大的改变。</p>
-<p><strong>强化学习和前二者的本质区别</strong>:没有前两者具有的明确数据概念，它不知道结果，只有目标。数据概念就是大量的数据，有监督学习、无监督学习需要大量数据去训练优化你建立的模型，就像猫狗识别，用n多张猫狗图片去训练模型，经过训练优化后，你用一张崭新的猫狗图片让模型作出判断，这个模型就知道是猫还是狗。</p>
-<h2 id="10-4-强化学习主要有哪些算法？"><a href="#10-4-强化学习主要有哪些算法？" class="headerlink" title="10.4 强化学习主要有哪些算法？"></a>10.4 强化学习主要有哪些算法？</h2><p>强化学习不需要监督信号,可以在模型未知的环境中平衡探索和利用, 其主要算法有蒙特卡罗强化学习, 时间差分(temporal difference: TD)学习, 策略梯度等。典型的深度强化学习算法特点及性能比较如下图所示：</p>
-<p><img src="/img/ch10/10-4.png" alt=""></p>
-<p>除了上述深度强化学习算法，还有深度迁移强化学习、分层深度强化学习、深度记忆强化学习以及多智能体强化学习等算法。</p>
-<h2 id="10-5-深度迁移强化学习算法"><a href="#10-5-深度迁移强化学习算法" class="headerlink" title="10.5 深度迁移强化学习算法"></a>10.5 深度迁移强化学习算法</h2><p>传统深度强化学习算法每次只能解决一种游戏任务, 无法在一次训练中完成多种任务. 迁移学习和强化学习的结合也是深度强化学习的一种主要思路。</p>
-<p>Parisotto等提出了一种基于行为模拟的深度迁移强化学习算法. 该算法通过监督信号的指导, 使得单一的策略网络学习各自的策略, 并将知识迁移到新任务中. Rusa等提出策略蒸馏(policy distillation)深度迁移强化学习算法. 策略蒸馏算法中分为学习网络和指导网络, 通过这两个网络Q值的偏差来确定目标函数,引导学习网络逼近指导网络的值函数空间. 此后,Rusa等又提出了一种基于渐进神经网络(progressive neural networks, PNN)的深度迁移强化学习算法.PNN是一种把神经网络和神经网络连起来的算法. 它在一系列序列任务中, 通过渐进的方式来存储知识和提取特征, 完成了对知识的迁移. PNN最终实现多个独立任务的训练, 通过迁移加速学习过程, 避免灾难性遗忘. Fernando 等提出了路径网络(PathNet)[45].PathNet可以说是PNN的进阶版. PathNet把网络中每一层都看作一个模块, 把构建一个网络看成搭积木,也就是复用积木. 它跟PNN非常类似, 只是这里不再有列, 而是不同的路径. PathNet将智能体嵌入到神经网络中, 其中智能体的任务是为新任务发现网络中可以复用的部分. 智能体是网络之中的路径, 其决定了反向传播过程中被使用和更新的参数范围. 在一系列的Atari强化学习任务上, PathNet都实现了正迁移, 这表明PathNet在训练神经网络上具有通用性应用能力.PathNet也可以显著提高A3C算法超参数选择的鲁棒性. Schaul等提出了一种通用值函数逼近器(universalvalue function approximators, UVFAs)来泛化状态和目标空间．UVFAs可以将学习到的知识迁移到环境动态特性相同但目标不同的新任务中.</p>
-<h2 id="10-6-分层深度强化学习算法"><a href="#10-6-分层深度强化学习算法" class="headerlink" title="10.6 分层深度强化学习算法"></a>10.6 分层深度强化学习算法</h2><p>分层强化学习可以将最终目标分解为多个子任务来学习层次化的策略, 并通过组合多个子任务的策略形成有效的全局策略. Kulkarni等提出了分层DQN(hierarchical deep Q-network, h—DQN) 算法. h—DQN基于时空抽象和内在激励分层, 通过在不同的时空尺度上设置子目标对值函数进行层次化处理. 顶层的值函数用于确定宏观决策, 底层的值函数用于确定具体行动．Krishnamurthy等在h—DQN的基础上提出了基于内部选择的分层深度强化学习算法. 该模型结合时空抽象和深度神经网络, 自动地完成子目标的学习, 避免了特定的内在激励和人工设定中间目标,加速了智能体的学习进程, 同时也增强了模型的泛化能力. Kulkarni等基于后续状态表示法提出了深度后续强化学习(deep successor reinforcement learning,DSRL)．DSRL通过阶段性地分解子目标和学习子目标策略, 增强了对未知状态空间的探索, 使得智能体更加适应那些存在延迟反馈的任务．Vezhnevets等受封建(feudal)强化学习算法的启发, 提出一种分层深度强化学习的架构FeUdal网络(FuNs)[49]. FuNs框架使用一个管理员模块和一个工人模块. 管理员模块在较低的时间分辨率下工作, 设置抽象目标并传递给工人模块去执行. FuNs框架创造了一个稳定的自然层次结构, 并且允许两个模块以互补的方式学习. 实验证明, FuNs有助于处理长期信用分配和记忆任务,在Atari视频游戏和迷宫游戏中都取得了不错的效果。</p>
-<h2 id="10-7-深度记忆强化学习算法"><a href="#10-7-深度记忆强化学习算法" class="headerlink" title="10.7 深度记忆强化学习算法"></a>10.7 深度记忆强化学习算法</h2><p>传统的深度强化学习模型不具备记忆、认知、推理等高层次的能力, 尤其是在面对状态部分可观察和延迟奖赏的情形时. Junhyuk等通过在传统的深度强化学习模型中加入外部的记忆网络部件和反馈控制机制, 提出反馈递归记忆Q网络(feedback recurrent memory Q-network, FRMQN)). FRMQN模型具备了一定的记忆与推理功能, 通过反馈控制机制,FRMQN整合过去存储的有价值的记忆和当前时刻的上下文状态, 评估动作值函数并做出决策. FRMQN初步模拟了人类的主动认知与推理能力, 并完成了一些高层次的认知任务. 在一些未经过训练的任务中,FRMQN模型表现出了很强的泛化能力．Blundell等设计出一种模型无关的情节控制算法(model-free episode control, MFEC). MFEC可以快速存储和回放状态转移序列, 并将回放的序列整合到结构化知识系统中, 使得智能体在面对一些复杂的决策任务时, 能快速达到人类玩家的水平．MFEC通过反向经验回放, 使智能体拥有初步的情节记忆. 实验表明, 基于MFEC算法的深度强化学习不仅可以在Atari游戏中学习到有效策略, 还可以处理一些三维场景的复杂任务. Pritzel等在MFEC的基础上进一步提出了神经情节控制(neural episodic control, NEC),有效提高了深度强化学习智能体的记忆能力和学习效率[53]. NEC能快速吸收新经验并依据新经验来采取行动. 价值函数包括价值函数渐变状态表示和价值函数快速更新估计两部分. 大量场景下的研究表明,NEC的学习速度明显快于目前最先进的通用深度强化学习智能体.</p>
-<h2 id="10-8-多智能体深度强化学习算法"><a href="#10-8-多智能体深度强化学习算法" class="headerlink" title="10.8 多智能体深度强化学习算法"></a>10.8 多智能体深度强化学习算法</h2><p>在一些复杂场景中, 涉及到多智能体的感知决策问题, 这时需要将单一模型扩展为多个智能体之间相互合作、通信及竞争的多智能体深度强化学习系统.Foerster等提出了一种称为分布式深度递归Q网络(deep distributed recurrent Q-networks, DDRQN) 的模型, 解决了状态部分可观测状态下的多智能体通信与合作的挑战性难题[54]. 实验表明, 经过训练的DDRQN模型最终在多智能体之间达成了一致的通信协1536 控制理论与应用第34 卷议, 成功解决了经典的红蓝帽子问题.让智能体学会合作与竞争一直以来都是人工智能领域内的一项重要研究课题, 也是实现通用人工智能的必要条件. Lowe等提出了一种用于合作–竞争混合环境的多智能体actor-critic 算法(multi-agent deepdeterministic policy gradient, MADDPG)[55]. MADDPG对DDPG强化学习算法进行了延伸, 可实现多智能体的集中式学习和分布式执行, 让智能体学习彼此合作和竞争. 在多项测试任务中, MADDPG的表现都优于DDPG. </p>
-<h2 id="10-9-强化学习开源框架"><a href="#10-9-强化学习开源框架" class="headerlink" title="10.9 强化学习开源框架"></a>10.9 强化学习开源框架</h2><p>谷歌TensorFlow Agents —-TensorFlow的加强版,它提供许多工具，通过强化学习可以实现各类智能应用程序的构建与训练。这个框架能够将OpoenAI Gym接口扩展至多个并行环境，并允许各代理立足TensorFlow之内实现以执行批量计算。其面向OpoenAI Gy环境的批量化接口可与TensorFlow实现全面集成，从而高效执行各类算法。该框架还结合有BatchPPO，一套经过优化的近端策略优化算法实现方案。其核心组件包括一个环境打包器，用于在外部过程中构建OpenAI Gym环境; 一套批量集成，用于实现TensorFlow图步并以强化学习运算的方式重置函数; 外加用于将TensorFlow图形批处理流程与强化学习算法纳入训练特内单一却步的组件。</p>
-<p>Roboschool：Roboschool 提供开源软件以通过强化学习构建并训练机器人模拟。其有助于在同一环境当中对多个代理进行强化学习训练。通过多方训练机制，您可以训练同一代理分别作为两方玩家（因此能够自我对抗）、使用相同算法训练两套代理，或者设置两种算法进行彼此对抗。Roboschool由OpenAI开发完成，这一非营利性组织的背后赞助者包括Elon Musk、Sam Altman、Reid Hoffman以及Peter Thiel。其与OpenAI Gym相集成，后者是一套用于开发及评估强化学习算法的开源工具集。OpenAI Gym与TensorFlow、Theano以及其它多种深度学习库相兼容。OpenAI Gym当中包含用于数值计算、游戏以及物理引擎的相关代码。Roboschool基于Bullet物理引擎，这是一套开源许可物理库，并被其它多种仿真软件——例如Gazebo与Virtual Robot Experimentation Platform（简称V-REP）所广泛使用。其中包含多种强化学习算法，具体以怨报德 异步深度强化学习方法、Actor-Critic with Experience Replay、Actor- Critic using Kronecker-Factored Trust Region、深度确定性策略梯度、近端策略优化以及信任域策略优化等等。</p>
-<p>Coach：英特尔公司的开源强化学习框架，可以对游戏、机器人以及其它基于代理的智能应用进行智能代理的建模、训练与评估。Coach 提供一套模块化沙箱、可复用组件以及用于组合新强化学习算法并在多种应用领域内训练新智能应用的Python API。该框架利用OpenAI Gym作为主工具，负责与不同强化学习环境进行交换。其还支持其它外部扩展，具体包括Roboschool、gym-extensions、PyBullet以及ViZDoom。Coach的环境打包器允许用户向其中添加自定义强化学习环境，从而解决其它学习问题。该框架能够在桌面计算机上高效训练强化学习代理，并利用多核CPU处理相关任务。其能够为一部分强化学习算法提供单线程与多线程实现能力，包括异步优势Actor-Critic、深度确定性策略梯度、近端策略优化、直接未来预测以及规范化优势函数。所有算法皆利用面向英特尔系统作出优化的TensorFLow完成，其中部分算法亦适用于英特尔的Neon深度学习框架。Coach 当中包含多种强化学习代理实现方案，具体包括从单线程实现到多线程实现的转换。其能够开发出支持单与多工作程序（同步或异步）强化学习实现方法的新代理。此外，其还支持连续与离散操作空间，以及视觉观察空间或仅包含原始测量指标的观察空间。</p>
-<h2 id="10-10-深度强化学习算法小结"><a href="#10-10-深度强化学习算法小结" class="headerlink" title="10.10 深度强化学习算法小结"></a>10.10 深度强化学习算法小结</h2><p>基于值函数概念的DQN及其相应的扩展算法在离散状态、离散动作的控制任务中已经表现了卓越的性能, 但是受限于值函数离散型输出的影响, 在连续型控制任务上显得捉襟见肘. 基于策略梯度概念的,以DDPG, TRPO等为代表的策略型深度强化学习算法则更适用于处理基于连续状态空间的连续动作的控制输出任务, 并且算法在稳定性和可靠性上具有一定的理论保证, 理论完备性较强. 采用actor-critic架构的A3C算法及其扩展算法, 相比于传统DQN算法, 这类算法的数据利用效率更高, 学习速率更快, 通用性、可扩展应用性更强, 达到的表现性能更优, 但算法的稳定性无法得到保证. 而其他的如深度迁移强化学习、分层深度强化学习、深度记忆强化学习和多智能体深度强化学习等算法都是现在的研究热点, 通过这些算法能应对更为复杂的场景问题、系统环境及控制任务, 是目前深度强化学习算法研究的前沿领域.</p>
-<p>展望未来，人工智能开发者们需要尽可能掌握上述框架以及其中所使用的各类强化学习算法。此外，还需要强化自身对于多代理强化学习架构的理解，因为其中多种框架都大量利用前沿博弈论研究成果。最后，还需要熟悉深度强化学习知识。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/03/03/%E7%AC%AC%E4%B9%9D%E7%AB%A0_%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Kay">
-      <meta itemprop="description" content="千里之行，始于足下">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Home">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/03/%E7%AC%AC%E4%B9%9D%E7%AB%A0_%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/" class="post-title-link" itemprop="url">第九章_图像分割</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-03 12:28:18 / 修改时间：12:28:42" itemprop="dateCreated datePublished" datetime="2020-03-03T12:28:18+08:00">2020-03-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>[TOC]</p>
-<h1 id="第九章-图像分割"><a href="#第九章-图像分割" class="headerlink" title="第九章 图像分割"></a>第九章 图像分割</h1><h2 id="9-1-图像分割算法分类？"><a href="#9-1-图像分割算法分类？" class="headerlink" title="9.1 图像分割算法分类？"></a>9.1 图像分割算法分类？</h2><p>图像分割是预测图像中每一个像素所属的类别或者物体。基于深度学习的图像分割算法主要分为两类：</p>
-<p><strong>1.语义分割</strong></p>
-<p>为图像中的每个像素分配一个类别，如把画面中的所有物体都指出它们各自的类别。</p>
-<p><img src="/img/ch9/Semantic-01.png" alt=""></p>
-<p><strong>2.实例分割</strong></p>
-<p>与语义分割不同，实例分割只对特定物体进行类别分配，这一点与目标检测有点相似，但目标检测输出的是边界框和类别，而实例分割输出的是掩膜（mask）和类别。</p>
-<p><img src="/img/ch9/Instance-01.png" alt=""></p>
-<h2 id="9-2-传统的基于CNN的分割方法缺点？"><a href="#9-2-传统的基于CNN的分割方法缺点？" class="headerlink" title="9.2 传统的基于CNN的分割方法缺点？"></a>9.2 传统的基于CNN的分割方法缺点？</h2><p>传统的基于CNN的分割方法：为了对一个像素分类，使用该像素周围的一个图像块作为CNN的输入，用于训练与预测，这种方法主要有几个缺点：<br>1）存储开销大，例如，对每个像素使用15 * 15的图像块，然后不断滑动窗口，将图像块输入到CNN中进行类别判断，因此，需要的存储空间随滑动窗口的次数和大小急剧上升；<br>2）效率低下，相邻像素块基本上是重复的，针对每个像素块逐个计算卷积，这种计算有很大程度上的重复；<br>3）像素块的大小限制了感受区域的大小，通常像素块的大小比整幅图像的大小小很多，只能提取一些局部特征，从而导致分类性能受到限制。<br>而全卷积网络(FCN)则是从抽象的特征中恢复出每个像素所属的类别。即从图像级别的分类进一步延伸到像素级别的分类。</p>
-<h2 id="9-3-FCN"><a href="#9-3-FCN" class="headerlink" title="9.3 FCN"></a>9.3 FCN</h2><h3 id="9-3-1-FCN改变了什么"><a href="#9-3-1-FCN改变了什么" class="headerlink" title="9.3.1 FCN改变了什么?"></a>9.3.1 FCN改变了什么?</h3><p>​    对于一般的分类CNN网络，如VGG和Resnet，都会在网络的最后加入一些全连接层，经过softmax后就可以获得类别概率信息。但是这个概率信息是1维的，即只能标识整个图片的类别，不能标识每个像素点的类别，所以这种全连接方法不适用于图像分割。<br>​    而FCN提出可以把后面几个全连接都换成卷积，这样就可以获得一张2维的feature map，后接softmax层获得每个像素点的分类信息，从而解决了分割问题，如图4。</p>
-<p><img src="/img/ch9/figure_9.1.1_2.jpg" alt=""></p>
-<p><center>图 4</center></p>
-<h3 id="9-3-2-FCN网络结构？"><a href="#9-3-2-FCN网络结构？" class="headerlink" title="9.3.2 FCN网络结构？"></a>9.3.2 FCN网络结构？</h3><p>​    FCN对图像进行像素级的分类，从而解决了语义级别的图像分割（semantic segmentation）问题。与经典的CNN在卷积层之后使用全连接层得到固定长度的特征向量进行分类（全联接层＋softmax输出）不同，FCN可以接受任意尺寸的输入图像，采用反卷积层对最后一个卷积层的feature map进行上采样, 使它恢复到输入图像相同的尺寸，从而可以对每个像素都产生了一个预测, 同时保留了原始输入图像中的空间信息, 最后在上采样的特征图上进行逐像素分类。<br>​    下图是语义分割所采用的全卷积网络(FCN)的结构示意图：</p>
-<p><img src="/img/ch9/figure_9.1.2_1.jpg" alt=""></p>
-<h3 id="9-3-3-全卷积网络举例？"><a href="#9-3-3-全卷积网络举例？" class="headerlink" title="9.3.3 全卷积网络举例？"></a>9.3.3 全卷积网络举例？</h3><p>​    通常CNN网络在卷积层之后会接上若干个全连接层, 将卷积层产生的特征图(feature map)映射成一个固定长度的特征向量。以AlexNet为代表的经典CNN结构适合于图像级的分类和回归任务，因为它们最后都得到整个输入图像的一个概率向量。</p>
-<p><img src="/img/ch9/figure_9.1.3_1.jpg" alt=""></p>
-<p>&emsp;&emsp;<br>如上图所示：<br>&emsp;&emsp;<br>（1）在CNN中, 猫的图片输入到AlexNet, 得到一个长为1000的输出向量, 表示输入图像属于每一类的概率, 其中在“tabby cat”这一类统计概率最高, 用来做分类任务。<br>&emsp;&emsp;<br>（2）FCN与CNN的区别在于把CNN最后的全连接层转换成卷积层，输出的是一张已经带有标签的图片, 而这个图片就可以做语义分割。<br>&emsp;&emsp;<br>（3）CNN的强大之处在于它的多层结构能自动学习特征，并且可以学习到多个层次的特征: 较浅的卷积层感知域较小，学习到一些局部区域的特征；较深的卷积层具有较大的感知域，能够学习到更加抽象一些的特征。高层的抽象特征对物体的大小、位置和方向等敏感性更低，从而有助于识别性能的提高, 所以我们常常可以将卷积层看作是特征提取器。</p>
-<h3 id="9-2-4-全连接层和卷积层如何相互转化？"><a href="#9-2-4-全连接层和卷积层如何相互转化？" class="headerlink" title="9.2.4 全连接层和卷积层如何相互转化？"></a>9.2.4 全连接层和卷积层如何相互转化？</h3><p>&emsp;&emsp;<br><strong>两者相互转换的可能性：</strong><br>&emsp;&emsp;<br>全连接层和卷积层之间唯一的不同就是卷积层中的神经元只与输入数据中的一个局部区域连接，并且在卷积列中的神经元共享参数。然而在两类层中，神经元都是计算点积，所以它们的函数形式是一样的。因此，将此两者相互转化是可能的：<br>&emsp;&emsp;<br>（1）对于任一个卷积层，都存在一个能实现和它一样的前向传播函数的全连接层。权重矩阵是一个巨大的矩阵，除了某些特定块，其余部分都是零。而在其中大部分块中，元素都是相等的。<br>&emsp;&emsp;<br>（2）任何全连接层都可以被转化为卷积层。比如VGG16中第一个全连接层是25088 <em> 4096的数据尺寸，将它转化为512 </em> 7 <em> 7 </em> 4096的数据尺寸，即一个K=4096的全连接层，输入数据体的尺寸是7 <em> 7 </em> 512，这个全连接层可以被等效地看做一个F=7, P=0, S=1, K=4096 的卷积层。换句话说，就是将滤波器的尺寸设置为和输入数据体的尺寸一致7 <em> 7, 这样输出就变为1 </em> 1 <em> 4096, 本质上和全连接层的输出是一样的。<br>&emsp;&emsp;<br><em>*输出激活数据体深度是由卷积核的数目决定的(K=4096)。</em></em><br>&emsp;&emsp;<br>在两种变换中，将全连接层转化为卷积层在实际运用中更加有用。假设一个卷积神经网络的输入是227x227x3的图像，一系列的卷积层和下采样层将图像数据变为尺寸为7x7x512的激活数据体, AlexNet的处理方式为使用了两个尺寸为4096的全连接层，最后一个有1000个神经元的全连接层用于计算分类评分。我们可以将这3个全连接层中的任意一个转化为卷积层：<br>&emsp;&emsp;<br>（1）第一个连接区域是[7x7x512]的全连接层，令其滤波器尺寸为F=7,K=4096，这样输出数据体就为[1x1x4096]。<br>&emsp;&emsp;<br>（2）第二个全连接层，令其滤波器尺寸为F=1,K=4096，这样输出数据体为[1x1x4096]。<br>&emsp;&emsp;<br>（3）最后一个全连接层也做类似的，令其F=1,K=1000，最终输出为[1x1x1000]。</p>
-<h3 id="9-2-5-为什么传统CNN的输入图片是固定大小？"><a href="#9-2-5-为什么传统CNN的输入图片是固定大小？" class="headerlink" title="9.2.5 为什么传统CNN的输入图片是固定大小？"></a>9.2.5 为什么传统CNN的输入图片是固定大小？</h3><p>&emsp;&emsp;<br>对于CNN，一幅输入图片在经过卷积和pooling层时，这些层是不关心图片大小的。比如对于一个卷积层，outputsize = (inputsize - kernelsize) / stride + 1，它并不关心inputsize多大，对于一个inputsize大小的输入feature map，滑窗卷积，输出outputsize大小的feature map即可。pooling层同理。但是在进入全连接层时，feature map（假设大小为n×n）要拉成一条向量，而向量中每个元素（共n×n个）作为一个结点都要与下一个层的所有结点（假设4096个）全连接，这里的权值个数是4096×n×n，而我们知道神经网络结构一旦确定，它的权值个数都是固定的，所以这个n不能变化，n是conv5的outputsize，所以层层向回看，每个outputsize都要固定，那每个inputsize都要固定，因此输入图片大小要固定。</p>
-<h3 id="9-2-6-把全连接层的权重W重塑成卷积层的滤波器有什么好处？"><a href="#9-2-6-把全连接层的权重W重塑成卷积层的滤波器有什么好处？" class="headerlink" title="9.2.6 把全连接层的权重W重塑成卷积层的滤波器有什么好处？"></a>9.2.6 把全连接层的权重W重塑成卷积层的滤波器有什么好处？</h3><p>&emsp;&emsp;<br>这样的转化可以在单个向前传播的过程中, 使得卷积网络在一张更大的输入图片上滑动，从而得到多个输出(可以理解为一个label map)。<br>&emsp;&emsp;<br>比如: 我们想让224×224尺寸的浮窗，以步长为32在384×384的图片上滑动，把每个经停的位置都带入卷积网络，最后得到6×6个位置的类别得分, 那么通过将全连接层转化为卷积层之后的运算过程为:<br>&emsp;&emsp;<br>如果224×224的输入图片经过卷积层和下采样层之后得到了[7x7x512]的数组，那么，384×384的大图片直接经过同样的卷积层和下采样层之后会得到[12x12x512]的数组, 然后再经过上面由3个全连接层转化得到的3个卷积层，最终得到[6x6x1000]的输出((12 – 7)/1 + 1 = 6), 这个结果正是浮窗在原图经停的6×6个位置的得分。<br>&emsp;&emsp;<br>一个确定的CNN网络结构之所以要固定输入图片大小，是因为全连接层权值数固定，而该权值数和feature map大小有关, 但是FCN在CNN的基础上把1000个结点的全连接层改为含有1000个1×1卷积核的卷积层，经过这一层，还是得到二维的feature map，同样我们也不关心这个feature map大小, 所以对于输入图片的size并没有限制。<br>&emsp;&emsp;<br>如下图所示，FCN将传统CNN中的全连接层转化成卷积层，对应CNN网络FCN把最后三层全连接层转换成为三层卷积层:</p>
-<p><img src="/img/ch9/figure_9.1.7_1.png" alt=""></p>
-<p><center>一个分类网络</center><br><img src="/img/ch9/figure_9.1.7_2.png" alt=""></p>
-<p><center>变为全卷积网络</center><br><img src="/img/ch9/figure_9.1.7_3.png" alt=""></p>
-<p><center>End-to-end, pixels-to pixels网络</center><br><img src="/img/ch9/figure_9.1.7_4.jpg" alt=""></p>
-<p>（1）全连接层转化为全卷积层 : 在传统的CNN结构中，前5层是卷积层，第6层和第7层分别是一个长度为4096的一维向量，第8层是长度为1000的一维向量，分别对应1000个不同类别的概率。FCN将这3层表示为卷积层，卷积核的大小 (通道数，宽，高) 分别为 (4096,1,1)、(4096,1,1)、(1000,1,1)。看上去数字上并没有什么差别，但是卷积跟全连接是不一样的概念和计算过程，使用的是之前CNN已经训练好的权值和偏置，但是不一样的在于权值和偏置是有自己的范围，属于自己的一个卷积核。<br>&emsp;&emsp;<br>（2）CNN中输入的图像大小是统一固定成227x227大小的图像，第一层pooling后为55x55，第二层pooling后图像大小为27x27，第五层pooling后的图像大小为13x13, 而FCN输入的图像是H <em> W大小，第一层pooling后变为原图大小的1/2，第二层变为原图大小的1/4，第五层变为原图大小的1/8，第八层变为原图大小的1/16。<br>&emsp;&emsp;<br>（3）经过多次卷积和pooling以后，得到的图像越来越小，分辨率越来越低。其中图像到H/32 </em> W/32的时候图片是最小的一层时，所产生图叫做heatmap热图，热图就是我们最重要的高维特征图，得到高维特征的heatmap之后就是最重要的一步也是最后的一步对原图像进行upsampling，把图像进行放大几次到原图像的大小。<br>&emsp;&emsp;<br>相较于使用被转化前的原始卷积神经网络对所有36个位置进行迭代计算优化模型，然后再对36个位置做预测，使用转化后的卷积神经网络进行一次前向传播计算要高效得多，因为36次计算都在共享计算资源。这一技巧在实践中经常使用，通常将一张图像尺寸变得更大，然后使用变换后的卷积神经网络来对空间上很多不同位置进行评价得到分类评分，然后在求这些分值的平均值。</p>
-<h3 id="9-2-7-反卷积层理解"><a href="#9-2-7-反卷积层理解" class="headerlink" title="9.2.7 反卷积层理解"></a>9.2.7 反卷积层理解</h3><p>&emsp;&emsp;<br>Upsampling的操作可以看成是反卷积(deconvolutional)，卷积运算的参数和CNN的参数一样是在训练FCN模型的过程中通过bp算法学习得到。反卷积层也是卷积层，不关心input大小，滑窗卷积后输出output。deconv并不是真正的deconvolution（卷积的逆变换），最近比较公认的叫法应该是transposed convolution，deconv的前向传播就是conv的反向传播。<br>&emsp;&emsp;<br>反卷积参数: 利用卷积过程filter的转置（实际上就是水平和竖直方向上翻转filter）作为计算卷积前的特征图。<br>&emsp;&emsp;<br>反卷积的运算如下所示:<br>&emsp;&emsp;<br>蓝色是反卷积层的input，绿色是反卷积层的outputFull padding, transposed Full padding, transposed。</p>
-<p><img src="/img/ch9/figure_9.1.8_1.png" alt=""></p>
-<p><center>上图中的反卷积，input是2×2, output是4×4。     Zero padding, non-unit strides, transposed。</center><br><img src="/img/ch9/figure_9.1.8_2.png" alt=""></p>
-<p><center>上图中的反卷积，input feature map是3×3, 转化后是5×5, output是5×5</center></p>
-<h3 id="9-2-8-跳级-skip-结构"><a href="#9-2-8-跳级-skip-结构" class="headerlink" title="9.2.8 跳级(skip)结构"></a>9.2.8 跳级(skip)结构</h3><p>&emsp;&emsp;<br>对CNN的结果做处理，得到了dense prediction，而作者在试验中发现，得到的分割结果比较粗糙，所以考虑加入更多前层的细节信息，也就是把倒数第几层的输出和最后的输出做一个fusion，实际上也就是加和：</p>
-<p><img src="/img/ch9/figure_9.1.9_1.png" alt=""><br>&emsp;&emsp;<br>实验表明，这样的分割结果更细致更准确。在逐层fusion的过程中，做到第三行再往下，结果又会变差，所以作者做到这里就停了。</p>
-<h3 id="9-2-9-模型训练"><a href="#9-2-9-模型训练" class="headerlink" title="9.2.9 模型训练"></a>9.2.9 模型训练</h3><p>&emsp;&emsp;<br>（1）用AlexNet，VGG16或者GoogleNet训练好的模型做初始化，在这个基础上做fine-tuning，全部都fine-tuning，只需在末尾加上upsampling，参数的学习还是利用CNN本身的反向传播原理。<br>&emsp;&emsp;<br>（2）采用whole image做训练，不进行patchwise sampling。实验证明直接用全图已经很effective and efficient。<br>&emsp;&emsp;<br>（3）对class score的卷积层做全零初始化。随机初始化在性能和收敛上没有优势。<br><em>举例：</em><br>&emsp;&emsp;<br><em>FCN例子: 输入可为任意尺寸图像彩色图像；输出与输入尺寸相同，深度为：20类目标+背景=21，模型基于AlexNet。</em><br>&emsp;&emsp;<br><em>蓝色：卷积层。</em><br>&emsp;&emsp;<br><em>绿色：Max Pooling层。</em><br>&emsp;&emsp;<br><em>黄色: 求和运算, 使用逐数据相加，把三个不同深度的预测结果进行融合：较浅的结果更为精细，较深的结果更为鲁棒。</em><br>&emsp;&emsp;<br><em>灰色: 裁剪, 在融合之前，使用裁剪层统一两者大小, 最后裁剪成和输入相同尺寸输出。</em><br>&emsp;&emsp;<br><em>对于不同尺寸的输入图像，各层数据的尺寸（height，width）相应变化，深度（channel）不变。</em></p>
-<p><img src="/img/ch9/figure_9.1.10_1.png" alt=""><br>&emsp;&emsp;<br>（1）全卷积层部分进行特征提取, 提取卷积层（3个蓝色层）的输出来作为预测21个类别的特征。</p>
-<p>&emsp;&emsp;<br>（2）图中虚线内是反卷积层的运算, 反卷积层（3个橙色层）可以把输入数据尺寸放大。和卷积层一样，升采样的具体参数经过训练确定。    </p>
-<p>&emsp;&emsp;&emsp;&emsp;<br>1) 以经典的AlexNet分类网络为初始化。最后两级是全连接（红色），参数弃去不用。</p>
-<p><img src="/img/ch9/figure_9.1.10_2.png" alt=""><br>&emsp;&emsp;&emsp;&emsp;<br>2) 从特征小图（）预测分割小图（），之后直接升采样为大图。</p>
-<p><img src="/img/ch9/figure_9.1.10_3.png" alt=""></p>
-<p><center>反卷积（橙色）的步长为32，这个网络称为FCN-32s</center><br>&emsp;&emsp;&emsp;&emsp;<br>3) 升采样分为两次完成（橙色×2）, 在第二次升采样前，把第4个pooling层（绿色）的预测结果（蓝色）融合进来。使用跳级结构提升精确性。</p>
-<p><img src="/img/ch9/figure_9.1.10_4.png" alt=""></p>
-<p><center>第二次反卷积步长为16，这个网络称为FCN-16s</center><br>&emsp;&emsp;&emsp;&emsp;<br>4) 升采样分为三次完成（橙色×3）, 进一步融合了第3个pooling层的预测结果。</p>
-<p><img src="/img/ch9/figure_9.1.10_5.png" alt=""></p>
-<p><center>第三次反卷积步长为8，记为FCN-8s</center><br>其他参数:<br>&emsp;&emsp;<br>minibatch：20张图片。<br>&emsp;&emsp;<br>learning rate：0.001。<br>&emsp;&emsp;<br>初始化：分类网络之外的卷积层参数初始化为0。<br>&emsp;&emsp;<br>反卷积参数初始化为bilinear插值。<br>&emsp;&emsp;<br>最后一层反卷积固定位bilinear插值不做学习。</p>
-<p><img src="/img/ch9/figure_9.1.10_6.png" alt=""></p>
-<h3 id="9-2-10-FCN缺点"><a href="#9-2-10-FCN缺点" class="headerlink" title="9.2.10 FCN缺点"></a>9.2.10 FCN缺点</h3><p>&emsp;&emsp;<br>（1）得到的结果还是不够精细。进行8倍上采样虽然比32倍的效果好了很多，但是上采样的结果还是比较模糊和平滑，对图像中的细节不敏感。<br>&emsp;&emsp;<br>（2）对各个像素进行分类，没有充分考虑像素与像素之间的关系。忽略了在通常的基于像素分类的分割方法中使用的空间规整（spatial regularization）步骤，缺乏空间一致性。</p>
-<h2 id="9-3-U-Net"><a href="#9-3-U-Net" class="headerlink" title="9.3 U-Net"></a>9.3 U-Net</h2><p>&emsp;&emsp;<br>卷积网络被大规模应用在分类任务中，输出的结果是整个图像的类标签。然而，在许多视觉任务，尤其是生物医学图像处理领域，目标输出应该包括目标类别的位置，并且每个像素都应该有类标签。另外，在生物医学图像往往缺少训练图片。所以，Ciresan等人训练了一个卷积神经网络，用滑动窗口提供像素的周围区域（patch）作为输入来预测每个像素的类标签。这个网络有两个优点：<br>第一，输出结果可以定位出目标类别的位置；<br>第二，由于输入的训练数据是patches，这样就相当于进行了数据增广，解决了生物医学图像数量少的问题。<br>&emsp;&emsp;<br>但是，这个方法也有两个很明显缺点。<br>&emsp;&emsp;<br>第一，它很慢，因为这个网络必须训练每个patch，并且因为patch间的重叠有很多的冗余(冗余会造成什么影响呢？卷积核里面的W，就是提取特征的权重，两个块如果重叠的部分太多，这个权重会被同一些特征训练两次，造成资源的浪费，减慢训练时间和效率，虽然说会有一些冗余，训练集大了，准确率不就高了吗？可是你这个是相同的图片啊，重叠的东西都是相同的，举个例子，我用一张相同的图片训练20次，按照这个意思也是增大了训练集啊，可是会出现什么结果呢，很显然，会导致过拟合，也就是对你这个图片识别很准，别的图片就不一定了)。<br>&emsp;&emsp;<br>第二，定位准确性和获取上下文信息不可兼得。大的patches需要更多的max-pooling层这样减小了定位准确性(为什么？因为你是对以这个像素为中心的点进行分类，如果patch太大，最后经过全连接层的前一层大小肯定是不变的，如果你patch大就需要更多的pooling达到这个大小，而pooling层越多，丢失信息的信息也越多；小的patches只能看到很小的局部信息，包含的背景信息不够。<br>&emsp;&emsp;<br>这篇论文建立了一个更好全卷积方法。我们定义和扩展了这个方法它使用更少的训练图片但产生更精确的分割。</p>
-<p><img src="/img/ch9/figure_9.2_1.png" alt="">   </p>
-<p>&emsp;&emsp;<br>(1)    使用全卷积神经网络。(全卷积神经网络就是卷积取代了全连接层，全连接层必须固定图像大小而卷积不用，所以这个策略使得，你可以输入任意尺寸的图片，而且输出也是图片，所以这是一个端到端的网络。)<br>&emsp;&emsp;<br>(2)    左边的网络是收缩路径：使用卷积和maxpooling。<br>&emsp;&emsp;<br>(3)    右边的网络是扩张路径:使用上采样产生的特征图与左侧收缩路径对应层产生的特征图进行concatenate操作。（pooling层会丢失图像信息和降低图像分辨率且是不可逆的操作，对图像分割任务有一些影响，对图像分类任务的影响不大，为什么要做上采样？因为上采样可以补足一些图片的信息，但是信息补充的肯定不完全，所以还需要与左边的分辨率比较高的图片相连接起来（直接复制过来再裁剪到与上采样图片一样大小），这就相当于在高分辨率和更抽象特征当中做一个折衷，因为随着卷积次数增多，提取的特征也更加有效，更加抽象，上采样的图片是经历多次卷积后的图片，肯定是比较高效和抽象的图片，然后把它与左边不怎么抽象但更高分辨率的特征图片进行连接）。<br>&emsp;&emsp;<br>(4)    最后再经过两次反卷积操作，生成特征图，再用两个1X1的卷积做分类得到最后的两张heatmap,例如第一张表示的是第一类的得分，第二张表示第二类的得分heatmap,然后作为softmax函数的输入，算出概率比较大的softmax类，选择它作为输入给交叉熵进行反向传播训练。</p>
-<p>下面是U-Net模型的代码实现：（贡献者：黄钦建－华南理工大学）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">def get_unet():</span><br><span class="line">    inputs &#x3D; Input((img_rows, img_cols, 1))</span><br><span class="line">    conv1 &#x3D; Conv2D(32, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(inputs)</span><br><span class="line">    conv1 &#x3D; Conv2D(32, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(conv1)</span><br><span class="line">    pool1 &#x3D; MaxPooling2D(pool_size&#x3D;(2, 2))(conv1)</span><br><span class="line">    # pool1 &#x3D; Dropout(0.25)(pool1)</span><br><span class="line">    # pool1 &#x3D; BatchNormalization()(pool1)</span><br><span class="line"></span><br><span class="line">    conv2 &#x3D; Conv2D(64, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(pool1)</span><br><span class="line">    conv2 &#x3D; Conv2D(64, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(conv2)</span><br><span class="line">    pool2 &#x3D; MaxPooling2D(pool_size&#x3D;(2, 2))(conv2)</span><br><span class="line">    # pool2 &#x3D; Dropout(0.5)(pool2)</span><br><span class="line">    # pool2 &#x3D; BatchNormalization()(pool2)</span><br><span class="line"></span><br><span class="line">    conv3 &#x3D; Conv2D(128, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(pool2)</span><br><span class="line">    conv3 &#x3D; Conv2D(128, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(conv3)</span><br><span class="line">    pool3 &#x3D; MaxPooling2D(pool_size&#x3D;(2, 2))(conv3)</span><br><span class="line">    # pool3 &#x3D; Dropout(0.5)(pool3)</span><br><span class="line">    # pool3 &#x3D; BatchNormalization()(pool3)</span><br><span class="line"></span><br><span class="line">    conv4 &#x3D; Conv2D(256, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(pool3)</span><br><span class="line">    conv4 &#x3D; Conv2D(256, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(conv4)</span><br><span class="line">    pool4 &#x3D; MaxPooling2D(pool_size&#x3D;(2, 2))(conv4)</span><br><span class="line">    # pool4 &#x3D; Dropout(0.5)(pool4)</span><br><span class="line">    # pool4 &#x3D; BatchNormalization()(pool4)</span><br><span class="line"></span><br><span class="line">    conv5 &#x3D; Conv2D(512, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(pool4)</span><br><span class="line">    conv5 &#x3D; Conv2D(512, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(conv5)</span><br><span class="line"></span><br><span class="line">    up6 &#x3D; concatenate([Conv2DTranspose(256, (2, 2), strides&#x3D;(</span><br><span class="line">        2, 2), padding&#x3D;&#39;same&#39;)(conv5), conv4], axis&#x3D;3)</span><br><span class="line">    # up6 &#x3D; Dropout(0.5)(up6)</span><br><span class="line">    # up6 &#x3D; BatchNormalization()(up6)</span><br><span class="line">    conv6 &#x3D; Conv2D(256, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(up6)</span><br><span class="line">    conv6 &#x3D; Conv2D(256, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(conv6)</span><br><span class="line"></span><br><span class="line">    up7 &#x3D; concatenate([Conv2DTranspose(128, (2, 2), strides&#x3D;(</span><br><span class="line">        2, 2), padding&#x3D;&#39;same&#39;)(conv6), conv3], axis&#x3D;3)</span><br><span class="line">    # up7 &#x3D; Dropout(0.5)(up7)</span><br><span class="line">    # up7 &#x3D; BatchNormalization()(up7)</span><br><span class="line">    conv7 &#x3D; Conv2D(128, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(up7)</span><br><span class="line">    conv7 &#x3D; Conv2D(128, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(conv7)</span><br><span class="line"></span><br><span class="line">    up8 &#x3D; concatenate([Conv2DTranspose(64, (2, 2), strides&#x3D;(</span><br><span class="line">        2, 2), padding&#x3D;&#39;same&#39;)(conv7), conv2], axis&#x3D;3)</span><br><span class="line">    # up8 &#x3D; Dropout(0.5)(up8)</span><br><span class="line">    # up8 &#x3D; BatchNormalization()(up8)</span><br><span class="line">    conv8 &#x3D; Conv2D(64, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(up8)</span><br><span class="line">    conv8 &#x3D; Conv2D(64, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(conv8)</span><br><span class="line"></span><br><span class="line">    up9 &#x3D; concatenate([Conv2DTranspose(32, (2, 2), strides&#x3D;(</span><br><span class="line">        2, 2), padding&#x3D;&#39;same&#39;)(conv8), conv1], axis&#x3D;3)</span><br><span class="line">    # up9 &#x3D; Dropout(0.5)(up9)</span><br><span class="line">    # up9 &#x3D; BatchNormalization()(up9)</span><br><span class="line">    conv9 &#x3D; Conv2D(32, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(up9)</span><br><span class="line">    conv9 &#x3D; Conv2D(32, (3, 3), activation&#x3D;&#39;relu&#39;, padding&#x3D;&#39;same&#39;)(conv9)</span><br><span class="line"></span><br><span class="line">    # conv9 &#x3D; Dropout(0.5)(conv9)</span><br><span class="line"></span><br><span class="line">    conv10 &#x3D; Conv2D(1, (1, 1), activation&#x3D;&#39;sigmoid&#39;)(conv9)</span><br><span class="line"></span><br><span class="line">    model &#x3D; Model(inputs&#x3D;[inputs], outputs&#x3D;[conv10])</span><br><span class="line"></span><br><span class="line">    model.compile(optimizer&#x3D;Adam(lr&#x3D;1e-5),</span><br><span class="line">                  loss&#x3D;dice_coef_loss, metrics&#x3D;[dice_coef])</span><br><span class="line"></span><br><span class="line">    return model</span><br></pre></td></tr></table></figure>
-<h2 id="9-4-SegNet"><a href="#9-4-SegNet" class="headerlink" title="9.4 SegNet"></a>9.4 SegNet</h2><p>&emsp;&emsp;<br>可训练的图像分割引擎，包含一个encoder网络，一个对应的decoder网络，衔接像素级分类层，解码网络与VGG16的13层卷积层相同。解码网络是将低分辨率的编码特征图映射到全分辨率的特征图。解码网络使用最大池化层的池化索引进行非线性上采样，上采样过程就不需要学习。上采样得到的稀疏图与可训练的滤波器卷积得到致密的特征图。<br>&emsp;&emsp;<br>使用池化层索引进行上采样的优势：<br>&emsp;&emsp;<br>1）提升边缘刻画度；<br>&emsp;&emsp;<br>2）减少训练的参数；<br>&emsp;&emsp;<br>3）这种上采样模式可以包含到任何编码-解码网络中。<br>&emsp;&emsp;<br>SegNet网络的结构如下图所示：</p>
-<p><img src="/img/ch9/figure_9.3_1.jpg" alt="">  </p>
-<p>&emsp;&emsp;<br>SegNet网络结构如图1所示，Input为输入图片，Output为输出分割的图像，不同颜色代表不同的分类。语义分割的重要性就在于不仅告诉你图片中某个东西是什么，而且告知你他在图片的位置。我们可以看到是一个对称网络，由中间绿色pooling层与红色upsampling层作为分割，左边是卷积提取高维特征，并通过pooling使图片变小，SegNet作者称为Encoder，右边是反卷积（在这里反卷积与卷积没有区别）与upsampling，通过反卷积使得图像分类后特征得以重现，upsampling使图像变大，SegNet作者称为Decoder，最后通过Softmax，输出不同分类的最大值。这就是大致的SegNet过程，下面对这个过程里面使用到的方法进行介绍。<br>&emsp;&emsp;<br>编码网络与滤波器族卷积得到特征图，进行BN，ReLU，最大池化。最大池化是为了获得空间小位移的平移不变。最大池化和下采样损失了边缘细节，因此，在编码过程中保存边缘信息很重要。考虑到内存原因，只保存最大池化索引，如最大特征值的位置。<br>&emsp;&emsp;<br>SegNet解码技术如下图所示：</p>
-<p><img src="/img/ch9/figure_9.3_2.jpg" alt="">  </p>
-<p>&emsp;&emsp;<br>解码网络使用保存的最大池化索引上采样，得到稀疏的特征图，将特征图与可训练的解码滤波器族卷积得到致密的特征图。之后进行BN。高维的特征图输入soft-max层，对每个像素进行分类，得到每个像素属于K类的概率。  图3中右边是FCN的解码技术，FCN对编码的特征图进行降维，降维后输入到解码网络，解码网络中，上采样使用反卷积实现，上采样的特征图与降维的编码图进行element-wise add得到最终的解码特征图。FCN解码模型需要存储编码特征图，在嵌入式设备中内存紧张。<br>&emsp;&emsp;<br>SegNet的Encoder过程中，卷积的作用是提取特征，SegNet使用的卷积为same卷积（详见卷积神经网络CNN（1）)，即卷积后不改变图片大小；在Decoder过程中，同样使用same卷积，不过卷积的作用是为upsampling变大的图像丰富信息，使得在Pooling过程丢失的信息可以通过学习在Decoder得到。SegNet中的卷积与传统CNN的卷积并没有区别。</p>
-<h2 id="9-5-空洞卷积-Dilated-Convolutions"><a href="#9-5-空洞卷积-Dilated-Convolutions" class="headerlink" title="9.5 空洞卷积(Dilated Convolutions)"></a>9.5 空洞卷积(Dilated Convolutions)</h2><p>&emsp;&emsp;<br>在图像分割领域，图像输入到CNN（典型的网络比如FCN[3]）中，FCN先像传统的CNN那样对图像做卷积再pooling，降低图像尺寸的同时增大感受野，但是由于图像分割预测是pixel-wise的输出，所以要将pooling后较小的图像尺寸upsampling到原始的图像尺寸进行预测（upsampling一般采用deconv反卷积操作，deconv可参见知乎答案如何理解深度学习中的deconvolution networks？），之前的pooling操作使得每个pixel预测都能看到较大感受野信息。因此图像分割FCN中有两个关键，一个是pooling减小图像尺寸增大感受野，另一个是upsampling扩大图像尺寸。在先减小再增大尺寸的过程中，肯定有一些信息损失掉了，那么能不能设计一种新的操作，不通过pooling也能有较大的感受野看到更多的信息呢？答案就是dilated conv。<br>&emsp;&emsp;<br>以前的CNN主要问题总结：<br>&emsp;&emsp;<br>（1）Up-sampling / pooling layer<br>&emsp;&emsp;<br>（2）内部数据结构丢失；空间层级化信息丢失。<br>&emsp;&emsp;<br>（3）小物体信息无法重建 (假设有四个pooling layer 则 任何小于 2^4 = 16 pixel 的物体信息将理论上无法重建。)<br>&emsp;&emsp;<br>举例如下：</p>
-<p><img src="/img/ch9/figure_9.3_3.png" alt=""></p>
-<p><center>Dilated Convolution with a 3 x 3 kernel and dilation rate 2</center><br>&emsp;&emsp;<br>下面看一下dilated conv原始论文[4]中的示意图</p>
-<p><img src="/img/ch9/figure_9.3_4.jpg" alt="">  </p>
-<p>&emsp;&emsp;<br>(a)    图对应3x3的1-dilated conv，和普通的卷积操作一样，(b)图对应3x3的2-dilated conv，实际的卷积kernel size还是3x3，但是空洞为1，也就是对于一个7x7的图像patch，只有9个红色的点和3x3的kernel发生卷积操作，其余的点略过。也可以理解为kernel的size为7x7，但是只有图中的9个点的权重不为0，其余都为0。 可以看到虽然kernel size只有3x3，但是这个卷积的感受野已经增大到了7x7（如果考虑到这个2-dilated conv的前一层是一个1-dilated conv的话，那么每个红点就是1-dilated的卷积输出，所以感受野为3x3，所以1-dilated和2-dilated合起来就能达到7x7的conv）,(c)图是4-dilated conv操作，同理跟在两个1-dilated和2-dilated conv的后面，能达到15x15的感受野。对比传统的conv操作，3层3x3的卷积加起来，stride为1的话，只能达到(kernel-1) * layer+1=7的感受野，也就是和层数layer成线性关系，而dilated conv的感受野是指数级的增长。<br>&emsp;&emsp;<br>dilated的好处是不做pooling损失信息的情况下，加大了感受野，让每个卷积输出都包含较大范围的信息。在图像需要全局信息或者语音文本需要较长的sequence信息依赖的问题中，都能很好的应用dilated conv，比如图像分割、语音合成WaveNet、机器翻译ByteNet中。</p>
-<h2 id="9-6-RefineNet"><a href="#9-6-RefineNet" class="headerlink" title="9.6 RefineNet"></a>9.6 RefineNet</h2><p>&emsp;&emsp;<br>网络结构：<br>&emsp;&emsp;<br>RefineNet block的作用就是把不同resolution level的feature map进行融合。网络结构如下：</p>
-<p><img src="/img/ch9/figure_9.4_1.png" alt=""><br>&emsp;&emsp;<br>最左边一栏就是FCN的encoder部分(文中是用的ResNet)，先把pretrained ResNet按feature map的分辨率分成四个ResNet blocks，然后向右把四个blocks分别作为4个path通过RefineNet block进行融合refine，最后得到一个refined feature map(接softmax再双线性插值输出)。<br>注意除了RefineNet-4，所有的RefineNet block都是二输入的，用于融合不同level做refine，而单输入的RefineNet-4可以看作是先对ResNet的一个task adaptation。  </p>
-<p>&emsp;&emsp;<br><strong>RefineNet Block</strong><br>&emsp;&emsp;<br>接下来仔细看一下RefineNet block，可以看到主要组成部分是Residual convolution unit, Multi-resolution fusion, Chained residual pooling, Output convolutions. 切记这个block作用是融合多个level的feature map输出单个level的feature map，但具体的实现应该是和输入个数、shape无关的。</p>
-<p><img src="/img/ch9/figure_9.4_2.png" alt=""> </p>
-<p>&emsp;&emsp;<br>Residual convolution unit就是普通的去除了BN的residual unit；  </p>
-<p>&emsp;&emsp;<br>Multi-resolution fusion是先对多输入的feature map都用一个卷积层进行adaptation(都化到最小的feature map的shape)，再上采样再做element-wise的相加。注意如果是像RefineNet-4那样的单输入block这一部分就直接pass了；</p>
-<p>&emsp;&emsp;<br>Chained residual pooling中的ReLU对接下来池化的有效性很重要，还可以使模型对学习率的变化没这么敏感。这个链式结构能从很大范围区域上获取背景context。另外，这个结构中大量使用了identity mapping这样的连接，无论长距离或者短距离的，这样的结构允许梯度从一个block直接向其他任一block传播。</p>
-<p>&emsp;&emsp;<br>Output convolutions就是输出前再加一个RCU。</p>
-<h2 id="9-7-PSPNet"><a href="#9-7-PSPNet" class="headerlink" title="9.7 PSPNet"></a>9.7 PSPNet</h2><p>&emsp;&emsp;<br>场景解析对于无限制的开放词汇和不同场景来说是具有挑战性的.本文使用文中的pyramid pooling module实现基于不同区域的上下文集成，提出了PSPNet，实现利用上下文信息的能力进行场景解析。<br>&emsp;&emsp;<br>作者认为，FCN存在的主要问题是没有采取合适的策略来用全局的信息，本文的做法就是借鉴SPPNet来设计了PSPNet解决这个问题。<br>&emsp;&emsp;<br>很多State-of-the-art的场景解析框架都是基于FCN的.基于CNN的方法能够增强动态物体的理解，但是在无限制词汇和不同场景中仍然面临挑战.举个例子，如下图.</p>
-<p><img src="/img/ch9/figure_9.6_1.png" alt=""><br>&emsp;&emsp;<br>FCN认为右侧框中是汽车，但是实际上是船，如果参考上下文的先验知识，就会发现左边是一个船屋，进而推断是框中是船.FCN存在的主要问题就是不能利用好全局的场景线索。  </p>
-<p>&emsp;&emsp;<br>对于尤其复杂的场景理解，之前都是采用空间金字塔池化来做的，和之前方法不同（为什么不同，需要参考一下经典的金字塔算法），本文提出了pyramid scene parsing network(PSPNet)。<br>&emsp;&emsp;<br>本文的主要贡献如下:<br>&emsp;&emsp;<br>(1)    提出了PSPNet在基于FCN的框架中集成困难的上下文特征<br>&emsp;&emsp;<br>(2)    通过基于深度监督误差开发了针对ResNet的高效优化策略<br>&emsp;&emsp;<br>(3)    构建了一个用于state-of-the-art的场景解析和语义分割的实践系统（具体是什么？）<br>&emsp;&emsp;<br>通过观察FCN的结果，发现了如下问题：<br>&emsp;&emsp;<br>(1)    关系不匹配（Mismatched Relationship）<br>&emsp;&emsp;<br>(2)    易混淆的类别（Confusion Categories）<br>&emsp;&emsp;<br>(3)    不显眼的类别（Inconspicuous Classes）<br>&emsp;&emsp;<br>总结以上结果发现，以上问题部分或者全部与上下文关系和全局信息有关系，因此本文提出了PSPNet.框架如下:</p>
-<p><img src="/img/ch9/figure_9.6_2.png" alt=""><br>&emsp;&emsp;<br>并且加入额外的深度监督 Loss</p>
-<p><img src="/img/ch9/figure_9.6_3.png" alt=""></p>
-<h2 id="9-8-DeepLab系列"><a href="#9-8-DeepLab系列" class="headerlink" title="9.8 DeepLab系列"></a>9.8 DeepLab系列</h2><h3 id="9-8-1-DeepLabv1"><a href="#9-8-1-DeepLabv1" class="headerlink" title="9.8.1 DeepLabv1"></a>9.8.1 DeepLabv1</h3><p>&emsp;&emsp;<br>DeepLab 是结合了深度卷积神经网络（DCNNs）和概率图模型（DenseCRFs）的方法。<br>&emsp;&emsp;<br>在实验中发现 DCNNs 做语义分割时精准度不够的问题，根本原因是 DCNNs 的高级特征的平移不变性，即高层次特征映射，根源于重复的池化和下采样。<br>&emsp;&emsp;<br>针对信号下采样或池化降低分辨率，DeepLab 是采用的 atrous（带孔）算法扩展感受野，获取更多的上下文信息。<br>&emsp;&emsp;<br>分类器获取以对象中心的决策是需要空间变换的不变性，这天然地限制了 DCNN 的定位精度，DeepLab 采用完全连接的条件随机场（CRF）提高模型捕获细节的能力。<br>&emsp;&emsp;<br>除空洞卷积和 CRFs 之外，论文使用的 tricks 还有 Multi-Scale features。其实就是 U-Net 和 FPN 的思想，在输入图像和前四个最大池化层的输出上附加了两层的 MLP，第一层是 128 个 3×3 卷积，第二层是 128 个 1×1 卷积。最终输出的特征与主干网的最后一层特征图融合，特征图增加 5×128=640 个通道。<br>&emsp;&emsp;<br>实验表示多尺度有助于提升预测结果，但是效果不如 CRF 明显。<br>&emsp;&emsp;<br>论文模型基于 VGG16，在 Titan GPU 上运行速度达到了 8FPS，全连接 CRF 平均推断需要 0.5s ，在 PASCAL VOC-2012 达到 71.6% IOU accuracy。</p>
-<h3 id="9-8-2-DeepLabv2"><a href="#9-8-2-DeepLabv2" class="headerlink" title="9.8.2 DeepLabv2"></a>9.8.2 DeepLabv2</h3><p>&emsp;&emsp;<br>DeepLabv2 是相对于 DeepLabv1 基础上的优化。DeepLabv1 在三个方向努力解决，但是问题依然存在：特征分辨率的降低、物体存在多尺度，DCNN 的平移不变性。<br>&emsp;&emsp;<br>因 DCNN 连续池化和下采样造成分辨率降低，DeepLabv2 在最后几个最大池化层中去除下采样，取而代之的是使用空洞卷积，以更高的采样密度计算特征映射。<br>&emsp;&emsp;<br>物体存在多尺度的问题，DeepLabv1 中是用多个 MLP 结合多尺度特征解决，虽然可以提供系统的性能，但是增加特征计算量和存储空间。<br>&emsp;&emsp;<br>论文受到 Spatial Pyramid Pooling (SPP) 的启发，提出了一个类似的结构，在给定的输入上以不同采样率的空洞卷积并行采样，相当于以多个比例捕捉图像的上下文，称为 ASPP (atrous spatial pyramid pooling) 模块。<br>&emsp;&emsp;<br>DCNN 的分类不变形影响空间精度。DeepLabv2 是采样全连接的 CRF 在增强模型捕捉细节的能力。<br>&emsp;&emsp;<br>论文模型基于 ResNet，在 NVidia Titan X GPU 上运行速度达到了 8FPS，全连接 CRF 平均推断需要 0.5s ，在耗时方面和 DeepLabv1 无差异，但在 PASCAL VOC-2012 达到 79.7 mIOU。</p>
-<h3 id="9-8-3-DeepLabv3"><a href="#9-8-3-DeepLabv3" class="headerlink" title="9.8.3 DeepLabv3"></a>9.8.3 DeepLabv3</h3><p>&emsp;&emsp;<br>好的论文不止说明怎么做，还告诉为什么。DeepLab 延续到 DeepLabv3 系列，依然是在空洞卷积做文章，但是探讨不同结构的方向。<br>&emsp;&emsp;<br>DeepLabv3 论文比较了多种捕获多尺度信息的方式：</p>
-<p><img src="/img/ch9/figure_9.6_4.png" alt=""> </p>
-<p>&emsp;&emsp;<br>1.Image Pyramid：将输入图片放缩成不同比例，分别应用在 DCNN 上，将预测结果融合得到最终输出。<br>&emsp;&emsp;<br>2.Encoder-Decoder：利用 Encoder 阶段的多尺度特征，运用到 Decoder 阶段上恢复空间分辨率，代表工作有 FCN、SegNet、PSPNet 等工。<br>&emsp;&emsp;<br>3.Deeper w. Atrous Convolution：在原始模型的顶端增加额外的模块，例如 DenseCRF，捕捉像素间长距离信息。<br>&emsp;&emsp;<br>4.Spatial Pyramid Pooling：空间金字塔池化具有不同采样率和多种视野的卷积核，能够以多尺度捕捉对象。<br>&emsp;&emsp;<br>DeepLabv1-v2 都是使用带孔卷积提取密集特征来进行语义分割。但是为了解决分割对象的多尺度问题，DeepLabv3 设计采用多比例的带孔卷积级联或并行来捕获多尺度背景。<br>&emsp;&emsp;<br>此外，DeepLabv3 将修改之前提出的带孔空间金字塔池化模块，该模块用于探索多尺度卷积特征，将全局背景基于图像层次进行编码获得特征，取得 state-of-art 性能，在 PASCAL VOC-2012 达到 86.9 mIOU。</p>
-<h3 id="9-8-4-DeepLabv3"><a href="#9-8-4-DeepLabv3" class="headerlink" title="9.8.4 DeepLabv3+"></a>9.8.4 DeepLabv3+</h3><p>&emsp;&emsp;<br>语义分割关注的问题:<br>&emsp;&emsp;<br>1、 实例对象多尺度问题。<br>&emsp;&emsp;<br>2、 因为深度网络存在stride=2的层，会导致feature分辨率下降，从而导致预测精度降低，而造成的边界信息丢失问题。<br>&emsp;&emsp;<br>deeplab V3新设计的aspp结构解决了问题1，deeplab v3+主要目的在于解决问题2。<br>&emsp;&emsp;<br>问题2 可以使用空洞卷积替代更多的pooling层来获取分辨率更高的feature。但是feature分辨率更高会极大增加运算量。以deeplab v3使用的resnet101为例，stride=16将造成后面9层feature变大，后面9层的计算量变为原来的2*2=4倍大。stride=8则更为恐怖，后面78层的计算量都会变大很多。<br>&emsp;&emsp;<br>解决方案：1、编解码器结构；2 Modified Aligned Xception</p>
-<p><img src="/img/ch9/figure_9.6_5.png" alt="">   </p>
-<p>&emsp;&emsp;<br>在deeplabv3基础上加入解码器。A是aspp结构，其中8x的上采样可以看做是一个解码器。B是编解码结构，它集合了高层和底层的特征。C就是本文采取的结构。<br>&emsp;&emsp;<br>方法：<br>&emsp;&emsp;<br>（1）Encoder-Decoder with Atrous Convolution</p>
-<p><img src="/img/ch9/figure_9.6_6.png" alt="">  </p>
-<p>&emsp;&emsp;<br>编码器采用deeplabv3。<br>&emsp;&emsp;<br>解码器部分：先从低层级选一个feature，将低层级的feature用1 <em> 1的卷积进行通道压缩（原本为256通道，或者512通道），目的在于减少低层级的比重。作者认为编码器得到的feature具有更丰富的信息，所以编码器的feature应该有更高的比重。 这样做有利于训练。<br>&emsp;&emsp;<br>再将编码器的输出上采样，使其分辨率与低层级feature一致。举个例子，如果采用resnet conv2 输出的feature，则这里要</em> 4上采样。将两种feature连接后，再进行一次3 * 3的卷积（细化作用），然后再次上采样就得到了像素级的预测。后面的实验结果表明这种结构在 stride=16 时既有很高的精度速度又很快。stride=8相对来说只获得了一点点精度的提升，但增加了很多的计算量。<br>&emsp;&emsp;<br>（2）Modified Aligned Xception<br>&emsp;&emsp;<br>Xception主要采用了deepwish seperable convolution来替换原来的卷积层。简单的说就是这种结构能在更少参数更少计算量的情况下学到同样的信息。这边则是考虑将原来的resnet-101骨架网换成xception。</p>
-<p><img src="/img/ch9/figure_9.6_7.png" alt="">  </p>
-<p>&emsp;&emsp;<br><strong>红色部分为修改</strong><br>&emsp;&emsp;<br>更多层：重复8次改为16次（基于MSRA目标检测的工作）。<br>&emsp;&emsp;<br>将原来简单的pool层改成了stride为2的deepwish seperable convolution。<br>&emsp;&emsp;<br>额外的RELU层和归一化操作添加在每个 3 × 3 depthwise convolution之后（原来只在1 * 1卷积之后）</p>
-<h2 id="9-9-Mask-R-CNN"><a href="#9-9-Mask-R-CNN" class="headerlink" title="9.9 Mask-R-CNN"></a>9.9 Mask-R-CNN</h2><h3 id="9-9-1-Mask-RCNN-的网络结构示意图"><a href="#9-9-1-Mask-RCNN-的网络结构示意图" class="headerlink" title="9.9.1 Mask-RCNN 的网络结构示意图"></a>9.9.1 Mask-RCNN 的网络结构示意图</h3><p><img src="/img/ch9/figure_9.8_1.png" alt=""></p>
-<p>&emsp;&emsp;<br>其中黑色部分为原来的Faster-RCNN，红色部分为在Faster网络上的修改：<br>&emsp;&emsp;<br>1）将ROI Pooling层替换成了ROIAlign；<br>&emsp;&emsp;<br>2）添加并列的FCN层（Mask层）；<br>&emsp;&emsp;<br>先来概述一下Mask-RCNN的几个特点（来自于Paper<a href="https://arxiv.org/pdf/1703.06870.pdf" target="_blank" rel="noopener">Mask R-CNN</a>的Abstract）：<br>&emsp;&emsp;<br>1）在边框识别的基础上添加分支网络，用于语义Mask识别；<br>&emsp;&emsp;<br>2）训练简单，相对于Faster仅增加一个小的Overhead，可以跑到5FPS；<br>&emsp;&emsp;<br>3）可以方便的扩展到其他任务，比如人的姿态估计等；<br>&emsp;&emsp;<br>4）不借助Trick，在每个任务上，效果优于目前所有的 single-model entries；包括 COCO 2016 的Winners。</p>
-<h3 id="9-9-2-RCNN行人检测框架"><a href="#9-9-2-RCNN行人检测框架" class="headerlink" title="9.9.2 RCNN行人检测框架"></a>9.9.2 RCNN行人检测框架</h3><p>&emsp;&emsp;<br>来看下后面两种RCNN方法与Mask结合的示意图:</p>
-<p><img src="/img/ch9/figure_9.8_2.png" alt=""><br>&emsp;&emsp;<br>图中灰色部分是原来的RCNN结合ResNet or FPN的网络，下面黑色部分为新添加的并联Mask层，这个图本身与上面的图也没有什么区别，旨在说明作者所提出的Mask RCNN方法的泛化适应能力：可以和多种RCNN框架结合，表现都不错。</p>
-<h3 id="9-9-3-Mask-RCNN-技术要点"><a href="#9-9-3-Mask-RCNN-技术要点" class="headerlink" title="9.9.3 Mask-RCNN 技术要点"></a>9.9.3 Mask-RCNN 技术要点</h3><p>&emsp;&emsp;<br><strong>1.技术要点1 - 强化的基础网络</strong><br>&emsp;&emsp;<br>通过ResNeXt-101+FPN用作特征提取网络，达到state-of-the-art的效果。<br>&emsp;&emsp;<br><strong>2.技术要点2 - ROIAlign</strong><br>&emsp;&emsp;<br>采用ROIAlign替代RoiPooling（改进池化操作）。引入了一个插值过程，先通过双线性插值到14<em>14，再pooling到7</em>7，很大程度上解决了仅通过Pooling直接采样带来的Misalignment对齐问题。<br>&emsp;&emsp;<br>PS： 虽然 Misalignment 在分类问题上影响并不大，但在 Pixel 级别的 Mask 上会存在较大误差。<br>&emsp;&emsp;<br>后面我们把结果对比贴出来（Table2 c &amp; d），能够看到 ROIAlign 带来较大的改进，可以看到，Stride 越大改进越明显。<br>&emsp;&emsp;<br><strong>3.技术要点3 - Loss Function</strong><br>&emsp;&emsp;<br>每个ROIAlign对应K <em> m^2维度的输出。K对应类别个数，即输出K个mask，m对应池化分辨率（7 </em> 7）。Loss函数定义：</p>
-<script type="math/tex; mode=display">
-Lmask(Cls_k)=Sigmoid(Cls_k)</script><p>&emsp;&emsp;<br>$Lmask(Cls_k) = Sigmoid (Cls_k)$，平均二值交叉熵 （average binary cross-entropy）Loss，通过逐像素的 Sigmoid 计算得到。<br>&emsp;&emsp;<br>Why K个mask？通过对每个 Class 对应一个Mask可以有效避免类间竞争（其他Class不贡献Loss）。</p>
-<p><img src="/img/ch9/figure_9.8_3.png" alt=""><br>&emsp;&emsp;<br>通过结果对比来看（Table2 b），也就是作者所说的 Decouple 解耦，要比多分类的Softmax效果好很多。<br>&emsp;&emsp;<br>另外，作者给出了很多实验分割效果，就不都列了，只贴一张和FCIS的对比图（FCIS出现了Overlap的问题）</p>
-<p><img src="/img/ch9/figure_9.8_4.png" alt=""></p>
-<h2 id="9-10-CNN在基于弱监督学习的图像分割中的应用"><a href="#9-10-CNN在基于弱监督学习的图像分割中的应用" class="headerlink" title="9.10 CNN在基于弱监督学习的图像分割中的应用"></a>9.10 CNN在基于弱监督学习的图像分割中的应用</h2><p>&emsp;&emsp;<br>答案来源：<a href="https://zhuanlan.zhihu.com/p/23811946" target="_blank" rel="noopener">CNN在基于弱监督学习的图像分割中的应用</a>  </p>
-<p>&emsp;&emsp;<br>最近基于深度学习的图像分割技术一般依赖于卷积神经网络CNN的训练，训练过程中需要非常大量的标记图像，即一般要求训练图像中都要有精确的分割结果。<br>&emsp;&emsp;<br>对于图像分割而言，要得到大量的完整标记过的图像非常困难，比如在ImageNet数据集上，有1400万张图有类别标记，有50万张图给出了bounding box,但是只有4460张图像有像素级别的分割结果。对训练图像中的每个像素做标记非常耗时，特别是对医学图像而言，完成对一个三维的CT或者MRI图像中各组织的标记过程需要数小时。<br>&emsp;&emsp;<br>如果学习算法能通过对一些初略标记过的数据集的学习就能完成好的分割结果，那么对训练数据的标记过程就很简单，这可以大大降低花在训练数据标记上的时间。这些初略标记可以是：<br>&emsp;&emsp;<br>1、只给出一张图像里面包含哪些物体，<br>&emsp;&emsp;<br>2、给出某个物体的边界框，<br>&emsp;&emsp;<br>3、对图像中的物体区域做部分像素的标记，例如画一些线条、涂鸦等（scribbles)。</p>
-<h3 id="9-10-1-Scribble标记"><a href="#9-10-1-Scribble标记" class="headerlink" title="9.10.1 Scribble标记"></a>9.10.1 Scribble标记</h3><p>&emsp;&emsp;<br>论文地址：<a href="https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Lin_ScribbleSup_Scribble-Supervised_Convolutional_CVPR_2016_paper.pdf" target="_blank" rel="noopener">ScribbleSup: Scribble-Supervised Convolutional Networks for Semantic Segmentation (CVPR 2016)</a><br>&emsp;&emsp;<br>香港中文大学的Di Lin提出了一个基于Scribble标记的弱监督学习方法。Scribble是一个很方便使用的标记方法，因此被用得比较广泛。如下图，只需要画五条线就能完成对一副图像的标记工作。</p>
-<p><img src="/img/ch9/figure_9.9_1.png" alt=""><br>&emsp;&emsp;<br>ScribbleSup分为两步，第一步将像素的类别信息从scribbles传播到其他未标记的像素，自动完成所有的训练图像的标记工作； 第二步使用这些标记图像训练CNN。在第一步中，该方法先生成super-pxels, 然后基于graph cut的方法对所有的super-pixel进行标记。</p>
-<p><img src="/img/ch9/figure_9.9_2.png" alt="">  </p>
-<p>&emsp;&emsp;<br>Graph Cut的能量函数为：</p>
-<script type="math/tex; mode=display">
-\sum_{i}\psi _i\left(y_i|X,S\right)+\sum_{i,j}\psi_{ij}\left(y_i,y_j,X\right)</script><p>&emsp;&emsp;<br>在这个graph中，每个super-pixel是graph中的一个节点，相接壤的super-pixel之间有一条连接的边。这个能量函数中的一元项包括两种情况，一个是来自于scribble的，一个是来自CNN对该super-pixel预测的概率。整个最优化过程实际上是求graph cut能量函数和CNN参数联合最优值的过程：</p>
-<script type="math/tex; mode=display">
-\sum_{i}\psi _i^{scr}\left(y_i|X,S\right)+\sum _i-logP\left(y_i| X,\theta\right)+\sum_{i,j}\psi _{ij}\left(y_i,y_j|X\right)</script><p>&emsp;&emsp;<br>上式的最优化是通过交替求 $Y$ 和 $\theta$ 的最优值来实现的。文章中发现通过三次迭代就能得到比较好的结果。</p>
-<p><img src="/img/ch9/figure_9.9_3.png" alt=""></p>
-<h3 id="9-10-2-图像级别标记"><a href="#9-10-2-图像级别标记" class="headerlink" title="9.10.2 图像级别标记"></a>9.10.2 图像级别标记</h3><p>&emsp;&emsp;<br>论文地址：<a href="https://www.cv-foundation.org/openaccess/content_iccv_2015/papers/Pathak_Constrained_Convolutional_Neural_ICCV_2015_paper.pdf" target="_blank" rel="noopener">Constrained Convolutional Neural Networks for Weakly Supervised Segmentation （ICCV 2015）</a><br>&emsp;&emsp;<br>UC Berkeley的Deepak Pathak使用了一个具有图像级别标记的训练数据来做弱监督学习。训练数据中只给出图像中包含某种物体，但是没有其位置信息和所包含的像素信息。该文章的方法将image tags转化为对CNN输出的label分布的限制条件，因此称为 Constrained convolutional neural network (CCNN).</p>
-<p><img src="/img/ch9/figure_9.9_4.png" alt=""><br>&emsp;&emsp;</p>
-<p>该方法把训练过程看作是有线性限制条件的最优化过程：</p>
-<script type="math/tex; mode=display">
-\underset{\theta ,P}{minimize}\qquad D(P(X)||Q(X|\theta ))\\
-subject\to\qquad A\overrightarrow{P} \geqslant \overrightarrow{b},\sum_{X}^{ }P(X)=1</script><p>&emsp;&emsp;</p>
-<p>其中的线性限制条件来自于训练数据上的标记，例如一幅图像中前景类别像素个数期望值的上界或者下界（物体大小）、某个类别的像素个数在某图像中为0，或者至少为1等。该目标函数可以转化为为一个loss function，然后通过SGD进行训练。</p>
-<p><img src="/img/ch9/figure_9.9_5.png" alt=""><br>&emsp;&emsp;<br>实验中发现单纯使用Image tags作为限制条件得到的分割结果还比较差，在PASCAL VOC 2012 test数据集上得到的mIoU为35.6%，加上物体大小的限制条件后能达到45.1%，如果再使用bounding box做限制，可以达到54%。FCN-8s可以达到62.2%，可见弱监督学习要取得好的结果还是比较难。     </p>
-<h3 id="9-10-3-DeepLab-bounding-box-image-level-labels"><a href="#9-10-3-DeepLab-bounding-box-image-level-labels" class="headerlink" title="9.10.3 DeepLab+bounding box+image-level labels**"></a>9.10.3 DeepLab+bounding box+image-level labels**</h3><p>&emsp;&emsp;<br>论文地址：<a href="https://arxiv.org/pdf/1502.02734.pdf" target="_blank" rel="noopener">Weakly-and Semi-Supervised Learning of a DCNN for Semantic Image Segmentation</a><br>&emsp;&emsp;<br>Google的George Papandreou 和UCLA的Liang-Chieh Chen等在DeepLab的基础上进一步研究了使用bounding box和image-level labels作为标记的训练数据。使用了期望值最大化算法（EM）来估计未标记的像素的类别和CNN的参数。</p>
-<p><img src="/img/ch9/figure_9.9_6.png" alt=""><br>&emsp;&emsp;<br>对于image-level标记的数据，我们可以观测到图像的像素值和图像级别的标记 ,但是不知道每个像素的标号,因此把$y$当做隐变量。使用如下的概率图模式：</p>
-<script type="math/tex; mode=display">
-P\left ( x,y,z;\theta \right ) = P\left ( x \right )\left (\prod_{m=1}^{M} P\left ( y_m|x;\theta \right )\right )P\left ( z|y \right )</script><p>&emsp;&emsp;<br>这篇论文是通过EM算法来学习模型的参数$\theta$，具体推导过程可参考原论文。</p>
-<p><img src="/img/ch9/figure_9.9_7.png" alt=""><br>&emsp;&emsp;<br>对于给出bounding box标记的训练图像，该方法先使用CRF对该训练图像做自动分割，然后在分割的基础上做全监督学习。通过实验发现，单纯使用图像级别的标记得到的分割效果较差，但是使用bounding box的训练数据可以得到较好的结果，在VOC2012 test数据集上得到mIoU 62.2%。另外如果使用少量的全标记图像和大量的弱标记图像进行结合，可以得到与全监督学习(70.3%)接近的分割结果(69.0%)。     </p>
-<h3 id="9-10-4-统一的框架"><a href="#9-10-4-统一的框架" class="headerlink" title="9.10.4 统一的框架"></a>9.10.4 统一的框架</h3><p>&emsp;&emsp;<br>论文地址：<a href="https://www.cv-foundation.org/openaccess/content_cvpr_2015/papers/Xu_Learning_to_Segment_2015_CVPR_paper.pdf" target="_blank" rel="noopener">Learning to Segment Under Various Forms of Weak Supervision (CVPR 2015)</a> </p>
-<p>&emsp;&emsp;<br>Wisconsin-Madison大学的Jia Xu提出了一个统一的框架来处理各种不同类型的弱标记：图像级别的标记、bounding box和部分像素标记如scribbles。该方法把所有的训练图像分成共计$n$个super-pixel，对每个super-pixel提取一个$d$维特征向量。因为不知道每个super-pixel所属的类别，相当于无监督学习，因此该方法对所有的super-pixel做聚类，使用的是最大间隔聚类方法(max-margin clustering, MMC),该过程的最优化目标函数是：</p>
-<script type="math/tex; mode=display">
-\underset{W,H}{min} \qquad  \frac{1}{2}tr\left ( W^TW \right ) + \lambda\sum_{p=1}^{n}\sum_{c=1}^{C}\xi \left ( w_c;x_p;h_p^c \right)</script><p>&emsp;&emsp;<br>在这个目标函数的基础上，根据不同的弱标记方式，可以给出不同的限制条件，因此该方法就是在相应的限制条件下求最大间隔聚类。</p>
-<p><img src="/img/ch9/figure_9.9_8.png" alt="">  </p>
-<p>&emsp;&emsp;<br>该方法在Siftflow数据集上得到了比较好的结果，比state-of-the-art的结果提高了10%以上。</p>
-<p>&emsp;&emsp;<br>小结：在弱标记的数据集上训练图像分割算法可以减少对大量全标记数据的依赖，在大多数应用中会更加贴合实际情况。弱标记可以是图像级别的标记、边框和部分像素的标记等。训练的方法一般看做是限制条件下的最优化方法。另外EM算法可以用于CNN参数和像素类别的联合求优。</p>
-<h3 id="9-10-5-弱监督分割最新进展（贡献者：明奇-北京理工大学）"><a href="#9-10-5-弱监督分割最新进展（贡献者：明奇-北京理工大学）" class="headerlink" title="9.10.5 弱监督分割最新进展（贡献者：明奇-北京理工大学）"></a>9.10.5 弱监督分割最新进展（贡献者：明奇-北京理工大学）</h3><ul>
-<li><strong>bbox监督</strong></li>
-</ul>
-<ol>
-<li><p>Learning to Segment via Cut-and-Paste（ECCV 2018）</p>
-<p>利用GAN对抗学习的思想，在cut-paste思想指导下利用bbox弱监督进行实例分割。<br><img src="/img/ch9/9.10.5-1.png" alt=""><br>采用对抗学习的思想，网络主体分为两大部分：mask生成器和合成图像判别器。具体过程为：（1）在图像上截取gt，经过特征提取后预测一个bbox内gt的mask；（2）在原图上随机cut一个背景图像，将bbox内按照生成的mask提取出物体分割结果，然后paste到原图裁剪的背景上去；（3）合成的图像经过判别器进行真假判断。<br>通过生成器生成更好mask来使得判别器更难判别，在对抗学习中提升两者的性能，逐渐获得更好的结果 .</p>
-</li>
-<li><p>Simple Does It: Weakly Supervised Instance and Semantic Segmentation（CVPR2017）<br>本文做的是bbox弱监督语义/实例分割任务，能达到全监督分割效果(DeepLabv1)的95%。主要工作为：讨论了使用弱监督语义标签进行迭代训练的方法，以及其限制和不足之处；证明了通过类似GrabCut的算法能通过bbox生成分割训练标签方法的可行性，可以避免像上面的迭代方法重新调整网络训练策略；在VOC数据集上逼近监督学习的分割任务效果。<br>作者的启发是：将bbox level的mask送入网络训练后得到分割mask的比输入的bbox mask要好（这是很好的insight）。因此启发的操作是：将bbox level标注作为初始mask输入优化，每次得到的标注作为gt进行下一轮的迭代，从而不断获得更好的效果。效果图如下：<br><img src="/img/ch9/9.10.5-3.png" alt=""><br>在此基础上，再加上优化的GrabCut+算法，以及部分区域的筛选，以及BSDS500的边界预测信息整合到一起，能够达到很好的弱监督迭代分割效果。</p>
-</li>
-</ol>
-<ul>
-<li><strong>分类监督</strong></li>
-</ul>
-<ol>
-<li><p>Weakly Supervised Learning of Instance Segmentation with Inter-pixel Relations(CVPR2019)<br>使用分类标注作为弱监督信息，在CAM提取到特征的基础上，进一步设计IRNet学习额外的特征约束，从而到达更好的弱监督实例分割效果。为了解决CAM应用到实例分割的上述局限，设计IRNet。其组成为两部分：（1）不分类别的实例响应图  （2）pairwise semantic affinitie。其中通过不分类别的实例响应图和CAM结合，约束后得到instance-wise CAMS；另一个分支预先预测物体的边界然后得到pairwise semantic affinitie（关于这个的论文参考Related Work的对应部分，有相应的方法，暂时不深究）进行融合和处理得到最终的分割。整体流程如下：<br><img src="/img/ch9/9.10.5-2.png" alt=""> </p>
-</li>
-<li><p>Weakly Supervised Instance Segmentation using Class Peak Response（CVPR2018）<br>本文使用图像级的类别标注监督信息，通过探索类别响应峰值使分类网络能够很好地提取实例分割mask。本工作是使用图像级标注进行弱监督实例分割的首个工作。<br>在分类监督信息之下，CNN网络会产生一个类别响应图，每个位置是类别置信度分数。其局部极大值往往具有实例很强视觉语义线索。首先将类别峰值响应图的信息进行整合，然后反向传播将其映射到物体实例信息量较大的区域如边界。上述从类别极值响应图产生的映射图称为Peak Response Maps (PRMs)，该图提供了实例物体的详细表征，可以很好地用作分割监督信息。<br>具体流程如图：<br><img src="/img/ch9/9.10.5-4.png" alt=""><br>首先将图片经过正常的分类网络训练，其中在类别预测响应图上提取出局部响应极值点，进行增强卷积后预测出PRM。然后结合多种信息进行推断生成mask。</p>
-</li>
-<li><p>Weakly Supervised Semantic Segmentation Using Superpixel Pooling Network（AAAI 2017）<br>本文介绍通过类别标注的标签实现弱监督语义分割的方法。该方法在语义分割mask生成和使用生成mask学习分割生成网络之间反复交替。要实现这种交替迭代学习，关键点就是如何利用类别标注得到较准确的初始分割。为了解决这一问题,提出了Superpixel Pooling Network (SPN)，将输入图像的超像素分割结果作为低阶结构的表征，辅助语义分割的推断。<br><img src="/img/ch9/9.10.5-5.png" alt=""><br>首先是SPN生成初始mask，然后用另一个网络DecoupledNet来学习每个像素的mask标注。其中，该分割网络将语义分割任务解耦为分类和分割两个子任务，并且能够从类别标注中学习形状先验知识用于辅助分割。</p>
-</li>
-</ol>
-<h2 id="9-11-DenseNet（贡献者：黄钦建－华南理工大学）"><a href="#9-11-DenseNet（贡献者：黄钦建－华南理工大学）" class="headerlink" title="9.11 DenseNet（贡献者：黄钦建－华南理工大学）"></a>9.11 DenseNet（贡献者：黄钦建－华南理工大学）</h2><p>&emsp;&emsp;<br>这篇论文是CVPR2017年的最佳论文。</p>
-<p>&emsp;&emsp;<br>卷积神经网络结构的设计主要朝着两个方向发展，一个是更宽的网络（代表：GoogleNet、VGG），一个是更深的网络（代表：ResNet）。但是随着层数的加深会出现一个问题——梯度消失，这将会导致网络停止训练。到目前为止解决这个问题的思路基本都是在前后层之间加一个identity connections(short path)。</p>
-<p><img src="/img/ch9/9-10-3.png" alt=""></p>
-<p>&emsp;&emsp;<br>由上图中可知Resnet是做值的相加（也就是add操作），通道数是不变的。而DenseNet是做通道的合并（也就是Concatenation操作），就像Inception那样。从这两个公式就可以看出这两个网络的本质不同。此外DensetNet的前面一层输出也是后面所有层的输入，这也不同于ResNet残差网络。</p>
-<p><img src="/img/ch9/9-10-1.png" alt=""></p>
-<p>&emsp;&emsp;<br>DenseNet的Block结构如上图所示。</p>
-<p>&emsp;&emsp;<br>1*1卷积核的目的：减少输入的特征图数量，这样既能降维减少计算量，又能融合各个通道的特征。我们将使用BottleNeck Layers的DenseNet表示为DenseNet-B。(在论文的实验里，将1×1×n小卷积里的n设置为4k，k为每个H产生的特征图数量)</p>
-<p><img src="/img/ch9/9-10-2.png" alt=""></p>
-<p>&emsp;&emsp;<br>上图是DenseNet网络的整体网络结构示意图。其中1*1卷积核的目的是进一步压缩参数，并且在Transition Layer层有个参数Reduction（范围是0到1），表示将这些输出缩小到原来的多少倍，默认是0.5，这样传给下一个Dense Block的时候channel数量就会减少一半。当Reduction的值小于1的时候，我们就把带有这种层的网络称为DenseNet-C。</p>
-<p>&emsp;&emsp;<br>DenseNet网络的优点包括：</p>
-<ul>
-<li>减轻了梯度消失</li>
-<li>加强了feature的传递</li>
-<li>更有效地利用了feature </li>
-<li>一定程度上较少了参数数量</li>
-<li>一定程度上减轻了过拟合</li>
-</ul>
-<h2 id="9-12-图像分割的常用数据集"><a href="#9-12-图像分割的常用数据集" class="headerlink" title="9.12 图像分割的常用数据集"></a>9.12 图像分割的常用数据集</h2><h3 id="9-12-1-PASCAL-VOC"><a href="#9-12-1-PASCAL-VOC" class="headerlink" title="9.12.1 PASCAL VOC"></a>9.12.1 PASCAL VOC</h3><p>VOC 数据集分为20类，包括背景为21类，分别如下： </p>
-<ul>
-<li>Person: person </li>
-<li>Animal: bird, cat, cow, dog, horse, sheep </li>
-<li>Vehicle: aeroplane, bicycle, boat, bus, car, motorbike, train </li>
-<li>Indoor: bottle, chair, dining table, potted plant, sofa, tv/monitor</li>
-</ul>
-<p>VOC 数据集中用于分割比赛的图片实例如下，包含原图以及图像分类分割和图像物体分割两种图（PNG格式）。图像分类分割是在20种物体中，ground-turth图片上每个物体的轮廓填充都有一个特定的颜色，一共20种颜色。</p>
-<p><img src="/img/ch9/VOC-01.png" alt=""></p>
-<h3 id="9-12-2-MS-COCO"><a href="#9-12-2-MS-COCO" class="headerlink" title="9.12.2 MS COCO"></a>9.12.2 MS COCO</h3><p>MS COCO 是最大图像分割数据集，提供的类别有 80 类，有超过 33 万张图片，其中 20 万张有标注，整个数据集中个体的数目超过 150 万个。MS COCO是目前难度最大，挑战最高的图像分割数据集。</p>
-<p><img src="/img/ch9/COCO-01.png" alt=""></p>
-<h3 id="9-12-3-Cityscapes"><a href="#9-12-3-Cityscapes" class="headerlink" title="9.12.3 Cityscapes"></a>9.12.3 Cityscapes</h3><p>Cityscapes 是驾驶领域进行效果和性能测试的图像分割数据集，它包含了5000张精细标注的图像和20000张粗略标注的图像，这些图像包含50个城市的不同场景、不同背景、不同街景，以及30类涵盖地面、建筑、交通标志、自然、天空、人和车辆等的物体标注。Cityscapes评测集有两项任务：像素级（Pixel-level）图像场景分割（以下简称语义分割）与实例级（Instance-level）图像场景分割（以下简称实例分割）。</p>
-<p><img src="/img/ch9/Cityscapes-01.png" alt=""></p>
-<h2 id="9-13-全景分割（贡献者：北京理工大学—明奇）"><a href="#9-13-全景分割（贡献者：北京理工大学—明奇）" class="headerlink" title="9.13 全景分割（贡献者：北京理工大学—明奇）"></a>9.13 全景分割（贡献者：北京理工大学—明奇）</h2><p>全景分割的开山之作：何恺明的<em>Panoptic Segmentation</em></p>
-<ol>
-<li><strong>Introduction</strong></li>
-</ol>
-<p>&emsp;&emsp;语义分割通过带孔全卷积网络，根据不同的stuff进行划分；实例分割则是在目标检测的基础上基于检测框进行物体的分割。缺少一种框架可以将两者进行融合实现既能分割背景又能分割实例，而这在自动驾驶和AR技术中大有作为。由此提出的全景分割任务能将两者进行结合。        </p>
-<p>&emsp;&emsp;全景分割的思路很直观：为图像的每个像素分配语义label和类内实例id，前者用于区分语义信息，后者用于分割实例（因此stuff不具有实例id）。提出全景分割时，只是启发式地将语意分割和实例分割两种任务的输出进行后处理的融合（如NMS），并以此建立PS任务的baseline。为了评价全景分割的质量，提出panoptic quality (PQ) 标准，将背景和物体的评价纳入一个完整的框架下。示意图如下：<br><img src="/img/ch9/9.13-1.png" alt=""></p>
-<ol>
-<li><strong>Panoptic Segmentation</strong> </li>
-</ol>
-<ul>
-<li><p><strong>Task format</strong><br>全景分割的标注方法：<br>像素级的标注，标出类别label和类内实例id。如果某像素的这两个信息都能匹配，则可以将该像素匹配到某个类别和实例中去；类外的像素可以分配空标签，即并不是所有的像素都要有语义类别。</p>
-</li>
-<li><p><strong>Stuff and thing labels</strong><br>对于stuff和thing（背景填充和物体实例）的标签，交集是空集，并集是所有可能的label空间。这两者是互相独立不相关的（很好理解，像素属于那个类和它属于哪个物体不具有相关性）。</p>
-</li>
-<li><p><strong>Relationship</strong><br>都是像素级的label，需要为每个像素分配对应的标签。但是实例分割基于region的，允许重叠的segmentation，而全景分割和语义分割一样是像素级的label，不允许重叠标签的出现。</p>
-</li>
-<li><p><strong>Confidence scores</strong><br>这一点上更像语义分割而不是实例分割，对于PS不需要置信分数评价分割质量。提到这个，作者认为语义分割和全景分割可以直接利用人工标注的label进行对比从而评价当前mask的质量；而实例分割在选择mask时评价的是分类置信度，这个并没有人工标注进行参考，因此难以把握。   </p>
-</li>
-</ul>
-<ol>
-<li><strong>Panoptic Segmentation Metric</strong><br>&emsp;&emsp;用于衡量全景分割效果的指标应具有：完备性；可解释性；简洁性。由是提出了PQ指标，可分为两步：分割匹配、在匹配上进行计算PQ。    </li>
-</ol>
-<p>3.1  <strong>Segment Matching</strong><br>&emsp;&emsp;定义match：预测的segmentation和gt的iou大于0.5，说明两者can match。再结合全景分割的不可重叠性，不难得到：最多只有一个预测的segmentation可以match gt。    </p>
-<p>3.2  <strong>PQ Computation</strong><br>&emsp;&emsp;PQ的计算类似mAP，也是类内求取，然后求类间的平均值，以便不敏感类别不平衡。对于每一类，可以根据gt与预测的segmentation分为三类（下图描述）：<br><img src="/img/ch9/9.13-2.png" alt=""></p>
-<p>TP: 预测为正，实际为正，描述match较好的<br>FP: 预测为正，实际为负，描述match错的<br>FN: 预测为负，实际为正，描述没match出来的gt<br>&emsp;&emsp;通过上述三类可以计算得到PQ值公式：<br><img src="/img/ch9/9.13-3.png" alt=""></p>
-<p>式中出去FP与FN后，剩下的式子描述的是match的segmentation的平均IoU，加上FP与FN是为了惩罚match失败的分割实例。<br>有意思的是，对上述式子进行简单的恒等变化：<br><img src="/img/ch9/9.13-4.png" alt=""></p>
-<p>第一项评价的是match分割的质量，第二项类似于F1得分。因此可以PQ分解为：  </p>
-<script type="math/tex; mode=display">PQ=SQ*RQ</script><ul>
-<li><p><strong>Void labels</strong><br>gt中可能出现两种像素标注为空的情况：超出类别的像素和模糊不清的像素（难以分类）。在评估结果时，这些空的标签不予以评估。具体而言：<br>（1）在matching部分，预测出为void的像素会被移出prediction并不参与IoU计算；<br>（2）matching后，unmatched prediction按照一般情况会计算FP FN，但是对于空标签情况，如果该prediction含有的void像素块超过一定匹配阈值就会被移除，并不算作FP计算得分。   </p>
-</li>
-<li><p><strong>Group labels</strong><br>有时区分相同语义类别的实例个体标注比较困难，因此有提出组标签的标注方法。但对于PQ计算而言：<br>（1）matching部分不使用组标签，而是严格区分实例<br>（2）matching后，对于包含一部分相同类别像素点的unmatched predicted segments，这一部分将被去除并不视作false positives    </p>
-</li>
-</ul>
-<p>3.3  <strong>Comparison to Existing Metrics</strong></p>
-<ul>
-<li><p><strong>Semantic segmentation metrics</strong><br>衡量语义分割的标准有像素级精度，平均精度，IoU。但是其只专注于像素级的划分，不能反映物体实例级别的分割性能。</p>
-</li>
-<li><p><strong>Instance segmentation metrics</strong><br>度量为AP，主要是引入了置信度分数confidence score对检测目标进行打分。（两者不是完全的隔绝，实例分割也有用IoU监督的，而confidence score是否能够反映mask的真实质量也有存疑过，这个标准也不是固定的）</p>
-</li>
-<li><p><strong>Panoptic quality</strong><br>PQ的度量可以分解成SQ和RQ，SQ反映了语义分割的像素级IoU性能，RQ专注于检测识别的效果，因此将两者统一到一个框架下。</p>
-</li>
-</ul>
-<p>分割效果：<br><img src="/img/ch9/9.13-5.png" alt=""></p>
-<p><br><br><br></p>
-<p><hr /><br>TODO</p>
-<ul>
-<li>[ ] 图像分割数据集标注工具</li>
-<li>[ ] 图像分割评价标准</li>
-<li>[x] 全景分割</li>
-<li>[ ] UNet++</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -4676,7 +4439,7 @@ P\left ( x,y,z;\theta \right ) = P\left ( x \right )\left (\prod_{m=1}^{M} P\lef
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
