@@ -141,6 +141,176 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/02/25/%E5%9F%BA%E7%A1%80%E6%8A%80%E8%83%BD%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kay">
+      <meta itemprop="description" content="千里之行，始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/25/%E5%9F%BA%E7%A1%80%E6%8A%80%E8%83%BD%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">基础技能知识</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-25 21:29:48" itemprop="dateCreated datePublished" datetime="2020-02-25T21:29:48+08:00">2020-02-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-06 19:05:24" itemprop="dateModified" datetime="2020-04-06T19:05:24+08:00">2020-04-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><h3 id="常用的Python标准库有哪些？"><a href="#常用的Python标准库有哪些？" class="headerlink" title="常用的Python标准库有哪些？"></a>常用的Python标准库有哪些？</h3><p>常用的标准库：os操作系统，time时间，random随机，pymysql连接数据库，math数学，threading线程，multiprocessing进程，queue队列<br>第三方库：django和flask，requests，virtualenv，hashlib，md5<br>常用的科学计算库：Numpy,Scipy,Pandas等。</p>
+<h3 id="Python有哪些特点和优点？"><a href="#Python有哪些特点和优点？" class="headerlink" title="Python有哪些特点和优点？"></a>Python有哪些特点和优点？</h3><p>作为一门编程入门语言，Python主要有以下特点和优点：<br>1）可解释<br>2）具有动态特性<br>3）面向对象<br>4）简明简单<br>5）开源<br>6）具有强大的社区支持</p>
+<h3 id="深拷贝和浅拷贝之间的区别是什么？"><a href="#深拷贝和浅拷贝之间的区别是什么？" class="headerlink" title="深拷贝和浅拷贝之间的区别是什么？"></a>深拷贝和浅拷贝之间的区别是什么？</h3><p>深拷贝就是将一个对象拷贝到另一个对象中，这意味着如果你对一个对象的拷贝做出改变时，不会影响原对象。在Python中，我们使用函数deepcopy()执行深拷贝。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">b = copy.deepcopy(a)</span><br></pre></td></tr></table></figure><br>浅拷贝则是将一个对象的引用拷贝到另一个对象上，所以如果我们在拷贝中改动，会影响到原对象。我们使用函数function()执行浅拷贝。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b = copy.copy(a)</span><br></pre></td></tr></table></figure></p>
+<h3 id="列表和元组之间的区别是？"><a href="#列表和元组之间的区别是？" class="headerlink" title="列表和元组之间的区别是？"></a>列表和元组之间的区别是？</h3><p>二者的主要区别是列表是可变的，而元组是不可变的。</p>
+<h3 id="在Python中如何实现多线程？"><a href="#在Python中如何实现多线程？" class="headerlink" title="在Python中如何实现多线程？"></a>在Python中如何实现多线程？</h3><p>Python中的GIL（全局解释器锁）确保一次执行单个线程。一个线程保存GIL并在将其传递给下个线程之前执行一些操作，这会让我们产生并行运行的错觉。但实际上，只是线程在CPU上轮流运行。</p>
+<h3 id="在Python中是如何管理内存的？"><a href="#在Python中是如何管理内存的？" class="headerlink" title="在Python中是如何管理内存的？"></a>在Python中是如何管理内存的？</h3><p>Python有一个私有堆空间来保存所有的对象和数据结构。作为开发者，我们无法访问它，是解释器在管理它。但是有了核心API后，我们可以访问一些工具。Python内存管理器控制内存分配。另外，内置垃圾回收器会回收使用所有的未使用内存，所以使其适用于堆空间。</p>
+<h3 id="当退出Python时，是否释放全部内存？"><a href="#当退出Python时，是否释放全部内存？" class="headerlink" title="当退出Python时，是否释放全部内存？"></a>当退出Python时，是否释放全部内存？</h3><p>不会。循环引用其它对象或引用自全局命名空间的对象的模块，在Python退出时并非完全释放。另外，也不会释放C库保留的内存部分。</p>
+<h3 id="Python中的命名空间是什么？"><a href="#Python中的命名空间是什么？" class="headerlink" title="Python中的命名空间是什么？"></a>Python中的命名空间是什么？</h3><p>命名空间是一个命名系统，用于确保名称是唯一性，以避免命名冲突。</p>
+<h3 id="什么是PYTHONPATH？"><a href="#什么是PYTHONPATH？" class="headerlink" title="什么是PYTHONPATH？"></a>什么是PYTHONPATH？</h3><p>它是导入模块时使用的环境变量。每当导入模块时，也会查找PYTHONPATH以检查各个目录中是否存在导入的模块。解释器使用它来确定要加载的模块。</p>
+<h3 id="什么是init"><a href="#什么是init" class="headerlink" title="什么是init?"></a>什么是<strong>init</strong>?</h3><p><strong>init</strong>是Python中的方法或者结构。在创建类的新对象/实例时，将自动调用此方法来分配内存。所有类都有<strong>init</strong>方法。</p>
+<h3 id="Python中的self是什么？"><a href="#Python中的self是什么？" class="headerlink" title="Python中的self是什么？"></a>Python中的self是什么？</h3><p>self是类的实例或对象。在Python中，self包含在第一个参数中。但是，Java中的情况并非如此，它是可选的。它有助于区分具有局部变量的类的方法和属性。init方法中的self变量引用新创建的对象，而在其他方法中，它引用其方法被调用的对象。</p>
+<h3 id="什么是python迭代器？"><a href="#什么是python迭代器？" class="headerlink" title="什么是python迭代器？"></a>什么是python迭代器？</h3><p>迭代器是可以遍历或迭代的对象。</p>
+<h3 id="什么是python中的装饰器？"><a href="#什么是python中的装饰器？" class="headerlink" title="什么是python中的装饰器？"></a>什么是python中的装饰器？</h3><p>装饰器本质上是一个 Python 函数或类，它可以让其他函数或类在不需要做任何代码修改的前提下增加额外功能，装饰器的返回值也是一个函数/类对象。它经常用于有切面需求的场景，比如：插入日志、性能测试、事务处理、缓存、权限校验等场景。有了装饰器，我们就可以抽离出大量与函数功能本身无关的雷同代码到装饰器中并继续重用。概括的讲，装饰器的作用就是为已经存在的对象添加额外的功能。</p>
+<h3 id="os和sys的区别"><a href="#os和sys的区别" class="headerlink" title="os和sys的区别"></a>os和sys的区别</h3><p>os模块负责程序与操作系统的交互，提供了访问操作系统底层的接口;sys模块负责程序与python解释器的交互，提供了一系列的函数和变量，用于操控python的运行时环境。</p>
+<h3 id="什么是负指数，功能是什么？"><a href="#什么是负指数，功能是什么？" class="headerlink" title="什么是负指数，功能是什么？"></a>什么是负指数，功能是什么？</h3><p>Python中的序列是索引的，它由正数和负数组成。积极的数字使用’0’作为第一个索引，’1’作为第二个索引，进程继续使用。<br>负数的索引从’-1’开始，表示序列中的最后一个索引，’ - 2’作为倒数第二个索引，序列像正数一样前进。</p>
+<h3 id="什么是猴子补丁？"><a href="#什么是猴子补丁？" class="headerlink" title="什么是猴子补丁？"></a>什么是猴子补丁？</h3><p>在运行期间动态修改一个类或模块。</p>
+<h3 id="请解释使用args和-kwargs的含义"><a href="#请解释使用args和-kwargs的含义" class="headerlink" title="请解释使用args和*kwargs的含义"></a>请解释使用<em>args和*</em>kwargs的含义</h3><p>当我们不知道向函数传递多少参数时，比如我们向传递一个列表或元组，我们就使用<em>args。<br>在我们不知道该传递多少关键字参数时，使用*</em>kwargs来收集关键字参数。</p>
+<h3 id="解释一下Python中的身份运算符"><a href="#解释一下Python中的身份运算符" class="headerlink" title="解释一下Python中的身份运算符"></a>解释一下Python中的身份运算符</h3><p>通过身份运算符‘is’和‘is not’，我们可以确认两个值是否相同。</p>
+<h3 id="为何不建议以下划线作为标识符的开头"><a href="#为何不建议以下划线作为标识符的开头" class="headerlink" title="为何不建议以下划线作为标识符的开头"></a>为何不建议以下划线作为标识符的开头</h3><p>因为Python并没有私有变量的概念，所以约定速成以下划线为开头来声明一个变量为私有。所以如果你不想让变量私有，就不要使用下划线开头。</p>
+<h3 id="range＆xrange有什么区别？"><a href="#range＆xrange有什么区别？" class="headerlink" title="range＆xrange有什么区别？"></a>range＆xrange有什么区别？</h3><p>在大多数情况下，xrange和range在功能方面完全相同。它们都提供了一种生成整数列表的方法，唯一的区别是range返回一个Python列表对象，x range返回一个xrange对象。这就表示xrange实际上在运行时并不是生成静态列表。它使用称为yielding的特殊技术根据需要创建值。该技术与一种称为生成器的对象一起使用。因此如果你有一个非常巨大的列表，那么就要考虑xrange。</p>
+<h2 id="Pytorch、Tensorflow"><a href="#Pytorch、Tensorflow" class="headerlink" title="Pytorch、Tensorflow"></a>Pytorch、Tensorflow</h2><p><a href="https://blog.csdn.net/weixin_31866177/article/details/87974664" target="_blank" rel="noopener">tensorflow</a></p>
+<h2 id="Linux系统"><a href="#Linux系统" class="headerlink" title="Linux系统"></a>Linux系统</h2><p><a href="https://blog.csdn.net/qq_40910541/article/details/80686362?depth_1-utm_source=distribute.pc_relevant.none-task&amp;utm_source=distribute.pc_relevant.none-task" target="_blank" rel="noopener">linux常用指令</a></p>
+<h2 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h2><p><a href="https://blog.csdn.net/qq_26768741/article/details/66975516" target="_blank" rel="noopener">git常见问题</a></p>
+<h2 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h2><p><a href="https://www.jianshu.com/p/0fc161b9bcc7" target="_blank" rel="noopener">Java常见问题</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/02/25/%E9%9D%A2%E7%BB%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kay">
+      <meta itemprop="description" content="千里之行，始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/25/%E9%9D%A2%E7%BB%8F/" class="post-title-link" itemprop="url">面经</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-25 08:52:11" itemprop="dateCreated datePublished" datetime="2020-02-25T08:52:11+08:00">2020-02-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-18 11:15:46" itemprop="dateModified" datetime="2020-03-18T11:15:46+08:00">2020-03-18</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="2020年快手Y-tech面经"><a href="#2020年快手Y-tech面经" class="headerlink" title="2020年快手Y-tech面经"></a>2020年快手Y-tech面经</h1><h2 id="一面"><a href="#一面" class="headerlink" title="一面:"></a>一面:</h2><p>1、PCA原理，应用<br>PCA原理是在原有n维特征的基础上重新构造出k维全新的正交特征，PCA的工作就是从原始空间顺序中到一组互相正交的坐标轴，第一个坐标轴选择就是原始数据中方差最大的方向，第二个新坐标轴选取是与第一个坐标轴正交的平面中使方差最大的，第三个轴是与第1、2个轴正交的平面中方差最大的。依次类推可以得到n个这样的坐标轴。通过这种方式获得的新坐标轴，我们发现大部分方差都包含在前面k个坐标轴中，后面的坐标轴所含的方差几乎为0。于是我们可以忽略余下的坐标轴，只保留前面k个含有大部分方差的坐标轴。<br>PCA的应用范围有：1）数据压缩。数据压缩或者数据降维首先能够减少内存的使用，其次，数据降维能够加快机器学习的速度。2）数据可视化。在很多情况下，可能我们需要查看样本特征，但是高维度的特征根本无法观察，这个时候我们可以将样本的特征维数降到2个特征或3个特征，这样就可以采用可视化观察数据。3）去除数据噪声。<br>如何得到这些包含最大差异性的主成分方向呢？通过计算数据矩阵的协方差矩阵，然后得到协方差矩阵的特征值特征向量，选择特征值最大（即方差最大）的k个特征所对应的特征向量组成的矩阵。这样就可以将数据矩阵转换到新的空间中，实现数据特征的降维。得到协方差矩阵的特征值向量有两种方法：特征值分解协方差矩阵、奇异值分解协方差矩阵。<br>2、SVD原理，应用<br><a href="https://blog.csdn.net/weixin_31866177/article/details/88079612?depth_1-utm_source=distribute.pc_relevant.none-task&amp;utm_source=distribute.pc_relevant.none-task" target="_blank" rel="noopener">SVD推导过程</a><br>3、SVM<br>SVM是一种二分类模型，它的基本模型是定义在特征空间上的间隔最大的线性分类器，间隔大使它有别于普通的感知机，通过核技巧隐式的在输入空间直接求解映射空间中特征向量的内积，使其成为一个非线性分类器。SVM的学习策略是间隔最大化，可形式化为一个求解凸二次规划问题。<br>（重点）<a href="https://blog.csdn.net/cppjava_/article/details/68060439" target="_blank" rel="noopener">SVM算法推导过程</a><br>4、BN 优缺点 IN<br>BN的基本思想相当直观：因为深层神经网络在做非线性变换前的激活输入值随着网络深度加深或者在训练过程中，其分布逐渐发生偏移或变动，之所以训练收敛慢，一般是整体分布逐渐往非线性函数的取值区域的上下限两端靠近，所以这导致反向传播时低层神经网络的梯度消失，这是训练深层神经网络收敛越来越慢的本质原因。而BN就是通过一定的规范化手段，把层神经网络任意神经元这个输入值的分布强行拉回到均值为0方差为1的标准正态分布，其实就是把越来越偏的分布强制拉回到标准的分布，这样使得激活输入值落在非线性函数对输入比较敏感的区域，这样输入的小变化就是导致损失函数较大的变化。<br>BatchNorm的优点：1）极大提升了训练速度，使得收敛过程大大加快；2）还能增加分类效果，一种解释是这类似于Dropout的一种防止过拟合的正则化表达方式，所以不用Dropout也能达到相当的效果；3）调参过程也简单了，对于初始化要求没那么高，可以使用大的学习率。4）可以代替LRN<br>缺点：需要计算均值与方差，不适合动态网络或者RNN。计算均值方差依赖每批次，因此数据最好足够打乱。<br>IN的计算就是把每张图片的HW维度单独拿出来归一化处理，不受通道和batchsize 的影响<br>5、cross entropy和mse区别，求导<br>交叉熵是用来评估当前训练得到的概率分布于真实分布的差异情况，减少交叉熵损失就是在提高模型的预测准确率。交叉熵通常用作分类问题的代价函数。<br>均方误差是指参数估计值与真实值之差的平方的期望值，MSE可以评价数据的变化程度，MSE的值越小，说明预测模型描述实验数据具有更好的精度。通常用来做回归问题的代价函数。<br>6、sigmoid, softmax用途，区别<br>Sigmoid函数或Softmax函数可以将分类器的原始输出值映射为概率。Sigmoid函数会分别处理各个原始输出值，因此其结果相互独立，概率总和不一定为1。相反，Softmax函数的输出值相互关联，其概率的总和始终为1。<br>Sigmoid = 多标签分类问题 = 多个正确答案 = 非独占输出<br>Softmax = 多类别分类问题 = 只有一个正确答案 = 互斥输出<br>如果模型输出为非互斥类别，且可以同时选择多个类别，则采用Sigmoid函数计算该网络的原始输出值。<br>如果模型输出为互斥类别，且只能选择一个类别，则采用Softmax函数计算该网络的原始输出值。<br>7、单链表快排思想<br>8、概率题，a服从均匀分布(0,1)，b服从均匀分布(0,1),求max(a,b)的期望，拓展为n个独立变量，求max期望</p>
+<h2 id="二面"><a href="#二面" class="headerlink" title="二面:"></a>二面:</h2><p>1、cross entropy和mse能否互相替换？<br>不能。参见问题（为什么分类问题用 cross entropy，而回归问题用 MSE?）<br>2、多标签分类是否了解, 多标签分类激活函数?<br><a href="https://blog.csdn.net/rocling/article/details/89165463" target="_blank" rel="noopener">解答</a><br>3、单链表快排实现</p>
+<h1 id="2019-海康威视"><a href="#2019-海康威视" class="headerlink" title="2019 海康威视"></a>2019 海康威视</h1><h2 id="一面-1"><a href="#一面-1" class="headerlink" title="一面"></a>一面</h2><p>1、faster-rcnn的整个从输入到输出的框架流程？<br>参见深度学习基础知识.faster rcnn<br>2、说一下rpn的原理<br>参见深度学习基础知识.faster rcnn<br>3、针对小目标的解决措施<br>（待解决）<br>4、如何解决样本不均衡的问题<br><a href="https://zhuanlan.zhihu.com/p/60612064" target="_blank" rel="noopener">参考答案</a><br>5、focal loss原理<br><a href="https://blog.csdn.net/hejin_some/article/details/100600663" target="_blank" rel="noopener">参考解答</a></p>
+<h1 id="2019-旷视"><a href="#2019-旷视" class="headerlink" title="2019 旷视"></a>2019 旷视</h1><h2 id="一面-2"><a href="#一面-2" class="headerlink" title="一面"></a>一面</h2><p>1、讲一下SENet的模块，为什么有性能提升，有什么好处<br>2、讲一下Focal loss 的2个参数有什么作用<br>3、讲一下FPN为什么能提升小目标的准确率<br>4、对One-stage的模型有没有了解<br>5、说一说One-stage和Two-stage两者有什么特点<br>6、说一说SSD具体是怎么操作的<br>7、算法题：leetcode.754。一个人从原点出发，可以往左走可以往右走，每次走的步数递增1，问能不能到达一个位置x？如果能，给出走的步数最少的方案？</p>
+<h1 id="蚂蚁金服"><a href="#蚂蚁金服" class="headerlink" title="蚂蚁金服"></a>蚂蚁金服</h1><h2 id="二面-1"><a href="#二面-1" class="headerlink" title="二面"></a>二面</h2><p>1、分类和定位的不一致具体是什么<br>分类是给定一张图片或一段视频判断里面是否包含某种类别的目标<br>定位是标注出图片中这个目标的位置<br>检测是标注出这个目标的位置并知道目标的类别是什么<br>分割是解决每一个像素属于哪个目标物体或场景。<br>2、Faster-RCNN比起RCNN有什么改进的地方<br>3、Faster-RCNN如何进行一次计算<br>4、RoI Pooling如何操作<br>根据输入的图片，将ROI映射到feature map对应的位置，映射的规则就是把各个坐标除以输入图片与feature map的大小比值，得到feature map上的box坐标。然后将映射的区域划分为相同大小的sections，对每个sections进行max pooling的操作。<br>5、如果有很长，很小，或者很宽的目标，应该如何处理<br>采用FPN网络的多尺度预测方式，将高层特征和低层特征进行融合，增强特征的表达能力。<br>6、FPN具体是怎么操作的<br>将高层的特征进行两倍上采样和前一层的特征进行逐元素求和，然后将融合的特征输入3x3卷积（消除上采样的混叠效应）得到最后的特征。<br>7、FPN的特征融合具体是怎么做的<br>element-wise逐元素求和<br>8、FPN的特征融合为什么是相加操作呢<br>add操作可以看做是加入一种先验知识，通过add操作，网络会得到新的特征，这个心特征会反映原始特征的一些特性，但是原始特征的一些信息也会在这个过程中损失。但是concate就是讲原始的特征直接拼接，让网络学习如何融合特征，这个过程中信息不会损失，但是concate会带来的计算量较大，在明确原始特征的关系可以使用add操作，可以节省计算资源。<br>9、Soft-NMS是如何操作的<br>10、Softmax是什么，公式是什么样的<br><a href="https://blog.csdn.net/weixin_37142859/article/details/95534590" target="_blank" rel="noopener">参考答案</a><br>11、Softmax的梯度是什么<br>12、BN原理<br>13、Pytorch的卷积是如何实现的<br><a href="https://blog.csdn.net/qq_37541097/article/details/102926037" target="_blank" rel="noopener">解答</a><br>14、还知道哪些传统计算机视觉的算法<br>(待解决)<br>15、SIFT原理，SIFT如何保持尺度不变性的<br>(待解决)</p>
+<h2 id="三面"><a href="#三面" class="headerlink" title="三面"></a>三面</h2><p>1、说一个比较熟悉的网络<br>（项目中需准备）<br>2、对移动端的网络有没有什么了解<br>（待解决）<br>3、Focal loss怎么操作的<br>4、IoUNet怎么操作的<br>（待解决）<br>5、Soft-NMS怎么操作的<br>6、FPN的相加操作有没有尝试其他操作<br>7、对SSD和YOLO有没有什么了解？对SSD做过什么实验<br>8、对attention有什么了解<br>9、对跟踪有没有什么了解</p>
+<h2 id="四面"><a href="#四面" class="headerlink" title="四面"></a>四面</h2><p>1、说一下focal loss的原理<br>2、介绍一下目标检测有哪些方向，最近的一些新的进展<br>3、说一下Soft-NMS的原理<br>4、说一下视觉的attention<br>5、平常是如何学习的<br>6、python多线程有了解吗<br>（待解决）<br>7、引用和指针的区别<br>（待解决）整理python相关问题<br>8、有什么想问的</p>
+<h2 id="五面"><a href="#五面" class="headerlink" title="五面"></a>五面</h2><p>1、说比赛<br>2、比赛的数据集数量是怎么分布的<br>3、小目标占比如何<br>4、为什么说SENet泛化性好<br>5、SENet为什么效果好<br>6、FPN是怎么提升小目标检出率的<br>7、项目是一个什么问题呢<br>8、大目标如果有2个候选框和gt重合应该怎么处理<br>9、BN是解决什么问题的<br>10、BN为什么有效<br>11、什么时候开始接触这个方向的<br>12、学过哪些课程<br>13、学过机器学习吗</p>
+<h1 id="商汤"><a href="#商汤" class="headerlink" title="商汤"></a>商汤</h1><h2 id="一面-3"><a href="#一面-3" class="headerlink" title="一面"></a>一面</h2><p>1、InceptionV1为什么能提升性能<br>2、RPN哪里也可以提升小目标检出率<br>3、为什么说resnet101不适用于目标检测<br>4、小目标在FPN的什么位置检测<br>5、sigmoid和softmax的区别<br>6、detnet原理<br>7、一道算法题：输入一个文件，等概率输出某一行，只能顺序遍历<br>8、手写nms<br>(参考答案)[<a href="https://zhuanlan.zhihu.com/p/64423753" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/64423753</a>]</p>
+<h2 id="二面-2"><a href="#二面-2" class="headerlink" title="二面"></a>二面</h2><p>1、项目：最大的创新点是什么<br>2、SENet原理<br>3、Focal Loss 原理<br>4、Faster RCNN原理<br>5、用的roi pooling 还是roi align<br>6、IoUNet的原理<br>7、有了解过单阶段的检测器<br>8、说一下SSD的原理<br>9、还知道哪些轻量级的检测器<br>10、知道大网络用来学习小网络的方法吗<br>11、对分割有没有了解<br>12、用的什么机器(GPU)<br>13、比赛排名多少<br>14、用的什么模型</p>
+<h2 id="三面-1"><a href="#三面-1" class="headerlink" title="三面"></a>三面</h2><p>1、什么时候开始接触CV课程<br>2、有没有上过CV的相关课程<br>3、SENet原理<br>4、SENet接在ResNet还有Inception的什么位置呢<br>5、IOUNet能有多少提升<br>6、NMS和soft-NMS原理<br>7、比赛遇到了什么不work的地方<br>8、假如一个图片中有一个很大的目标还有一个很小的目标，你会怎么处理呢<br>9、多尺度训练如何设置<br>10、为什么设置长边为固定的1600呢<br>11、介绍一下SSD和Faster-RCNN，说一下异同点<br>12、Faster-RCNN的回归目标是如何定义的<br>13、Faster-RCNN用的什么loss<br>14、smooth L1 loss为什么更有效<br>15、SGD、Adam之类优化的原理<br>16、BN、IN、LN、GN原理，BN为什么有效<br>17、Python有哪些常用的库报一遍<br>18、说一下使用Pytorch对cifar10数据集分类的整个代码流程，构建模型的过程是怎么样的<br>19、会C++吗<br>20、github的常用操作：上传、合并、分支之类的<br>（待整理）<br>21、linux的常用操作：查看文件大小、删除文件、查看文件行数、假如文件中有很多文件，每个文件中又有很多文件，如何删除全部文件<br>（待整理）<br>22、SiamRPN原理<br>23、轻量级模型<br>（待解决）</p>
+<h1 id="精锐视觉上海研究院"><a href="#精锐视觉上海研究院" class="headerlink" title="精锐视觉上海研究院"></a>精锐视觉上海研究院</h1><h2 id="二面-3"><a href="#二面-3" class="headerlink" title="二面"></a>二面</h2><p>算法题：1、给定一个乱序的数组，给定一个整数target，要求找出数组中所有和为该target的两个数。2、给定一张100元纸币，兑换为20，5，1元的纸币，要求将100元纸币正好兑换为上述面额的纸币，且每种面额不少于一张，写代码实现总共有多少种兑换方法。<br>2、生成式模型和判别式模型<br>（待解决）<br>3、解释最大似然估计和最大后验概率以及区别<br>4、神经网络中激活层的作用<br>5、faster rcnn中为什么要用3x3的巻积核代替5x5和7x7的巻积核。<br>6、防止过拟合的方式有哪些，请写出不少于五种。<br>7、请用深度学习的方法设计一套手写签名的识别方案。（不会）<br>8、请自主设计一套人脸识别方案，详述数据集、backbone、训练策略、模型测试等。<br>9、opencv的cascade级联分类器的工作原理以及具体的实现方式，训练级联分类器的注意事项。<br>（待解决）<br>10、HOG，LBP，Haar特征<br>（待解决）<br>11、简单介绍一下deep_sort算法</p>
+<h2 id="三面-2"><a href="#三面-2" class="headerlink" title="三面"></a>三面</h2><p>1、问了一个深度学习的项目，项目简介，自己负责的部分，技术原理细节，创新点，难点。后续改进方案。<br>2、详细介绍一下deepsort算法，以及和传统跟踪方法的区别。<br>3、faster rcnn原理<br>4、详细解释deep_sort算法，与online track的方法有什么区别，目标跟踪丢失怎么办</p>
+<h1 id="聚时科技"><a href="#聚时科技" class="headerlink" title="聚时科技"></a>聚时科技</h1><h2 id="一面-4"><a href="#一面-4" class="headerlink" title="一面"></a>一面</h2><p>1、图像处理，中值滤波和平滑滤波的区别<br>2、说几个机器学习常用的算法，SVM的目标函数是什么，是如何实现分类的，KNN的原理以及分类流程<br>3、常见的目标分类的基础网络有哪些，mobilenet和shufflenet是如何实现卷积加速的。</p>
+<h2 id="二面-4"><a href="#二面-4" class="headerlink" title="二面"></a>二面</h2><p>1、给了一个7x7的灰度图像和一个2x2的卷积核，分别写出腐蚀和膨胀运算后的图像。<br>2、手写代码实现二维卷积过程，不得调用TF、Keras等深度学习库。<br>3、手写代码实现一个8邻接连通域算法，不得调用opencv等图像处理库。<br>4、写出三个常用的机器学习算法，并介绍其原理和使用场景。<br>5、请写出如些解决样本不平衡问题。</p>
+<h1 id="腾讯"><a href="#腾讯" class="headerlink" title="腾讯"></a>腾讯</h1><p>1、YOLO V2 V3你对哪个熟悉，讲一下细节实现<br>2、多尺度问题<br>3、anchor基础知识<br>4、人脸识别现在常用算法<br>5、语义分割到实例分割怎么做<br>6、GAN是否了解，如何通俗的讲其原理<br>7、PCA原理LDA原理<br>8、SVM+HOG<br>9、XGBoost<br>10、CNN、RCNN、FRCNN，有可能问你其中一个细节的关键<br>11、TensorFlow这些框架你谈一下看法以及对其他框架的了解<br>12、现在机器学习、深度学习这么火，你有什么看法<br>13、机器学习、深度学习你对他们的理解是什么<br>14、Relu比Sigmoid使用多的原因<br>15、Loss不升反降的原因，如何解决<br>16、SSD细节<br>17、Linux 权限的意义<br>18、块操作的操作的步骤以及快捷方式</p>
+<h1 id="搜狗"><a href="#搜狗" class="headerlink" title="搜狗"></a>搜狗</h1><h2 id="一面-5"><a href="#一面-5" class="headerlink" title="一面"></a>一面</h2><p>1、RCNN系列的算法流程和区别；<br>2、Fast RCNN中 bbox 回归的损失函数什么；<br>3、解释 ROI Pooling 和 ROI Align；<br>4、Mask RCNN中 mask branch 如何接入 Faster RCNN中；<br>5、解释 FPN （没细看，面完补的）；<br>6、优化算法举例和他们的区别（SGD、SGDM、RMSprop、Adam）；<br>7、训练不收敛的原因有哪些；<br>8、简述 Inception v1-v4；<br>9、简述 CNN 的演变；<br>10、BN 的作用和缺陷，以及针对batch_size小的情况的改进（GN）</p>
+<h1 id="旷世CV岗"><a href="#旷世CV岗" class="headerlink" title="旷世CV岗"></a>旷世CV岗</h1><p>1.自我介绍，项目介绍<br>2.FCN结构介绍，上采样的具体操作<br>3.空洞卷积原理，deeplab v1 v2的改进<br>4.focal loss介绍, lovasz loss数学原理<br>5.一道题，计算卷积操作的浮点计算量，比较简单<br>6.介绍下RPN的原理<br>7.mobile net<br>8.unet的缺点</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/02/21/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -930,7 +1100,7 @@ M(m,n) \ if\ M(m,n)>T \\
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

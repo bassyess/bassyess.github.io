@@ -141,6 +141,162 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/08/23/%E8%85%BE%E8%AE%AF%E5%AE%9E%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kay">
+      <meta itemprop="description" content="千里之行，始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/23/%E8%85%BE%E8%AE%AF%E5%AE%9E%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">腾讯实习项目总结</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-23 15:00:10 / 修改时间：21:04:09" itemprop="dateCreated datePublished" datetime="2020-08-23T15:00:10+08:00">2020-08-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="腾讯实习工作总结"><a href="#腾讯实习工作总结" class="headerlink" title="腾讯实习工作总结"></a>腾讯实习工作总结</h1><p>AI 在视频生产流程里的应用。首先是是智能拆条，视频进来之后，把片头、片尾和广告去掉，其次是标注，就像把所有的商品打上标签一样，根据这个标签进行推荐和搜索。然后是审核，过滤盗版、情色等内容。最后是播放处理，比如自动生成封面和动态海报图，帮助对剪辑不熟悉的自媒体用户选取魅力封面图，也提高了海量视频的分发效率。<br>视频标注为视频打上时间 - 语义标签，是 AI 视频理解的关键。标签有不同类别、层次和粒度，例如识别不同人物、行为、场景、物品等等，还可以用于对内容和用户的精细化分析，例如年龄、表情、服装款式，手机品牌等，更好地进行搜索推荐，实现精准的内容分发。<br>AI 应用在文字识别，可以对字幕进行文字识别和语义理解，对审核图片、视频中的不合规文字信息进行识别和反垃圾过滤。</p>
+<h2 id="视频分类"><a href="#视频分类" class="headerlink" title="视频分类"></a>视频分类</h2><p>广电场景下的海量短视频剧名分类：在算法流程中，我们首先把视频的图片进行解码，凑齐N帧，保证每个视频都有相同的采样帧，然后采用resnet网络提取视觉特征，采用NetVlad提取融合时间特征，最后融合多张图片得到视频的分类结果。<br>我们在总共有957万个短视频，只取出现频次在50-3000类别的短视频总共有552万，剧名类别有8740种，对其进行训练，分类的top1的准确率只到0.18。因此，我们考虑从关键帧和多级分类器方面提高算法的准召率。<br>抽取关键帧的思路也很简单：我们知将两帧图像进行差分，得到图像的平均像素强度可以用来衡量两帧图像的变化大小。因此，基于帧间差分的平均强度，每当视频中的某一帧与前一阵画面内容产生大的变化，我们便认为它是关键帧，并将其提取出来。<br>我们可以使用如下三种方法中的一种来提取关键帧，这都是基于帧间差分的：<br>（1）使用差分强度顺序：我们对所有帧按照平均帧间差分强度进行排序，选择平均帧间差分强度最大的若干张图片作为视频的关键帧。<br>（2）使用差分强度阈值：我们悬着平均帧间差分强度高于预设阈值的帧作为视频的关键帧。<br>（3）使用局部最大值：我们选择具有平均帧间差分强度局部最大值作为视频的关键帧。这种方法的提取结果在丰富度上表现更好，提取结果均匀分散在视频中。<br>在抽帧方面，每个视频里的关键帧数目不同，如果一个视频只有四帧，我们如何取八帧呢？有两个方法，第一个办法是再补尾帧，后面重复实现。还有一个办法是均匀插帧，经评测，均匀补帧比插尾帧效果好很多，因为插尾帧的时候，相当于把最后第四帧插了很多帧无效的信息。如果第四帧是黑帧，或者是无意义的帧，它会带来负面的影响。<br>除了在每个短视频中提取关键帧获取视频更具判别性的视觉特征外，在全类目的视频分类效果差的原因在于，每个视频的内容、风格差异非常大，从历史题材到都市生活、从科幻大片到动漫题材，模型很难去拟合出有效的高层语义信息对剧名进行分类。因此，我们考虑训练多级分类器，为每个题材的内容训练对应的分类模型，能有效提高模型的分类效果。我们首先利用每个视频的一级标签（电影、电视剧、动漫、综艺、体育、军事、纪录片、游戏）等8个一级类目训练一级分类器，然后对每个类目下的视频分别训练各自的剧名分类器模型。即网络会先判断该短视频是属于电影、电视剧类别，然后判断该短视频的剧名。在实验数据集中，一级分类器的准召率为0.82/0.71，但在看点、企鹅号和ugc数据中，模型分类的准召率分别为0.6/0.46，0.57/0.51以及0.47/0.5。而二级的剧名分类像电影、电视剧的准召率为0.86/0.79、0.75/0.54，而像军事、体育的准召率可达0.96/0.94。对实验结果进行分析，我们可以看到，每个像一些内容单一、题材近似的视频类别，如军事、体育等单独训练的分类模型具有较高的准确性，因此通过多级分类器对视频剧名进行分类方案是可行的。但是我们认为简单的将剧名分为8个一级标签，一级分类器的准召率一般，且模型的泛化性不行。我们认为是由于像电影、电视剧这种标签类别过于宽泛，视频题材丰富，模型很难去拟合有效的特征。<br>因此，我们最终考虑采用视频多标签技术，对每个视频提取语义标签，然后通过聚类和人工筛选，提取了近20个的二级标签（都市生活、娱乐综艺、历史文化、科幻战争等），然后通过这些类别标签训练多级分类器，在全类目的剧名分类模型中，算法的最终准召率为0.58/0.52，分类效果得到有效的提升。</p>
+<h2 id="视频多标签"><a href="#视频多标签" class="headerlink" title="视频多标签"></a>视频多标签</h2><p>视频多标签是为视频标注出语义标签，是视频理解的关键，但在视频多标签领域仍存在很多问题和难点。我们先看一下视频多标签实验的数据集分布，在总共2000万个短视频中，标签出现频次大于100的标签类别有18916种。在这里我列举了部分标签及其出现的频次，我们可以看到标签的分布及其不均衡，像内地综艺出现的频次高达2194775次，而像“芒果讲”、“行车视线”出现的频次只有100次。还有一些标签，如“创业”、“聊天”、“恶搞”标签定义的过于抽象，模型很难学习这类标签的特征。当然，标签中还存在一些标签语义非常近似，如“内地综艺”和“综艺片段”，“宝宝秀”和“天真萌娃”，这类标签问题和数据标注有很大关系，我们暂且不考虑。为了更直观的看到标签的分布情况，我统计了标签出现的频次发现，在标签出现频次大于5000的类别，只占所有类别总数的10%，但这部分标签出现频次之和占所有标签出现频次之和的84%。在标签频次小于500的标签类别占所有标签类别的56%，但由于每个标签出现的频次较少，该部分标签频次之和只占所有标签频次和的3%。标签的类别严重不均衡，使得模型在训练的过程中更容易去拟合频次出现过的标签的特征，而很难去学习绝大部分的出现频次较少的标签特征。面对这个问题，我们决定重构模型的loss函数，使得标签能够去学习那些少量样本的特征。我们认为，模型无法有效地学习标签之间的特征，主要在于标签的正负样本的之间差距过大，以及每个标签之间的相对的差距过大导致的。因此，我们要调整每个标签的正负样本之间的权重，调整每个标签之间相对的权重，通过均衡每个样本在参数更新过程中的贡献来训练更好的模型。我们设负样本数为$N_2$，正样本数为$P_2$，负样本权重为$W_2^n$，正样本权重为$W_2^p$，标签整体的样本权重为$W_2$，其中$W_2^p=1$，则</p>
+<script type="math/tex; mode=display">W_2^N = 
+\begin{cases}
+1, if \frac{N_2}{P_2}<10 \\
+10\frac{P_2}{N_2},if \frac{N_2}{P_2}\ge10 
+\end{cases}</script><script type="math/tex; mode=display">W_2=
+\begin{cases}
+1, if \frac{N_2W_2^n+P_2}{N_1W_1^n+P_1}<10 \\
+\frac{N_1W_1^n+P_1}{N_2W_2^n+P_2}, if \frac{N_2W_2^n+P_2}{N_1W_1^n+P_1}\ge10
+\end{cases}</script><p>对于正负样本间的权重，我们认为负样本数超过正样本数一定阈值，我们就将其倒数乘上相应阈值作为正负样本的权重；对于每个样本间的权重，为了简化计算，我们选择和最小频次的样本进行比较，当然为了防止最小频次的标签的样本数过小，拉低了标签的整体贡献，我们设置最小频次的标签样本数为1000。每个标签的调整的负样本数和正样本数之和就是该标签对在loss计算中的贡献，将其和最小的频次标签的贡献进行对比，就可以得到标签的整体分布权重$W_2$，则损失函数：</p>
+<script type="math/tex; mode=display">loss=-W_2[W_2^P\cdot y\cdot log\sigma(x)+W_2^n\cdot (1-y)\cdot log(1-\sigma(x))]</script><p>我们绘制了每个标签调整后的频次占比，发现大于5000的频次占比为42%，小于500的标签占比为28%，标签分布得到有效的均衡。<br>基于梯度均衡的损失函数，是2019年AAAI的论文提出的思想，作者认为影响单阶段检测器训练的本质问题，其根本原因是由于不同难度的样本的分布不均衡导致。我们随机统计了一批不同标签的训练样本中的梯度模长，发现大部分样本是十分容易预测的，这些可被准确预测的样本所占的比重也很大，而梯度g接近于1的样本的比例也相对较大，我们认为这是一些离群样本，可能是由于数据标注本身不准确或样本比较特殊难学习造成。对于一个已收敛的模型，强行学习这些离群样本可能会导致模型参数的较大偏差，反而影响模型的准确率。我们利用论文中提出的梯度均衡的概念，即根据样本模长分布的比例对不同样本产生的梯度进行加权，使得各类型的样本对模型参数有更均衡的贡献，而这种加权在损失函数上也可以达到同样的效果。在重构的loss函数中，我们将梯度模长的取值范围划分为若干区域，统计梯度模长g落在每个区域内的样本数量，而密度就是其所在的单位区域内的样本数量除以该单位区域的长度，而梯度密度的倒数就是样本计算loss要乘的权重。不过在多分类任务中，类别标签的onehot编码中，只有属于该类别的位置值为1，其余的均为0。因此在每个batch中计算梯度密度是只需要统计label为1的那个类别的梯度。而在多标签分类中，onehot编码的每个位置都是一个类别的二分类，label为0或1对loss均有影响，因此我们需要分别取统计每个类别的梯度分布，计算每个类别的权重去调整loss函数中每个标签的贡献。<br>原始的视频多标签的mAP指标为，添加权重分布的loss函数策略后，mAP指标为；添家梯度均衡策略的mAP指标为，最终的mAP指标为。</p>
+<h3 id="mAP的计算"><a href="#mAP的计算" class="headerlink" title="mAP的计算"></a>mAP的计算</h3><p>voc2010的AP计算方法是：假设N个样本中有M个正例，那么我们会得到M个recall值（1/M,2/M,…,M/M），对于每个recall值r，我们可以计算出对应（r’&gt;r）的最大precision，然后对这M个precision值取平均即得到最后的AP值。<br>把recall当场横坐标，precision当场纵坐标，即可得到常用的precision-recall曲线，曲线下的面积也是AP值。<br>AP衡量的是学出来的模型在每个类别上的好坏，mAP衡量的是学出的模型在所有类别上的好坏，得到AP后，取所有AP的平均值就是mAP。</p>
+<h2 id="片段层标题提取"><a href="#片段层标题提取" class="headerlink" title="片段层标题提取"></a>片段层标题提取</h2><h3 id="OCR检测器"><a href="#OCR检测器" class="headerlink" title="OCR检测器"></a>OCR检测器</h3><p>PSENet是一种基于语义分割的方法检测任意方向的文本，采用渐进式尺度扩展的方法区分邻近的文本块。<br><img src="https://pic4.zhimg.com/80/v2-59313cb1f5422cc242199fd80b6cfb82_720w.jpg" alt="网络模型"><br>网络结构类似于FPN的形式，先采用CNN提取四层不同level的feature map，分别是$P_2,P_3,P_4,P_5$，解决文本块尺度变换剧烈的问题，early-stage可用于预测小的文本块，late-stage可用于预测大的文本块，然后通过2倍上采样进行concate来融合特征，得到最后的特征图F。特征图F送入$3\times 3$大小的卷积中输出通道数为256的特征图，将次特征图再送入到$1\times 1$大小卷积层输出n个最终结果，这n个结果用$S_1,S_2,…,S_n$表示，最后通过渐进的尺度扩展算法PSE进一步得到最终的文字检测结果。这里的$S_1,S_2,…,S_n$, $S_i$是图像分割的文字检测框结果，不同之处在于每个结果对应的文字区域大小不一样。如$S_1$对应最小文字分割的结果，$S_n$是最大的文字分割的结果。<br><img src="https://pic2.zhimg.com/80/v2-24655da704f2a162be8da640f519e634_720w.jpg" alt="渐进式尺度扩展算法"><br>渐进尺度扩展算法（PSE）:首先看$S_1$，图中有四个不同的分割区域（$C_1,C_2,C_3,C_4$），通过CC（CC是一个寻找连接区域的函数，就是给不同的pixel设置不同的label）将不同分割区域合并得到图b（四个连通域使用不同颜色标记，不同文本行之间的margin很大，很容易区分开），然后合并$S_2$中像素，将属于$S_2$在的kernel但不属于$S_1$中的kernel的像素点分配，将b图所找到的连通域的每个pixel以BFS的方式，逐个上下左右扩展，即相当于把$S_1$中预测的文本行的区域逐渐边框（简单来说，就是讲$S_2$中的每个像素点都分别分配给$S_1$中的某个连通域）。重复上述过程，知道发现最大的核作为预测结果。</p>
+<h3 id="OCR识别器"><a href="#OCR识别器" class="headerlink" title="OCR识别器"></a>OCR识别器</h3><p>现今基于深度学习的端到端OCR技术有两个主流技术：CRNN OCR和attention OCR。其实这两个方法主要区别在于最后的输出层，即怎么将网络学习到的序列特征信息转化为最终的识别结果。这两大主流技术在其特征学习阶段都采用CNN+RNN的网络结构，CRNN OCR在对齐时采取的方式是CTC算法，，而attention OCR采取的方式则是attention。<br><img src="https://img2018.cnblogs.com/blog/1093303/201901/1093303-20190129201832538-1001193226.png" alt="网络模型"><br>网络结构包含三部分，从上到下依次为：<br>（1）卷积层，使用CNN，作用是从输入图像中提取特征序列；<br>（2）循环层，使用RNN，作用是预测从卷积层获取的特征序列的标签分布；<br>（3）转录层，使用CTC，作用是从循环层获取的标签分布通过去重整合等操作转换成最终的识别结果。<br>端到端OCR的难点在哪儿呢？在于怎么处理不定长序列对齐问题！CRNN算法输入100*32归一化高度的词条图像，基于7层CNN（普遍使用VGG16）提取特征图，把特征图按列切分（Map-to-Sequence），每一列的512维特征，输入到两层各256单元的双向LSTM进行分类。在训练过程中，通过CTC损失函数的指导，实现字符位置与类标的近似软对齐。LSTM有256个隐藏节点，经过LSTM后变为长度为T × nclass的向量，再经过softmax处理，列向量每个元素代表对应的字符预测概率，最后再将这个T的预测结果去冗余合并成一个完整识别结果即可。<br>CRNN算法最大的贡献，是把CNN做图像特征工程的潜力与LSTM做序列化识别的潜力，进行结合。它既提取了鲁棒特征，又通过序列识别避免了传统算法中难度极高的单字符切分与单字符识别，同时序列化识别也嵌入时序依赖（隐含利用语料）。<br>我们现在要将 RNN 输出的序列翻译成最终的识别结果，RNN进行时序分类时，不可避免地会出现很多冗余信息，比如一个字母被连续识别两次，这就需要一套去冗余机制。<br><img src="https://pic1.zhimg.com/80/v2-3f14dcfe7b671a77856d11da8013aad4_720w.jpg" alt=""><br>比如我们要识别上面这个文本，其中 RNN 中有 5 个时间步，理想情况下 t0, t1, t2 时刻都应映射为“a”，t3, t4 时刻都应映射为“b”，然后将这些字符序列连接起来得到“aaabb”，我们再将连续重复的字符合并成一个，那么最终结果为“ab”。<br>这似乎是个比较好的方法，但是存在一个问题，如果是book，hello之类的词，合并连续字符后就会得到 bok 和 helo，这显然不行，所以 CTC 有一个blank机制来解决这个问题。<br>我们以“-”符号代表blank，RNN 输出序列时，在文本标签中的重复的字符之间插入一个“-”，比如输出序列为“bbooo-ookk”，则最后将被映射为“book”，即有blank字符隔开的话，连续相同字符就不进行合并。即对字符序列先删除连续重复字符，然后从路径中删除所有“-”字符，这个称为解码过程，而编码则是由神经网络来实现。引入blank机制，我们就可以很好地解决重复字符的问题。</p>
+<h3 id="标题提取"><a href="#标题提取" class="headerlink" title="标题提取"></a>标题提取</h3><p>对于一段新闻视频，由于每个标题出现的位置固定，因此我们1.0版本的算法中采用规则筛选来提取标题。我们首先采用OCR检测器去获取每一帧图片中文本的位置，通过一些位置规则去除一些文本框；然后利用OCR识别器获取剩下的文本框中的文本信息。在1.0版本的算法中，我们会在前5帧中去搜索视频的四个角的文本信息，通过正则匹配查找电视的台标。然后根据台标在配置文件中找到每个电视的配置信息。基于规则的文本筛选主要有，（1）标题出现在视频帧的区域位置，如在横轴方向的0.1-0.9区间，在纵轴方向的0.67-0.9区间；（2）在可能的区间中先搜索文本框最大的文本作为可能的标题，然后通过该文本块搜索临近的文本块，拼接成段落。我们还会通过一些内容匹配，如“新闻联播”、“记者”、“编辑”等文字的正则匹配过滤无效的文本。在配置文件中，我们对每个电视台的阈值进行调整，通过这些规则过滤后剩下的文本内容就是新闻标题。提测反馈结果，基于规则筛选的标题提取对于符合规则的视频可能有很好的识别效果，如“央视新闻”，但在卫视新闻中，对于配置文件中没有的电视台，默认的配置需求可能满足，导致无法识别正确的标题。同时，由于该版本算法没有对文本的内容进行过滤，经常讲记者姓名、插播广告等识别为标题。面对这种情况，我们在2.0版本的算法中提出基于内容过滤的新闻标题提取算法。虽然基于规则的算法在某些电视台能很好的识别出标题，但是这些规则也严格限制了算法性能。我们考虑能否利用少量的规则甚至不利用规则就能很好的识别出新闻标题，因此，我们利用NLP中的bert模型+FC层进行finetune，训练文本二分类模型，并通过sigmoid函数的阈值划分，过滤那些非标题的文本。我们将每个OCR识别文本送入到二分类模型进行过滤，这样的做法的有点在于可以过滤掉很大部分的受访者信息和记者姓名等文本，而且算法没有严格的规则限制，鲁棒性好。当然，文本分类器也可能会将一部分正确的标题文本过滤，甚至对于段落文本，由于逐行的过滤可能导致标题不完整或没有标题。因此我们考虑结合部分宽松条件的规则和文本分类器进行更好的标题提取。先阶段的算法的在自己的100段测试视频中的准召率为0.95和0.91，相对于1.0版本的算法有很大的提升。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/08/22/%E5%BF%AB%E6%89%8B%E5%AE%9E%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%95%B4%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kay">
+      <meta itemprop="description" content="千里之行，始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/22/%E5%BF%AB%E6%89%8B%E5%AE%9E%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%95%B4%E7%90%86/" class="post-title-link" itemprop="url">快手实习项目整理</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-08-22 15:13:04 / 修改时间：23:12:53" itemprop="dateCreated datePublished" datetime="2020-08-22T15:13:04+08:00">2020-08-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="快手实习项目整理"><a href="#快手实习项目整理" class="headerlink" title="快手实习项目整理"></a>快手实习项目整理</h1><h2 id="论文阅读"><a href="#论文阅读" class="headerlink" title="论文阅读"></a>论文阅读</h2><p>首先，是图像修复领域的调研和复现，主要是《Image Inpainting with Learnable Bidirectional Attention Maps》、《EdgeConnect: Structure Guided Image Inpainting using Edge Prediction》以及《Free-Form Image Inpainting with Gated Convolution》。<br>《Free-Form Image Inpainting with Gated Convolution》</p>
+<h2 id="图像修复"><a href="#图像修复" class="headerlink" title="图像修复"></a>图像修复</h2><p>1、使用低阶图像特征的块（patch）匹配：生成看似合理的平稳纹理，但在处理复杂的场景，例如人脸和物体的时候，常出现严重的错误。<br>2、使用卷积神经网络推理生成模型： 从大规模数据集中学习到的语义，以端到端的方式合成非平稳图像中的内容。但是普通卷积的深度生成模型，在图像填充上存在严重的问题，因为普通卷积识所有输入的像素和特征，均为有效像素。对于图像填充来说，每一层的输入时由确实外的有效像素/特征和缺失区域（掩码区域）的无效像素组成。普通卷积使用相同的卷积核，适用于所有有效、无效和混合（例如那些空洞边界）的像素/特征，在自由形状上的掩码做测试时，导致视觉上的伪影（如颜色差异，模糊和孔周围明显的边缘响应）。</p>
+<h3 id="部分卷积"><a href="#部分卷积" class="headerlink" title="部分卷积"></a>部分卷积</h3><p>为了解决这一局限性，部分卷积（PartialConv），其中卷积被遮掩（masked）和归一化，仅以有效像素为条件。基于规则的掩码更新策略，用于更新下一层的有效位置。部分卷积将所有位置视为无效或有效，并用0或1掩码乘以所有层的输入，该掩码可以看做是一个单一的不可学习的特征门（gate）通道。<br>然而，这种假设是有几个局限性：<br>（1）考虑跨网络不同层的输入空间位置，他们可能包括：a)输入图像中有有效像素；b)输入图像中有掩蔽mask像素；c)感受野的神经元没有覆盖到输入图像的有效像素；d)感受野的神经元覆盖了不同数量的输入图像的有效像素，这些有效地图像像素也可能有不同的相对位置；e)深层合成的像素；f)启发式的将所有的位置归类为无效或有效，会忽略以上这些重要信息。<br>（2）如果我们扩展到用户知道的图像修复，用户在掩码内提供的稀疏草图（sparse sketch），这些像素位置应该被视为有效地还是无效的？如何正确地更新下一层的掩码？<br>（3）对于部分卷积，无效的像素将逐层逐渐消失，基于规则的掩码将在深层全部消失。然而，为了合成孔内的像素，这些深层可能还需要知道当前位置是在孔内还是孔外？全1掩码的部分卷积不能提供这样的信息。</p>
+<h3 id="门控卷积"><a href="#门控卷积" class="headerlink" title="门控卷积"></a>门控卷积</h3><p>因此提出了门控卷积的概念，门控卷积掩码更新过程，输入特征首先用于计算门控值$g=\theta(w_gx)$，$\theta$是激活函数，$w_g$是可学习参数。最终的输出是学习到的特征和门控值$y=\fi(wx)\bigdot g$的乘积。<br>由于普通卷积是将每一个像素都当成有效值去计算的，这个特性适用于分类和检测任务，但是不适用于inpainting任务，因为inpainting任务中hole里面的像素是无效值，因此对空洞hole里面的内容和外面的内容要加以区分，部分卷积虽然将里面和外面的内容加以区分，但是它将含有1个有效值像素的区域与含有9个有效值像素的区域同等对待，这明显不合理，gated conv则是使用卷积核sigmoid函数使得网络去学习这种区分。</p>
+<h3 id="光谱归一化马尔科夫判别器（SNPatchGAN）"><a href="#光谱归一化马尔科夫判别器（SNPatchGAN）" class="headerlink" title="光谱归一化马尔科夫判别器（SNPatchGAN）"></a>光谱归一化马尔科夫判别器（SNPatchGAN）</h3><p>之前的修复网络，为了修复带有矩形确实部分的图片，提出 local GAN 来提升实验结果；然而，我们要研究的是对任意形状缺失的形状，借鉴 global and GANs、MarkovianGANs、perpetual loss、spectral-normalized GANs，作者提出一个有效地GAN loss，即为 SN-PatchGAN。<br>SN-PatchGAN的组成，是由卷积网络构成，输入为image、mask、guidance channel，输出是一个形状为h×w×c的3维特征，h、w、c分别代表高、宽和通道数。SN-PatchGAN由6个卷积层（卷积核大小为2，步幅为2）堆叠来获得Markovian Patches特征的统计信息。然后直接将SN-PatchGAN应用到特征图的每一个特征元素，以输入图像的不同位置和不同语义（在不同的通道中表示）的形式表示GAN的$h\times w\times c$个。<br>值得注意的是，在训练的环境中，输出图中每个神经元的感受野可以覆盖整个输入图像，因此不需要全局判别器。<br>作者也采用了最近提出的Spectral normalization来进一步稳定GANs的训练。我们采用SN-GANs中描述的默认Spectral normalization的fast approximation算法。<br>为了判别输入的真假，作者也采用了hings loss来作为目标函数，未采用Perceptual loss的原因是相似的patch-level information已经被编码在SN-PatchGAN中。</p>
+<h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><p>作者定制了一个带有Gated convolution layer和SN-PatchGan loss的generative inpainting network。网络结构由粗修复和细修复两个网络构成，采用了encoder-decoder network（PartialConv采用的是类似U-net的结构）。网络为全卷积神经网络，支持不同分辨率图片的输入。训练是一个端到端的过程。</p>
+<h2 id="“蝴蝶消失”特效算法"><a href="#“蝴蝶消失”特效算法" class="headerlink" title="“蝴蝶消失”特效算法"></a>“蝴蝶消失”特效算法</h2><p>快手的“蝴蝶消失”特效算法，主要是在用户上传的图片中，在蝴蝶飞舞的特效下，图片中的人像逐渐消失，还原完整的背景图像信息。算法的实现，是通过人像分割算法，检测图片中人体的位置并去除人体图像信息，然后采用图像修复算法还原人像区域可能存在的背景内容，实现蝴蝶飞舞下人像消失的特效。在这项工作中，我主要负责的是图像修复算法的研究以及后期的模型压缩等工作。<br>对于图像修复算法，我们使用卷积神经网络推理生成模型，从大规模数据集中学习到的语义，以端到端的方式合成非平稳图像中的内容。但是普通卷积的深度生成模型，在图像填充上存在严重的问题，因为普通卷积识所有输入的像素和特征，均为有效像素。但是对于图像填充来说，每一层的输入是由图像的有效像素和缺失区域的无效像素组成。普通卷积使用相同的卷积核，在人像这种自由形状上进行修复时，会导致视觉上的伪影（如颜色差异，模糊和孔周围明显的边缘响应）。<br>因此，我们采用门控卷积用于不规则的图像修复，它会为每个通道和每个空间位置（例如内部和外部掩码，RGB通道和用户知道通道）学习动态特征门控机制，使得最终的输出是学习到的特征与门控值g的乘积，门控卷积可以学会在单独的通道中突出掩码区域的信息，提高了不规则掩码输入的图像修复质量。我们通过堆叠门控卷积形成编码器和解码器网络，并将上下文注意模块集成到网络中，来更好的捕获远距离的依赖关系。<br><img src="https://upload-images.jianshu.io/upload_images/13278405-ec200149adb2f468.png?imageMogr2/auto-orient/strip|imageView2/2/w/852/format/webp" alt="网络结构"><br>由于网络采用的是生成对抗网络，处理像素级的l1重建损失函数和GAN loss(生成器和判别器都使用hinge loss)外，我们还尝试添加其他的损失函数优化图像修复效果。 我们发现不同的损失函数对图像的修复结果有很大的影响，添加log-loss以及ls-loss生成的纹理信息相对来说比较差，但可以避免斑块状伪影的问题，而relgan-loss生成的纹理信息比较好，但会出现斑块状的纹理。添加感知损失perceptual loss，通过VGG16计算全图区域的影响能有效平滑修复区域的斑块信息，减少伪影现象，而添加风格损失style loss计算图像的风格变化，并没有带来明显的效果提升，因此模型最终选择添加感知损失来优化模型修复效果。（感知损失将真实图片卷积得到的feature与生产图片卷积得到的feature进行对比，是高层的内容和全局信息接近，也就是感知的含义）。<br>由于图像修复是基于人像分割算法得到的人像区域上进行修复的，在真实场景中，可能由于人像手持物体或者头发等导致人像分割的区域不准确，有残留的边缘区域会导致修复的结果出现斑块状的伪影现象。针对这种现象，我们在模型训练的时候添加了攻击噪声，使得模型更加的稳定和鲁棒。考虑到人像分割的不准确性多是发生于边缘区域，因此我们训练的时候对人像的mask轮廓上随机添加块状的缺口，模拟分割不准确问题。在验证集的添加30%的边界攻击数据集上进行验证，模型修复的SSIM相较于原始模型降低0.04，但相较于原始模型在攻击数据集的表降低0.1现，添加边界噪声的模型具有更加鲁棒的结果，模型最终的修复指标SSIM为0.737。</p>
+<h3 id="图像修复的评价指标"><a href="#图像修复的评价指标" class="headerlink" title="图像修复的评价指标"></a>图像修复的评价指标</h3><p>计算图像修复的质量，最直接的思路即比较修复后的图片与真实图像之间的可视误差，通过visibility of errors评价图像的质量。</p>
+<h4 id="PSNR"><a href="#PSNR" class="headerlink" title="PSNR"></a>PSNR</h4><p>PSNR(Peak Signal to nise Ratio)，峰值信噪比，即峰值信号的能量与噪声的平均能量之比，通常表示时取log变成db计算，由于MSE为真实图片与含噪图像之差的能量均值，而两者的差即为噪声，因此PSNR即峰值信号能量与MSE之比。<br>优点：算法简单，计算的速度快。<br>缺点：基于对应像素点间的误差，呈现的差异值与人的主观感受不成比例，不符合人类视觉系统（HVS）的评价结果。</p>
+<h4 id="SSIM"><a href="#SSIM" class="headerlink" title="SSIM"></a>SSIM</h4><p>SSIM(Structural Similarity)，结构相似性，也就是一种全参考的图像质量评价指标，它分别从亮度、对比度、结构三方面度量图像相似性。SSIM取值范围[0, 1]，值越大，表示图像失真越小，SSIM在图像去噪、图像相似度评价上是由于PSNR的。</p>
+<script type="math/tex; mode=display">SSIM = \frac{(2\mu_x\mu_y+c_1)(\sigma_{xy}+c_2}{(\mu_x^2+\mu_y^2+c_1)(\sigma_x^2+\sigma_y^2+c_2)}</script><p>我们每次计算都是从图片上取一个NxN的窗口，然后不断滑动窗口进行计算，最后取平均值作为全局的SSIM。<br>优点：改进了PSNR的缺点，比较符合人体视觉系统的评估。<br>缺点：结构相似性指标对于图像出现位移、缩放、旋转等非结构性的失真无法有效的运作。</p>
+<h2 id="模型压缩算法"><a href="#模型压缩算法" class="headerlink" title="模型压缩算法"></a>模型压缩算法</h2><h3 id="分组卷积"><a href="#分组卷积" class="headerlink" title="分组卷积"></a>分组卷积</h3><p>分组卷积（Group convolution）：将多个卷积核拆分为分组，每个分组单独执行一系列运算之后，最终在全连接层再拼接在一起。分组卷积的重点不在于卷积，而在于分组：在执行卷积之后，将输出的feature map 执行分组。然后在每个组的数据会在各个GPU 上单独训练。<br>分组卷积在网络的全连接层才进行融合，这使得每个GPU 中只能看到部分通道的数据，这降低了模型的泛化能力。但是分组卷积降低了模型的参数数量以及计算量。<br>假设输入feature map具有$C_I$的输入通道，宽/高分别为$W_I, H_I$，假设卷积核的宽/高分别为$W_K, H_K$，有$C_O$个卷积核，则卷积的参数量为:$W_K\times H_K\times C_I\times C_O$，计算量为：$W_K\times H_K\times C_I\times W_O\times H_O\times C_O$。假设采用分组卷积，将输入通道分成G组，则分组后：参数量为$W_K\times H_K\times \frac{C_I}{G}\times \frac{C_O}{G}$，分组卷积的参数量、计算量均为标准卷积计算的$\frac{1}{G}$。</p>
+<h3 id="可分离卷积DepthWise"><a href="#可分离卷积DepthWise" class="headerlink" title="可分离卷积DepthWise"></a>可分离卷积DepthWise</h3><p>标准的卷积会考虑所有的输入通道，而DepthWise 卷积会针对每一个输入通道进行卷积操作，然后接一个1x1 的跨通道卷积操作。<br>DepthWise 卷积与分组卷积的区别在于：<br>1）分组卷积是一种通道分组的方式，它改变的是对输入的feature map 处理的方式。Depthwise 卷积是一种卷积的方式，它改变的是卷积的形式。<br>2）Depthwise 分组卷积结合了两者：首先沿着通道进行分组，然后每个分组执行DepthWise 卷积。<br>假设使用标准卷积，输入通道的数量为$C_I$，输出通道的数量为$C_O$，卷积核的尺寸为$W_K\times H_K$。则需要的参数数量为$C_I\times W_K\times H_K\times C_O$。使用Depthwise卷积时，图像的每个通道先通过一个$W_K\times H_K$的depthwise卷积层，再经过一个1x1、输出为$C_O$的卷积层。参数量为：</p>
+<script type="math/tex; mode=display">C_I\times W_K\times H_K+C_I\times 1\times 1\times C_O=W_K\times H_K\times C_I+C_IC_O</script><p>其参数数量是标准卷积的$\frac{1}{C_O}+\frac{1}{W_KH_K}$。</p>
+<h3 id="知识蒸馏"><a href="#知识蒸馏" class="headerlink" title="知识蒸馏"></a>知识蒸馏</h3><p>知识蒸馏的本质是让大的teacher model来协助线上的student model进行训练。因为模型训练时，我们通常采用复杂模型或Ensemble方式来获取最好的结果，从而导致参数冗余验证，在前向推理的时候，需要对模型进行复杂的计算。而知识蒸馏是把复杂模型或多个模型Ensemble（Teacher）学到的知识迁移到另一个轻量级模型上（Student）叫知识蒸馏，使得模型变轻量的同时（方便部署），尽量不损失性能。<br>知识蒸馏主要分成三个大类：<br>（1）输出迁移（output transfer），将网络的输出（soft-target）作为知识；<br>（2）特征迁移（feature transfer），将网络学习的特征作为知识；<br>（3）关系迁移（relation transfer），将网络或样本的关系作为知识。<br>在输出迁移中，我们对一些术语进行定义：</p>
+<ul>
+<li>Teacher：原始较大的模型或模型Ensemble，用于获取知识；</li>
+<li>Student：新的较小模型，接收teacher的知识，训练后用于前向预测；</li>
+<li>Hard target：样本原本的标签，Onehot</li>
+<li>Soft target：Teacher输出的预测结果（一般是softmax之后的概率）</li>
+</ul>
+<p>这里的软目标的优势在于：<br>（1）弥补了简单分类中监督信号不足（信息熵比较少）的问题，增加了信息量；<br>（2）提供了训练数据中类别的关系（数据增强）；<br>（3）可能增强了模型泛化的能力。<br>而特征迁移Feature Transfer——将网络学习的特征作为知识，对卷积网络隐藏层输出的特征图——feature map（特征 &amp; 知识）进行迁移（Attention transfer），让学生网络的feature map与教师网络的feature map尽可能相似。<br>关系迁移Relation Transfer——将网络或者样本的关系作为知识，让学生网络学习教师网络层与层之间的关系（特征关系）。</p>
+<h3 id="模型压缩过程"><a href="#模型压缩过程" class="headerlink" title="模型压缩过程"></a>模型压缩过程</h3><p>在原始的图像修复模型中，输入的图像大小为256x256，卷积的第一层通道数为48，模型的参数量接近25G，模型修复指标SSIM为0.7273。首先，们将输出图像的大小resize到128x128大小，模型的参数量降低为6G，但是模型的修复指标SSIM降低为0.6918，然后我们采用mobile_v2中的可分离卷积的思想，替换模型中的卷积方式，模型的参数量减少为1G，此时模型的SSIM指标为0.6486；接着我们进一步将卷积层的通道数减少为24，模型的参数量为300M，修复指标为0.6276。我们采用压缩的方式，很好的降低了模型的参数量，但由于模型压缩过程导致有用的参数的丢失，使得模型修复指标出现严重的下降，图像修复结果也出现严重的斑块状的伪影。为此，我们采用知识蒸馏的思想，将未压缩的模型作为教师网络，利用教师网络中生成的粗糙和中间特征图和输出的精细修复图，对学生网络的粗糙特征图和输出进行是修复图进行监督，在损失函数中计算二者的重建损失l1-loss，使得学生网络在训练过程中保留更多有用的信息。采用知识蒸馏的做法后，在参数量为1G的压缩模型中，SSIM指标提升为0.6661，在300M的蒸馏版本中模型的SSIM指标提升为0.6500，相较于未蒸馏前的效果有了明显的改进，而且修复的图片的斑块状伪影减少，修复区域更加的平滑。但在一些颜色变化复杂的区域，修复效果和原始相比还是会呈现明显的亮斑，因此我们添加感知损失计算teacher模型输出图像和学生网络输出图像的差值来平滑图像学生网络图像修复的结果。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/06/01/%E5%BF%AB%E6%89%8B%E5%AE%9E%E4%B9%A0%E8%AE%B0%E5%BD%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3636,736 +3792,6 @@ E(g-f)^2&=E(g^2-2gf+f^2)
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/03/03/%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0_%E7%BD%91%E7%BB%9C%E6%90%AD%E5%BB%BA%E5%8F%8A%E8%AE%AD%E7%BB%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Kay">
-      <meta itemprop="description" content="千里之行，始于足下">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Home">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/03/%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0_%E7%BD%91%E7%BB%9C%E6%90%AD%E5%BB%BA%E5%8F%8A%E8%AE%AD%E7%BB%83/" class="post-title-link" itemprop="url">第十二章_网络搭建及训练</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-03 12:32:46 / 修改时间：12:33:03" itemprop="dateCreated datePublished" datetime="2020-03-03T12:32:46+08:00">2020-03-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>[TOC]</p>
-<h1 id="第十二章-网络搭建及训练"><a href="#第十二章-网络搭建及训练" class="headerlink" title="第十二章 网络搭建及训练"></a>第十二章 网络搭建及训练</h1><h1 id="12-1-TensorFlow"><a href="#12-1-TensorFlow" class="headerlink" title="12.1 TensorFlow"></a>12.1 TensorFlow</h1><h2 id="12-1-1-TensorFlow是什么？"><a href="#12-1-1-TensorFlow是什么？" class="headerlink" title="12.1.1 TensorFlow是什么？"></a>12.1.1 TensorFlow是什么？</h2><p>&emsp;&emsp;TensorFlow支持各种异构平台，支持多CPU/GPU、服务器、移动设备，具有良好的跨平台的特性；TensorFlow架构灵活，能够支持各种网络模型，具有良好的通用性；此外，TensorFlow架构具有良好的可扩展性，对OP的扩展支持，Kernel特化方面表现出众。</p>
-<p>&emsp;&emsp;TensorFlow最初由Google大脑的研究员和工程师开发出来，用于机器学习和神经网络方面的研究，于2015.10宣布开源，在众多深度学习框架中脱颖而出，在Github上获得了最多的Star量。</p>
-<h2 id="12-1-2-TensorFlow的设计理念是什么？"><a href="#12-1-2-TensorFlow的设计理念是什么？" class="headerlink" title="12.1.2 TensorFlow的设计理念是什么？"></a>12.1.2 TensorFlow的设计理念是什么？</h2><p>TensorFlow的设计理念主要体现在两个方面：</p>
-<p>（1）将图定义和图运算完全分开。<br>&emsp;&emsp;TensorFlow 被认为是一个“符号主义”的库。我们知道，编程模式通常分为命令式编程（imperative style programming）和符号式编程（symbolic style programming）。命令式编程就是编写我们理解的通常意义上的程序，很容易理解和调试，按照原有逻辑执行。符号式编程涉及很多的嵌入和优化，不容易理解和调试，但运行速度相对有所提升。现有的深度学习框架中，Torch 是典型的命令式的，Caffe、MXNet 采用了两种编程模式混合的方法，而 TensorFlow 完全采用符号式编程。</p>
-<p>&emsp;&emsp;符号式计算一般是先定义各种变量，然后建立一个数据流图，在数据流图中规定各个变量间的计算关系，最后需要对据流图进行编译，但此时的数据流图还是一个空壳儿，里面没有任何实际数据，只有把需要运算的输入放进去后，才能在整个模型中形成数据流，从而形成输出值。</p>
-<p>　　例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t &#x3D; 8 + 9</span><br><span class="line">print(t)</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;在传统的程序操作中，定义了 t 的运算，在运行时就执行了，并输出 17。而在 TensorFlow中，数据流图中的节点，实际上对应的是 TensorFlow API 中的一个操作，并没有真正去运行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">t &#x3D; tf.add(8,9)</span><br><span class="line">print(t)</span><br><span class="line"></span><br><span class="line">#输出  Tensor&#123;&quot;Add_1:0&quot;,shape&#x3D;&#123;&#125;,dtype&#x3D;int32&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;（2）TensorFlow 中涉及的运算都要放在图中，而图的运行只发生在会话（session）中。开启会话后，就可以用数据去填充节点，进行运算；关闭会话后，就不能进行计算了。因此，会话提供了操作运行和 Tensor 求值的环境。</p>
-<p>　　例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">#创建图</span><br><span class="line">a &#x3D; tf.constant([4.0,5.0])</span><br><span class="line">b &#x3D; tf.constant([6.0,7.0])</span><br><span class="line">c &#x3D; a * b</span><br><span class="line">#创建会话</span><br><span class="line">sess  &#x3D; tf.Session()</span><br><span class="line">#计算c</span><br><span class="line">print(sess.run(c))   #进行矩阵乘法，输出[24.,35.]</span><br><span class="line">sess.close()</span><br></pre></td></tr></table></figure>
-<h2 id="12-1-3-TensorFlow特点有哪些？"><a href="#12-1-3-TensorFlow特点有哪些？" class="headerlink" title="12.1.3 TensorFlow特点有哪些？"></a>12.1.3 TensorFlow特点有哪些？</h2><h3 id="1-高度的灵活性"><a href="#1-高度的灵活性" class="headerlink" title="1.高度的灵活性"></a>1.高度的灵活性</h3><p>&emsp;&emsp;TensorFlow 并不仅仅是一个深度学习库，只要可以把你的计算过程表示称一个数据流图的过程，我们就可以使用 TensorFlow 来进行计算。TensorFlow 允许我们用计算图的方式建立计算网络，同时又可以很方便的对网络进行操作。用户可以基于 TensorFlow 的基础上用 python 编写自己的上层结构和库，如果TensorFlow没有提供我们需要的API的，我们也可以自己编写底层的 C++ 代码，通过自定义操作将新编写的功能添加到 TensorFlow 中。</p>
-<h3 id="2-真正的可移植性"><a href="#2-真正的可移植性" class="headerlink" title="2.真正的可移植性"></a>2.真正的可移植性</h3><p>&emsp;&emsp;TensorFlow 可以在 CPU 和 GPU 上运行，可以在台式机、服务器、移动设备上运行。你想在你的笔记本上跑一下深度学习的训练，或者又不想修改代码，想把你的模型在多个CPU上运行， 亦或想将训练好的模型放到移动设备上跑一下，这些TensorFlow都可以帮你做到。</p>
-<h3 id="3-多语言支持"><a href="#3-多语言支持" class="headerlink" title="3.多语言支持"></a>3.多语言支持</h3><p>&emsp;&emsp;TensorFlow采用非常易用的python来构建和执行我们的计算图，同时也支持 C++ 的语言。我们可以直接写python和C++的程序来执行TensorFlow，也可以采用交互式的ipython来方便的尝试我们的想法。当然，这只是一个开始，后续会支持更多流行的语言，比如Lua，JavaScript 或者R语言。</p>
-<h3 id="4-丰富的算法库"><a href="#4-丰富的算法库" class="headerlink" title="4.丰富的算法库"></a>4.丰富的算法库</h3><p>&emsp;&emsp;TensorFlow提供了所有开源的深度学习框架里，最全的算法库，并且在不断的添加新的算法库。这些算法库基本上已经满足了大部分的需求，对于普通的应用，基本上不用自己再去自定义实现基本的算法库了。</p>
-<h3 id="5-完善的文档"><a href="#5-完善的文档" class="headerlink" title="5.完善的文档"></a>5.完善的文档</h3><p>&emsp;&emsp;TensorFlow的官方网站，提供了非常详细的文档介绍，内容包括各种API的使用介绍和各种基础应用的使用例子，也包括一部分深度学习的基础理论。</p>
-<p>&emsp;&emsp;自从宣布开源以来，大量人员对TensorFlow做出贡献，其中包括Google员工，外部研究人员和独立程序员，全球各地的工程师对TensorFlow的完善，已经让TensorFlow社区变成了Github上最活跃的深度学习框架。</p>
-<h2 id="12-1-4-TensorFlow的系统架构是怎样的？"><a href="#12-1-4-TensorFlow的系统架构是怎样的？" class="headerlink" title="12.1.4 TensorFlow的系统架构是怎样的？"></a>12.1.4 TensorFlow的系统架构是怎样的？</h2><h3 id="emsp-emsp-整个系统从底层到上层可分为七层："><a href="#emsp-emsp-整个系统从底层到上层可分为七层：" class="headerlink" title="&emsp;&emsp;整个系统从底层到上层可分为七层："></a>&emsp;&emsp;整个系统从底层到上层可分为七层：</h3><p><img src=".\img\ch12\1.bmp" alt=""></p>
-<p>&emsp;&emsp;设备层：硬件计算资源，支持CPU、GPU</p>
-<p>&emsp;&emsp;网络层：支持两种通信协议</p>
-<p>&emsp;&emsp;数值计算层：提供最基础的计算，有线性计算、卷积计算</p>
-<p>&emsp;&emsp;高维计算层：数据的计算都是以数组的形式参与计算</p>
-<p>&emsp;&emsp;计算图层：用来设计神经网络的结构</p>
-<p>&emsp;&emsp;工作流层：提供轻量级的框架调用</p>
-<p>&emsp;&emsp;构造层：最后构造的深度学习网络可以通过TensorBoard服务端可视化</p>
-<h2 id="12-1-5-TensorFlow编程模型是怎样的？"><a href="#12-1-5-TensorFlow编程模型是怎样的？" class="headerlink" title="12.1.5 TensorFlow编程模型是怎样的？"></a>12.1.5 TensorFlow编程模型是怎样的？</h2><p>TensorFlow的编程模型：让向量数据在计算图里流动。那么在编程时至少有这几个过程：1.构建图，2.启动图，3.给图输入数据并获取结果。</p>
-<h3 id="1-构建图"><a href="#1-构建图" class="headerlink" title="1.构建图"></a>1.构建图</h3><p>TensorFlow的图的类型是tf.Graph，它包含着计算节点和tensor的集合。</p>
-<p>&emsp;&emsp;这里引用了两个新概念：tensor和计算节点。<br>&emsp;&emsp;我们先介绍tensor，一开始我们就介绍了，我们需要把数据输入给启动的图才能获取计算结果。那么问题来了，在构建图时用什么表示中间计算结果？这个时候tensor的概念就需要引入了。<br>&emsp;&emsp;类型是tf.Tensor，代表某个计算节点的输出，一定要看清楚是“代表”。它主要有两个作用：</p>
-<p>1.构建不同计算节点之间的数据流</p>
-<p>2.在启动图时，可以设置某些tensor的值，然后获取指定tensor的值。这样就完成了计算的输入输出功能。</p>
-<p>如下代码所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">inImage &#x3D; tf.placeholder(tf.float32,[32,32,3],&quot;inputImage&quot;)</span><br><span class="line">processedImage &#x3D; tf.image.per_image_standardization(inImage,&quot;processedImage&quot;)</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;这里inImage和processedImage都是tensor类型。它们代表着计算节点输出的数据，数据的值具体是多少在启动图的时候才知道。上面两个方法调用都传递了一个字符串，它是计算节点的名字，最好给节点命名，这样我们可以在图上调用get_tensor_by_name(name)获取对应的tensor对象，十分方便。（tensor名字为“&lt;计算节点名字&gt;:<tensor索引>”）</p>
-<p>&emsp;&emsp;创建tensor时，需要指定类型和shape。对不同tensor进行计算时要求类型相同，可以使用 tf.cast 进行类型转换。同时也要求 shape (向量维度)满足运算的条件，我们可以使用 tf.reshape 改变shape。</p>
-<p>&emsp;&emsp;现在了解计算节点的概念，其功能是对tensor进行计算、创建tensor或进行其他操作，类型是tf.Operation。获取节点对象的方法为get_operation_by_name(name)。</p>
-<p>构建图，如下代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">g&#x3D;tf.Graph()</span><br><span class="line"></span><br><span class="line">with g.as_default():</span><br><span class="line">    input_data&#x3D;tf.placeholder(tf.float32,[None,2],&quot;input_data&quot;)</span><br><span class="line">    input_label&#x3D;tf.placeholder(tf.float32,[None,2],&quot;input_label&quot;)</span><br><span class="line"></span><br><span class="line">    W1&#x3D;tf.Variable(tf.truncated_normal([2,2]),name&#x3D;&quot;W1&quot;)</span><br><span class="line">    B1&#x3D;tf.Variable(tf.zeros([2]),name&#x3D;&quot;B1&quot;)</span><br><span class="line"></span><br><span class="line">    output&#x3D;tf.add(tf.matmul(input_data,W1),B1,name&#x3D;&quot;output&quot;)</span><br><span class="line">    cross_entropy&#x3D;tf.nn.softmax_cross_entropy_with_logits(logits&#x3D;output,labels&#x3D;input_label)</span><br><span class="line"></span><br><span class="line">    train_step&#x3D;tf.train.AdamOptimizer().minimize(cross_entropy,name&#x3D;&quot;train_step&quot;)</span><br><span class="line"></span><br><span class="line">    initer&#x3D;tf.global_variables_initializer()</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;上面的代码中我们创建了一个图，并在上面添加了很多节点。我们可以通过调用get_default_graph()获取默认的图。</p>
-<p>&emsp;&emsp;Input_data，input_label，W1，B1，output，cross_entropy都是tensor类型，train_step，initer，是节点类型。</p>
-<p>有几类tensor或节点比较重要，下面介绍一下：</p>
-<h4 id="1-placeholder"><a href="#1-placeholder" class="headerlink" title="1.placeholder"></a>1.placeholder</h4><p>&emsp;&emsp;Tensorflow，顾名思义， tensor代表张量数据，flow代表流，其最初的设计理念就是构建一张静态的数据流图。图是有各个计算节点连接而成，计算节点之间流动的便是中间的张量数据。要想让张量数据在我们构建的静态计算图中流动起来，就必须有最初的输入数据流。而placeholder，翻译过来叫做占位符，顾名思义，是给我们的输入数据提供一个接口，也就是说我们的一切输入数据，例如训练样本数据，超参数数据等都可以通过占位符接口输送到数据流图之中。使用实例如下代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">x &#x3D; tf.placeholder(dtype&#x3D;tf.float32,shape&#x3D;[],name&#x3D;&#39;x&#39;)</span><br><span class="line">y &#x3D; tf.placeholder(dtpe&#x3D;tf.float32,shape&#x3D;[],nmae&#x3D;&#39;y&#39;)</span><br><span class="line">z &#x3D; x*y</span><br><span class="line">with tf.Session() as sess:</span><br><span class="line">	prod &#x3D; sess.run(z,feed_dict&#x3D;&#123;x:1.,y:5.2&#125;)</span><br><span class="line">	print(prod)</span><br><span class="line">[out]:5.2</span><br></pre></td></tr></table></figure>
-<h4 id="2-variable"><a href="#2-variable" class="headerlink" title="2. variable"></a>2. variable</h4><p>&emsp;&emsp;无论是传统的机器学习算法，例如线性支持向量机（Support Vector Machine, SVM)，其数学模型为y = <w,x> + b，还是更先进的深度学习算法，例如卷积神经网络（Convolutional Neural Network， CNN）单个神经元输出的模型y = w*x + b。可以看到，w和b就是我们要求的模型，模型的求解是通过优化算法（对于SVM，使用<br>SMO[1]算法，对于CNN，一般基于梯度下降法）来一步一步更新w和b的值直到满足停止条件。因此，大多数机器学习的模型中的w和b实际上是以变量的形式出现在代码中的，这就要求我们在代码中定义模型变量。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">a &#x3D; tf.Variable(2.)</span><br><span class="line">b &#x3D; tf.Variable(3.)</span><br><span class="line">with tf.Session() as sess:</span><br><span class="line">	sess.run(tf.global_variables_initializer()) #变量初始化</span><br><span class="line">    print(sess.run(a*b))</span><br><span class="line">[out]:6.</span><br></pre></td></tr></table></figure>
-<p>[1] Platt, John. “Sequential minimal optimization: A fast algorithm for training support vector machines.” (1998).</p>
-<h4 id="3-initializer"><a href="#3-initializer" class="headerlink" title="3. initializer"></a>3. initializer</h4><p>&emsp;&emsp;由于tensorflow构建的是静态的计算流图，在开启会话之前，所有的操作都不会被执行。因此为了执行在计算图中所构建的赋值初始化计算节点，需要在开启会话之后，在会话环境下运行初始化。如果计算图中定义了变量，而会话环境下为执行初始化命令，则程序报错，代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">a &#x3D; tf.Variable(2.)</span><br><span class="line">b &#x3D; tf.Variable(3.)</span><br><span class="line">with tf.Session() as sess:</span><br><span class="line">	#sess.run(tf.global_variables_initializer()) #注释掉初始化命令</span><br><span class="line">    print(sess.run(a*b))</span><br><span class="line">[Error]: Attempting to use uninitialized value Variable</span><br></pre></td></tr></table></figure>
-<h3 id="2-启动图"><a href="#2-启动图" class="headerlink" title="2.启动图"></a>2.启动图</h3><p>&emsp;&emsp;先了解session的概念，然后才能更好的理解图的启动。<br>&emsp;&emsp;图的每个运行实例都必须在一个session里，session为图的运行提供环境。Session的类型是tf.Session，在实例化session对象时我们需要给它传递一个图对象，如果不显示给出将使用默认的图。Session有一个graph属性，我们可以通过它获取session对应的图。</p>
-<p>代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">numOfBatch&#x3D;5</span><br><span class="line">datas&#x3D;np.zeros([numOfBatch,2],np.float32)</span><br><span class="line">labels&#x3D;np.zeros([numOfBatch,2],np.float32)</span><br><span class="line"></span><br><span class="line">sess&#x3D;tf.Session(graph&#x3D;g)</span><br><span class="line">graph&#x3D;sess.graph</span><br><span class="line">sess.run([graph.get_operation_by_name(&quot;initer&quot;)])</span><br><span class="line"></span><br><span class="line">dataHolder&#x3D;graph.get_tensor_by_name(&quot;input_data:0&quot;)</span><br><span class="line">labelHolder&#x3D;graph.get_tensor_by_name(&quot;input_label:0&quot;)</span><br><span class="line">train&#x3D;graph.get_operation_by_name(&quot;train_step&quot;)</span><br><span class="line">out&#x3D;graph.get_tensor_by_name(&quot;output:0&quot;)</span><br><span class="line"></span><br><span class="line">for i inrange(200):</span><br><span class="line">   result&#x3D;sess.run([out,train],feed_dict&#x3D;&#123;dataHolder:datas,labelHolder:labels&#125;)</span><br><span class="line">   if i%100&#x3D;&#x3D;0:</span><br><span class="line">       saver.save(sess,&quot;.&#x2F;moules&quot;)</span><br><span class="line"></span><br><span class="line">sess.close()</span><br></pre></td></tr></table></figure>
-<p>代码都比较简单，就不介绍了。不过要注意2点：1.别忘记运行初始化节点，2.别忘记close掉session对象以释放资源。</p>
-<h4 id="3-给图输入数据并获取结果"><a href="#3-给图输入数据并获取结果" class="headerlink" title="3.给图输入数据并获取结果"></a>3.给图输入数据并获取结果</h4><p>代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for i inrange(200):</span><br><span class="line">    result&#x3D;sess.run([out,train],feed_dict&#x3D;&#123;dataHolder:datas,labelHolder:labels&#125;)</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;这里主要用到了session对象的run方法，它用来运行某个节点或tensor并获取对应的值。我们一般会一次传递一小部分数据进行mini-batch梯度下降来优化模型。</p>
-<p>&emsp;&emsp;我们需要把我们需要运行的节点或tensor放入一个列表，然后作为第一个参数(不考虑self)传递给run方法，run方法会返回一个计算结果的列表，与我们传递的参数一一对应。</p>
-<p>&emsp;&emsp;如果我们运行的节点依赖某个placeholder，那我们必须给这个placeholder指定值，怎么指定代码里面很清楚，给关键字参数feed_dict传递一个字典即可，字典里的元素的key是placeholder对象，value是我们指定的值。值的数据的类型必须和placeholder一致，包括shape。值本身的类型是numpy数组。</p>
-<p>这里再解释一个细节，在定义placeholder时代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">input_data&#x3D;tf.placeholder(tf.float32,[None,2],&quot;input_data&quot;)</span><br><span class="line">input_label&#x3D;tf.placeholder(tf.float32,[None,2],&quot;input_label&quot;)</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;shape为[None,2]，说明数据第一个维度是不确定的，然后TensorFlow会根据我们传递的数据动态推断第一个维度，这样我们就可以在运行时改变batch的大小。比如一个数据是2维，一次传递10个数据对应的tensor的shape就是[10,2]。可不可以把多个维度指定为None？理论上不可以！</p>
-<h2 id="12-1-6-如何基于tensorflow搭建VGG16"><a href="#12-1-6-如何基于tensorflow搭建VGG16" class="headerlink" title="12.1.6 如何基于tensorflow搭建VGG16"></a>12.1.6 如何基于tensorflow搭建VGG16</h2><p>​    介绍完关于tensorflow的基础知识，是时候来一波网络搭建实战了。虽然网上有很多相关教程，但我想从最标准的tensorflow代码和语法出发（而不是调用更高级的API，失去了原来的味道），向大家展示如何搭建其标准的VGG16网络架构。话不多说，上代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_weight_variable</span><span class="params">(shape)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.get_variable(<span class="string">'weight'</span>, shape=shape, initializer=tf.truncated_normal_initializer(stddev=<span class="number">0.1</span>))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_bias_variable</span><span class="params">(shape)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.get_variable(<span class="string">'bias'</span>, shape=shape, initializer=tf.constant_initializer(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">conv2d</span><span class="params">(x, w, padding = <span class="string">'SAME'</span>, s=<span class="number">1</span>)</span>:</span></span><br><span class="line">    x = tf.nn.conv2d(x, w, strides=[<span class="number">1</span>, s, s, <span class="number">1</span>], padding = padding)</span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">maxPoolLayer</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.nn.max_pool(x, ksize = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>],</span><br><span class="line">                          strides = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding = <span class="string">'SAME'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">conv2d_layer</span><span class="params">(x,in_chs, out_chs, ksize, layer_name)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> tf.variable_scope(layer_name):</span><br><span class="line">        w = get_weight_variable([ksize, ksize, in_chs, out_chs])</span><br><span class="line">        b = get_bias_variable([out_chs])</span><br><span class="line">        y = tf.nn.relu(tf.bias_add(conv2d(x,w,padding = <span class="string">'SAME'</span>, s=<span class="number">1</span>), b))</span><br><span class="line">    <span class="keyword">return</span> y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fc_layer</span><span class="params">(x,in_kernels, out_kernels, layer_name)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> tf.variable_scope(layer_name):</span><br><span class="line">        w = get_weight_variable([in_kernels,out_kernels])</span><br><span class="line">        b = get_bias_variable([out_kernels])</span><br><span class="line">        y = tf.nn.relu(tf.bias_add(tf.matmul(x,w),b))</span><br><span class="line">    <span class="keyword">return</span> y</span><br><span class="line">        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">VGG16</span><span class="params">(x)</span>:</span></span><br><span class="line">    conv1_1 = conv2d_layer(x,tf.get_shape(x).as_list()[<span class="number">-1</span>], <span class="number">64</span>, <span class="number">3</span>, <span class="string">'conv1_1'</span>)</span><br><span class="line">    conv1_2 = conv2d_layer(conv1_1,<span class="number">64</span>, <span class="number">64</span>, <span class="number">3</span>, <span class="string">'conv1_2'</span>)</span><br><span class="line">    pool_1 = maxPoolLayer(conv1_2)</span><br><span class="line">    </span><br><span class="line">    conv2_1 = conv2d_layer(pool1,<span class="number">64</span>, <span class="number">128</span>, <span class="number">3</span>, <span class="string">'conv2_1'</span>)</span><br><span class="line">    conv2_2 = conv2d_layer(conv2_1,<span class="number">128</span>, <span class="number">128</span>, <span class="number">3</span>, <span class="string">'conv2_2'</span>)</span><br><span class="line">    pool2 = maxPoolLayer(conv2_2)</span><br><span class="line">    </span><br><span class="line">	conv3_1 = conv2d_layer(pool2,<span class="number">128</span>, <span class="number">256</span>, <span class="number">3</span>, <span class="string">'conv3_1'</span>)</span><br><span class="line">    conv3_2 = conv2d_layer(conv3_1,<span class="number">256</span>, <span class="number">256</span>, <span class="number">3</span>, <span class="string">'conv3_2'</span>)</span><br><span class="line">	conv3_3 = conv2d_layer(conv3_2,<span class="number">256</span>, <span class="number">256</span>, <span class="number">3</span>, <span class="string">'conv3_3'</span>)</span><br><span class="line">    pool3 = maxPoolLayer(conv3_3)</span><br><span class="line">    </span><br><span class="line">	conv4_1 = conv2d_layer(pool3,<span class="number">256</span>, <span class="number">512</span>, <span class="number">3</span>, <span class="string">'conv4_1'</span>)</span><br><span class="line">    conv4_2 = conv2d_layer(conv4_1,<span class="number">512</span>, <span class="number">512</span>, <span class="number">3</span>, <span class="string">'conv4_2'</span>)</span><br><span class="line">	conv4_3 = conv2d_layer(conv4_2,<span class="number">512</span>, <span class="number">512</span>, <span class="number">3</span>, <span class="string">'conv4_3'</span>)</span><br><span class="line">    pool4 = maxPoolLayer(conv4_3)</span><br><span class="line">    </span><br><span class="line">	conv5_1 = conv2d_layer(pool4,<span class="number">512</span>, <span class="number">512</span>, <span class="number">3</span>, <span class="string">'conv5_1'</span>)</span><br><span class="line">    conv5_2 = conv2d_layer(conv5_1,<span class="number">512</span>, <span class="number">512</span>, <span class="number">3</span>, <span class="string">'conv5_2'</span>)</span><br><span class="line">	conv5_3 = conv2d_layer(conv5_1,<span class="number">512</span>, <span class="number">512</span>, <span class="number">3</span>, <span class="string">'conv5_3'</span>)</span><br><span class="line">    pool5 = maxPoolLayer(conv5_3)</span><br><span class="line">    </span><br><span class="line">	pool5_flatten_dims = int(np.prod(pool5.get_shape().as_list()[<span class="number">1</span>:]))</span><br><span class="line">    pool5_flatten = tf.reshape(pool5,[<span class="number">-1</span>,pool5_flatten_dims])</span><br><span class="line">    </span><br><span class="line">    fc_6 = fc_layer(pool5_flatten, pool5_flatten_dims, <span class="number">4096</span>, <span class="string">'fc6'</span>)</span><br><span class="line">	fc_7 = fc_layer(fc_6, <span class="number">4096</span>, <span class="number">4096</span>, <span class="string">'fc7'</span>)</span><br><span class="line">	fc_8 = fc_layer(fc_7, <span class="number">4096</span>, <span class="number">10</span>, <span class="string">'fc8'</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> fc_8</span><br></pre></td></tr></table></figure>
-<h1 id="12-2-Pytorch"><a href="#12-2-Pytorch" class="headerlink" title="12.2 Pytorch"></a>12.2 Pytorch</h1><h2 id="12-2-1-Pytorch是什么？"><a href="#12-2-1-Pytorch是什么？" class="headerlink" title="12.2.1 Pytorch是什么？"></a>12.2.1 Pytorch是什么？</h2><p>&emsp;&emsp;Pytorch是torch的python版本，是由Facebook开源的神经网络框架，专门针对 GPU 加速的深度神经网络（DNN）编程。Torch 是一个经典的对多维矩阵数据进行操作的张量（tensor ）库，在机器学习和其他数学密集型应用有广泛应用。与Tensorflow的静态计算图不同，pytorch的计算图是动态的，可以根据计算需要实时改变计算图。但由于Torch语言采用 Lua，导致在国内一直很小众，并逐渐被支持 Python 的 Tensorflow 抢走用户。作为经典机器学习库 Torch 的端口，PyTorch 为 Python 语言使用者提供了舒适的写代码选择。</p>
-<h2 id="12-2-2-为什么选择-Pytorch？"><a href="#12-2-2-为什么选择-Pytorch？" class="headerlink" title="12.2.2 为什么选择 Pytorch？"></a>12.2.2 为什么选择 Pytorch？</h2><h3 id="1-简洁："><a href="#1-简洁：" class="headerlink" title="1.简洁："></a>1.简洁：</h3><p>&emsp;&emsp;PyTorch的设计追求最少的封装，尽量避免重复造轮子。不像 TensorFlow 中充斥着session、graph、operation、name_scope、variable、tensor、layer等全新的概念，PyTorch 的设计遵循tensor→variable(autograd)→nn.Module 三个由低到高的抽象层次，分别代表高维数组（张量）、自动求导（变量）和神经网络（层/模块），而且这三个抽象之间联系紧密，可以同时进行修改和操作。<br>简洁的设计带来的另外一个好处就是代码易于理解。PyTorch的源码只有TensorFlow的十分之一左右，更少的抽象、更直观的设计使得PyTorch的源码十分易于阅读。</p>
-<h3 id="2-速度："><a href="#2-速度：" class="headerlink" title="2.速度："></a>2.速度：</h3><p>&emsp;&emsp;PyTorch 的灵活性不以速度为代价，在许多评测中，PyTorch 的速度表现胜过 TensorFlow和Keras 等框架。框架的运行速度和程序员的编码水平有极大关系，但同样的算法，使用PyTorch实现的那个更有可能快过用其他框架实现的。</p>
-<h3 id="3-易用："><a href="#3-易用：" class="headerlink" title="3.易用："></a>3.易用：</h3><p>&emsp;&emsp;PyTorch 是所有的框架中面向对象设计的最优雅的一个。PyTorch的面向对象的接口设计来源于Torch，而Torch的接口设计以灵活易用而著称，Keras作者最初就是受Torch的启发才开发了Keras。PyTorch继承了Torch的衣钵，尤其是API的设计和模块的接口都与Torch高度一致。PyTorch的设计最符合人们的思维，它让用户尽可能地专注于实现自己的想法，即所思即所得，不需要考虑太多关于框架本身的束缚。</p>
-<h3 id="4-活跃的社区："><a href="#4-活跃的社区：" class="headerlink" title="4.活跃的社区："></a>4.活跃的社区：</h3><p>&emsp;&emsp;PyTorch 提供了完整的文档，循序渐进的指南，作者亲自维护的论坛 供用户交流和求教问题。Facebook 人工智能研究院对 PyTorch 提供了强力支持，作为当今排名前三的深度学习研究机构，FAIR的支持足以确保PyTorch获得持续的开发更新，不至于像许多由个人开发的框架那样昙花一现。</p>
-<h2 id="12-2-3-PyTorch-的架构是怎样的？"><a href="#12-2-3-PyTorch-的架构是怎样的？" class="headerlink" title="12.2.3 PyTorch 的架构是怎样的？"></a>12.2.3 PyTorch 的架构是怎样的？</h2><p>&emsp;&emsp;PyTorch(Caffe2) 通过混合前端，分布式训练以及工具和库生态系统实现快速，灵活的实验和高效生产。PyTorch 和 TensorFlow 具有不同计算图实现形式，TensorFlow 采用静态图机制(预定义后再使用)，PyTorch采用动态图机制(运行时动态定义)。PyTorch 具有以下高级特征：</p>
-<p>&emsp;&emsp;混合前端:新的混合前端在急切模式下提供易用性和灵活性，同时无缝转换到图形模式，以便在C ++运行时环境中实现速度，优化和功能。<br>&emsp;&emsp;分布式训练:通过利用本地支持集合操作的异步执行和可从Python和C ++访问的对等通信，优化了性能。<br>&emsp;&emsp;Python优先: PyTorch为了深入集成到Python中而构建的，因此它可以与流行的库和Cython和Numba等软件包一起使用。<br>&emsp;&emsp;丰富的工具和库:活跃的研究人员和开发人员社区建立了丰富的工具和库生态系统，用于扩展PyTorch并支持从计算机视觉到强化学习等领域的开发。<br>&emsp;&emsp;本机ONNX支持:以标准ONNX（开放式神经网络交换）格式导出模型，以便直接访问与ONNX兼容的平台，运行时，可视化工具等。<br>&emsp;&emsp;C++前端：C++前端是PyTorch的纯C++接口，它遵循已建立的Python前端的设计和体系结构。它旨在实现高性能，低延迟和裸机C++应用程序的研究。<br>使用GPU和CPU优化的深度学习张量库。</p>
-<h2 id="12-2-4-Pytorch-与-tensorflow-之间的差异在哪里？"><a href="#12-2-4-Pytorch-与-tensorflow-之间的差异在哪里？" class="headerlink" title="12.2.4 Pytorch 与 tensorflow 之间的差异在哪里？"></a>12.2.4 Pytorch 与 tensorflow 之间的差异在哪里？</h2><p>&emsp;&emsp;上面也将了PyTorch 最大优势是建立的神经网络是动态的, 对比静态的 Tensorflow, 它能更有效地处理一些问题, 比如说 RNN 变化时间长度的输出。各有各的优势和劣势。两者都是大公司发布的, Tensorflow（Google）宣称在分布式训练上下了很大的功夫, 那就默认 Tensorflow 在分布式训练上要超出 Pytorch（Facebook），还有tensorboard可视化工具, 但是 Tensorflow 的静态计算图使得在 RNN 上有一点点被动 (虽然它用其他途径解决了), 不过用 PyTorch 的时候, 会对这种动态的 RNN 有更好的理解。而且 Tensorflow 的高度工业化, 它的底层代码很难看懂， Pytorch 好那么一点点, 如果深入 PytorchAPI, 至少能比看 Tensorflow 多看懂一点点 Pytorch 的底层在干啥。</p>
-<h2 id="12-2-5-Pytorch有哪些常用工具包？"><a href="#12-2-5-Pytorch有哪些常用工具包？" class="headerlink" title="12.2.5 Pytorch有哪些常用工具包？"></a>12.2.5 Pytorch有哪些常用工具包？</h2><p>&emsp;&emsp;torch ：类似 NumPy 的张量库，强 GPU 支持 ；<br>&emsp;&emsp;torch.autograd ：基于 tape 的自动区别库，支持 torch 之中的所有可区分张量运行；<br>&emsp;&emsp;torch.nn ：为最大化灵活性未涉及、与 autograd 深度整合的神经网络库；<br>&emsp;&emsp;torch.optim：与 torch.nn 一起使用的优化包，包含 SGD、RMSProp、LBFGS、Adam 等标准优化方式；<br>&emsp;&emsp;torch.multiprocessing： python 多进程并发，进程之间 torch Tensors 的内存共享；<br>&emsp;&emsp;torch.utils：数据载入器。具有训练器和其他便利功能；<br>&emsp;&emsp;torch.legacy(.nn/.optim) ：处于向后兼容性考虑，从 Torch 移植来的 legacy 代码；</p>
-<h1 id="12-3-Caffe"><a href="#12-3-Caffe" class="headerlink" title="12.3 Caffe"></a>12.3 Caffe</h1><h2 id="12-3-1-什么是-Caffe？"><a href="#12-3-1-什么是-Caffe？" class="headerlink" title="12.3.1 什么是 Caffe？"></a>12.3.1 什么是 Caffe？</h2><p>&emsp;&emsp;Caffe的全称应该是Convolutional Architecture for Fast Feature Embedding，它是一个清晰、高效的深度学习框架，它是开源的，核心语言是C++，它支持命令行、Python和Matlab接口，它既可以在CPU上运行也可以在GPU上运行。它的license是BSD 2-Clause。</p>
-<h2 id="12-3-2-Caffe的特点是什么？"><a href="#12-3-2-Caffe的特点是什么？" class="headerlink" title="12.3.2 Caffe的特点是什么？"></a>12.3.2 Caffe的特点是什么？</h2><p>(1)、模块化：Caffe从一开始就设计得尽可能模块化，允许对新数据格式、网络层和损失函数进行扩展。</p>
-<p>(2)、表示和实现分离：Caffe的模型(model)定义是用Protocol Buffer语言写进配置文件的。以任意有向无环图的形式，Caffe支持网络架构。Caffe会根据网络的需要来正确占用内存。通过一个函数调用，实现CPU和GPU之间的切换。</p>
-<p>(3)、测试覆盖：在Caffe中，每一个单一的模块都对应一个测试。</p>
-<p>(4)、python和Matlab接口：同时提供Python和Matlab接口。</p>
-<p>(5)、预训练参考模型：针对视觉项目，Caffe提供了一些参考模型，这些模型仅应用在学术和非商业领域，它们的license不是BSD。</p>
-<h2 id="12-3-3-Caffe的设计思想是怎样的？"><a href="#12-3-3-Caffe的设计思想是怎样的？" class="headerlink" title="12.3.3 Caffe的设计思想是怎样的？"></a>12.3.3 Caffe的设计思想是怎样的？</h2><p>&emsp;&emsp;基本上，Caffe 沿用了神经网络的一个简单假设——所有的计算都是以layer的形式表示的，layer做的事情就是take一些数据，然后输出一些计算以后的结果，比如说卷积，就是输入一个图像，然后和这一层的参数（filter）做卷积，然后输出卷积的结果。每一个layer需要做两个计算：forward是从输入计算输出，然后backward是从上面给的gradient来计算相对于输入的gradient，只要这两个函数实现了以后，我们就可以把很多层连接成一个网络，这个网络做的事情就是输入我们的数据（图像或者语音或者whatever），然后来计算我们需要的输出（比如说识别的label），在training的时候，我们可以根据已有的label来计算loss和gradient，然后用gradient来update网络的参数，这个就是Caffe的一个基本流程。</p>
-<p>&emsp;&emsp;基本上，最简单地用Caffe上手的方法就是先把数据写成Caffe的格式，然后设计一个网络，然后用Caffe提供的solver来做优化看效果如何，如果你的数据是图像的话，可以从现有的网络，比如说alexnet或者googlenet开始，然后做fine tuning，如果你的数据稍有不同，比如说是直接的float vector，你可能需要做一些custom的configuration，Caffe的logistic regression example兴许会很有帮助。</p>
-<p>&emsp;&emsp;Fine tune方法：fine tuning的想法就是说，在imagenet那么大的数据集上train好一个很牛的网络了，那别的task上肯定也不错，所以我们可以把pretrain的网络拿过来，然后只重新train最后几层，重新train的意思是说，比如我以前需要classify imagenet的一千类，现在我只想识别是狗还是猫，或者是不是车牌，于是我就可以把最后一层softmax从一个4096<em>1000的分类器变成一个4096</em>2的分类器，这个strategy在应用中非常好使，所以我们经常会先在imagenet上pretrain一个网络，因为我们知道imagenet上training的大概过程会怎么样。</p>
-<h2 id="12-3-4-Caffe架构是怎样的？"><a href="#12-3-4-Caffe架构是怎样的？" class="headerlink" title="12.3.4 Caffe架构是怎样的？"></a>12.3.4 Caffe架构是怎样的？</h2><p>&emsp;&emsp;Caffe的架构与其它的深度学习框架稍微不同，它没有根据算法实现过程的方式来进行编码，而是以系统级的抽象作为整体架构，逐层的封装实现细节，使得上层的架构变得很清晰。Caffe的整体架构如下：</p>
-<h3 id="1-SyncedMem"><a href="#1-SyncedMem" class="headerlink" title="1. SyncedMem"></a>1. SyncedMem</h3><p>&emsp;&emsp;这个类的主要功能是封装CPU和GPU的数据交互操作。一般来说，数据的流动形式都是：硬盘-&gt;CPU内存-&gt;GPU内存-&gt;CPU内存-&gt;（硬盘），所以在写代码的过程中经常会写CPU/GPU之间数据传输的代码，同时还要维护CPU和GPU两个处理端的内存指针。这些事情处理起来不会很难，但是会很繁琐。因此SyncedMem的出现就是把CPU/GPU的数据传输操作封装起来，只需要调用简单的接口就可以获得两个处理端同步后的数据。</p>
-<h3 id="2-Blob"><a href="#2-Blob" class="headerlink" title="2. Blob"></a>2. Blob</h3><p>&emsp;&emsp;Blob是用于存储数据的对象，在Caffe中各种数据(图像输入、模型参数)都是以Blob的形式在网络中传输的，Blob提供统一的存储操作接口，可用来保存训练数据、模型参数等，同时Blob还能在CPU和GPU之间进行同步以支持CPU/GPU的混合运算。<br>&emsp;&emsp;这个类做了两个封装：一个是操作数据的封装，使用Blob可以操纵高维的数据，快速访问其中的数据，变换数据的维度等；另一个是对原始数据和更新量的封装，每一个Blob中都有data和diff两个数据指针，data用于存储原始数据，diff 用于存储反向传播（Backpropagation）的梯度更新值。Blob使用了SyncedMem，这样便于访问不同的处理端。Blob基本实现了整个Caffe数据结构部分的封装，在Net类中可以看到所有的前后向数据和参数都用Blob来表示就足够了。数据的抽象到这个就可以了，接下来作层级的抽象。神经网络的前后向计算可以做到层与层之间完全独立，只要每个层按照一定的接口规则实现，就可以确保整个网络的正确性。</p>
-<h3 id="3-Layer"><a href="#3-Layer" class="headerlink" title="3. Layer"></a>3. Layer</h3><p>&emsp;&emsp;Layer是网络Net的基本单元，也是Caffe中能在外部进行调整的最小网络结构单元，每个Layer都有输入Blob和输出Blob。Layer（层）是Caffe中最庞大最繁杂的模块，它是神经网络的基本计算单元。由于Caffe强调模块化设计，因此只允许每个layer完成一类特定的计算，例如convolution操作、pooling、非线性变换、内积运算，以及数据加载、归一化和损失计算等。Caffe中layer的种类有很多，具体的种类及功能请看官方文档。在创建一个Caffe模型的时候，也是以Layer为基础进行的。Layer是一个父类，它的下面还有各种实现特定功能的子类，例如data_layer，conv_layer，loss_layer等。Layer是通过LayFactory来创建的。</p>
-<h3 id="4-Net"><a href="#4-Net" class="headerlink" title="4. Net"></a>4. Net</h3><p>&emsp;&emsp;Net是一个完整的深度网络，包含输入层、隐藏层、输出层，在Caffe中一般是一个卷积神经网络(Convolution Neural Networ，CNN)。通过定义不同类型的Layer，并用Blob将不同的Layer连接起来，就能产生一个Net。Net将数据Blob和层Layer组合起来做进一步的封装，对外提供了初始化和前后传播的接口，使得整体看上去和一个层的功能类似，但内部的组合可以是多种多样的。值得一提的是，每一层的输入输出数据统一保存在Net中，同时每个层内的参数指针也保存在Net中，不同的层可以通过WeightShare共享相同的参数，因此可以通过配置来实现多个神经网络层之间共享参数的功能。一个Net由多个Layer组成。一个典型的网络从data layer（从磁盘中载入数据）出发到loss layer结束。</p>
-<h3 id="5-Solver"><a href="#5-Solver" class="headerlink" title="5. Solver"></a>5. Solver</h3><p>&emsp;&emsp;有了Net就可以进行神经网络的前后向传播计算了，但是还缺少神经网络的训练和预测功能，Solver类进一步封装了训练和预测相关的一些功能。它还提供了两个接口：一个是更新参数的接口，继承Solver可以实现不同的参数更新方法，如Momentum，Nesterov，Adagrad等，因此可以使用不同的优化算法。另一个接口是训练过程中每一轮特定状态下的可注入的一些回调函数，在代码中这个回调点的直接使用者就是多GPU训练算法。Solver定义了针对Net网络模型的求解方法，记录网络的训练过程，保存网络模型参数，中断并恢复网络的训练过程。自定义Solver能够实现不同的神经网络求解方式。阅读Solver的代码可以了解网络的求解优化过程。Solver是一个父类，它下面还有实现不同优化方法的子类，例如sgd_solver，adagrad_sovler等，Solver是通过SolverFactory来创建的。</p>
-<h3 id="6-Proto"><a href="#6-Proto" class="headerlink" title="6. Proto"></a>6. Proto</h3><p>&emsp;&emsp;caffe.proto位于…/src/caffe/proto目录下，在这个文件夹下还有一个.pb.cc和一个.pb.h文件，这两个文件都是由caffe.proto编译而来的。 在caffe.proto中定义了很多结构化数据，包括：<br>BlobProto、Datum、FillerParameter、NetParameter、SolverParameter、SolverState、LayerParameter、ConcatParameter、ConvolutionParameter、DataParameter、DropoutParameter、HDF5DataParameter、HDF5OutputParameter、ImageDataParameter、InfogainLossParameter、InnerProductParameter、LRNParameter、MemoryDataParameter、PoolingParameter、PowerParameter、WindowDataParameter、V0LayerParameter。</p>
-<h3 id="7-IO"><a href="#7-IO" class="headerlink" title="7. IO"></a>7. IO</h3><p>&emsp;&emsp;除了上面的东西之外，还需要输入数据和参数。DataReader和DataTransformer帮助准备输入数据，Filler对参数进行初始化，一些Snapshot方法可以对模型进行持久化。</p>
-<h2 id="12-3-5-Caffe的有哪些接口？"><a href="#12-3-5-Caffe的有哪些接口？" class="headerlink" title="12.3.5 Caffe的有哪些接口？"></a>12.3.5 Caffe的有哪些接口？</h2><p>&emsp;&emsp;Caffe深度学习框架支持多种编程接口，包括命令行、Python和Matlab,下面将介绍如何使用这些接口。</p>
-<h3 id="1-Caffe-Python接口"><a href="#1-Caffe-Python接口" class="headerlink" title="1. Caffe Python接口"></a>1. Caffe Python接口</h3><p>&emsp;&emsp;Caffe提供 Python 接口，即Pycaffe，具体实现在caffe、python文件夹内。在Python代码中import caffe，可以load models（导入模型）、forward and backward （前向、反向迭代）、handle IO（数据输入输出）、visualize networks（绘制net）和instrument model solving（自定义优化方法)。所有的模型数据、计算参数都是暴露在外、可供读写的。<br>&emsp;&emsp;(1)caffe.Net 是主要接口，负责导入数据、校验数据、计算模型。<br>&emsp;&emsp;(2)caffe.Classsifier 用于图像分类。<br>&emsp;&emsp;(3)caffe.Detector 用于图像检测。<br>&emsp;&emsp;(4)caffe.SGDSolver 是露在外的 solver 的接口。<br>&emsp;&emsp;(5)caffe.io 处理输入输出，数据预处理。<br>&emsp;&emsp;(6)caffe.draw 可视化 net 的结构。<br>&emsp;&emsp;(7)caffe blobs 以 numpy ndarrys 的形式表示，方便而且高效。</p>
-<h3 id="2-Caffe-MATLAB接口"><a href="#2-Caffe-MATLAB接口" class="headerlink" title="2. Caffe MATLAB接口"></a>2. Caffe MATLAB接口</h3><p>&emsp;&emsp;MATLAB接口（Matcaffe）在 caffe/matlab 目录的 caffe 软件包。在 matcaffe 的基础上，可将Caffe整合到MATLAB代码中。<br>&emsp;&emsp;MATLAB接口包括：<br>&emsp;&emsp;(1)MATLAB 中创建多个网络结构。<br>&emsp;&emsp;(2)网络的前向传播（Forward）与反向传播（Backward）计算。<br>&emsp;&emsp;(3)网络中的任意一层以及参数的存取。<br>&emsp;&emsp;(4)网络参数保存至文件或从文件夹加载。<br>&emsp;&emsp;(5)blob 和 network 形状调整。<br>&emsp;&emsp;(6)网络参数编辑和调整。<br>&emsp;&emsp;(7)创建多个 solvers 进行训练。<br>&emsp;&emsp;(8)从solver 快照（Snapshots）恢复并继续训练。<br>&emsp;&emsp;(9)访问训练网络（Train nets）和测试网络(Test nets)。<br>&emsp;&emsp;(10)迭代后网络交由 MATLAB 控制。<br>&emsp;&emsp;(11)MATLAB代码融合梯度算法。</p>
-<h3 id="3-Caffe-命令行接口"><a href="#3-Caffe-命令行接口" class="headerlink" title="3. Caffe 命令行接口"></a>3. Caffe 命令行接口</h3><p>&emsp;&emsp;命令行接口 Cmdcaffe 是 Caffe 中用来训练模型、计算得分以及方法判断的工具。Cmdcaffe 存放在 caffe/build/tools 目录下。</p>
-<h4 id="1-caffe-train"><a href="#1-caffe-train" class="headerlink" title="1. caffe train"></a>1. caffe train</h4><p>&emsp;&emsp;caffe train 命令用于模型学习，具体包括：<br>&emsp;&emsp;(1)caffe train 带 solver.prototxt 参数完成配置。<br>&emsp;&emsp;(2)caffe train 带 snapshot mode_iter_1000.solverstate 参数加载 solver snapshot。<br>&emsp;&emsp;(3)caffe train 带 weights 参数 model.caffemodel 完成 Fine-tuning 模型初始化。</p>
-<h4 id="2-caffe-test"><a href="#2-caffe-test" class="headerlink" title="2. caffe test"></a>2. caffe test</h4><p>&emsp;&emsp;caffe test 命令用于测试运行模型的得分，并且用百分比表示网络输出的最终结果，比如 accuracyhuoloss 作为其结果。测试过程中，显示每个 batch 的得分，最后输出全部 batch 的平均得分值。</p>
-<h4 id="3-caffe-time"><a href="#3-caffe-time" class="headerlink" title="3. caffe time"></a>3. caffe time</h4><p>&emsp;&emsp;caffe time 命令用来检测系统性能和测量模型相对执行时间，此命令通过逐层计时与同步，执行模型检测。</p>
-<p>参考文献：<br>1.深度学习：Caffe之经典模型讲解与实战/ 乐毅，王斌</p>
-<h3 id="10-4-网络搭建有什么原则？"><a href="#10-4-网络搭建有什么原则？" class="headerlink" title="10.4 网络搭建有什么原则？"></a>10.4 网络搭建有什么原则？</h3><h3 id="10-4-1新手原则。"><a href="#10-4-1新手原则。" class="headerlink" title="10.4.1新手原则。"></a>10.4.1新手原则。</h3><p>刚入门的新手不建议直接上来就开始搭建网络模型。比较建议的学习顺序如下：</p>
-<ul>
-<li>1.了解神经网络工作原理，熟悉基本概念及术语。</li>
-<li>2.阅读经典网络模型论文+实现源码(深度学习框架视自己情况而定)。</li>
-<li>3.找数据集动手跑一个网络，可以尝试更改已有的网络模型结构。</li>
-<li>4.根据自己的项目需要设计网络。</li>
-</ul>
-<h3 id="10-4-2深度优先原则。"><a href="#10-4-2深度优先原则。" class="headerlink" title="10.4.2深度优先原则。"></a>10.4.2深度优先原则。</h3><p>通常增加网络深度可以提高准确率，但同时会牺牲一些速度和内存。但深度不是盲目堆起来的，一定要在浅层网络有一定效果的基础上，增加深度。深度增加是为了增加模型的准确率，如果浅层都学不到东西，深了也没效果。</p>
-<h3 id="10-4-3卷积核size一般为奇数。"><a href="#10-4-3卷积核size一般为奇数。" class="headerlink" title="10.4.3卷积核size一般为奇数。"></a>10.4.3卷积核size一般为奇数。</h3><p>卷积核为奇数有以下好处：</p>
-<ul>
-<li>1 保证锚点刚好在中间，方便以 central pixel为标准进行滑动卷积，避免了位置信息发生偏移 。</li>
-<li>2 保证在填充（Padding）时，在图像之间添加额外的零层，图像的两边仍然对称。</li>
-</ul>
-<h3 id="10-4-4卷积核不是越大越好。"><a href="#10-4-4卷积核不是越大越好。" class="headerlink" title="10.4.4卷积核不是越大越好。"></a>10.4.4卷积核不是越大越好。</h3><p>AlexNet中用到了一些非常大的卷积核，比如11×11、5×5卷积核，之前人们的观念是，卷积核越大，感受野越大，看到的图片信息越多，因此获得的特征越好。但是大的卷积核会导致计算量的暴增，不利于模型深度的增加，计算性能也会降低。于是在VGG、Inception网络中，利用2个3×3卷积核的组合比1个5×5卷积核的效果更佳，同时参数量（3×3×2+1=19&lt;26=5×5×1+1）被降低，因此后来3×3卷积核被广泛应用在各种模型中。</p>
-<h2 id="10-5-有哪些经典的网络模型值得我们去学习的？"><a href="#10-5-有哪些经典的网络模型值得我们去学习的？" class="headerlink" title="10.5 有哪些经典的网络模型值得我们去学习的？"></a>10.5 有哪些经典的网络模型值得我们去学习的？</h2><p>提起经典的网络模型就不得不提起计算机视觉领域的经典比赛：ILSVRC .其全称是 ImageNet Large Scale Visual Recognition Challenge.正是因为ILSVRC 2012挑战赛上的AlexNet横空出世，使得全球范围内掀起了一波深度学习热潮。这一年也被称作“深度学习元年”。而在历年ILSVRC比赛中每次刷新比赛记录的那些神经网络也成为了人们心中的经典，成为学术界与工业届竞相学习与复现的对象，并在此基础上展开新的研究。</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>序号</th>
-<th>年份</th>
-<th>网络名称</th>
-<th>获得荣誉</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>2012</td>
-<td>AlexNet</td>
-<td>ILSVRC图像分类冠军</td>
-</tr>
-<tr>
-<td>2</td>
-<td>2014</td>
-<td>VGGNet</td>
-<td>ILSVRC图像分类亚军</td>
-</tr>
-<tr>
-<td>3</td>
-<td>2014</td>
-<td>GoogLeNet</td>
-<td>ILSVRC图像分类冠军</td>
-</tr>
-<tr>
-<td>4</td>
-<td>2015</td>
-<td>ResNet</td>
-<td>ILSVRC图像分类冠军</td>
-</tr>
-<tr>
-<td>5</td>
-<td>2017</td>
-<td>SeNet</td>
-<td>ILSVRC图像分类冠军</td>
-</tr>
-</tbody>
-</table>
-</div>
-<blockquote>
-<ul>
-<li><p>1 AlexNet<br>论文:<a href="https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf" target="_blank" rel="noopener">ImageNet Classification with Deep Convolutional Neural Networks</a><br>代码实现:<a href="https://github.com/tensorflow/tensorflow/blob/361a82d73a50a800510674b3aaa20e4845e56434/tensorflow/contrib/slim/python/slim/nets/alexnet.py" target="_blank" rel="noopener">tensorflow</a><br>主要特点：</p>
-<blockquote>
-<ul>
-<li>1.第一次使用非线性激活函数ReLU。</li>
-<li>2.增加防加过拟合方法：Droupout层,提升了模型鲁棒性。</li>
-<li>3.首次使用数据增强。  </li>
-<li>4.首次使用GPU加速运算。</li>
-</ul>
-</blockquote>
-</li>
-<li><p>2 VGGNet<br>论文:<a href="https://arxiv.org/abs/1409.1556" target="_blank" rel="noopener">Very Deep Convolutional Networks for Large-Scale Image Recognition</a><br>代码实现:<a href="https://github.com/tensorflow/tensorflow/blob/361a82d73a50a800510674b3aaa20e4845e56434/tensorflow/contrib/slim/python/slim/nets/vgg.py" target="_blank" rel="noopener">tensorflow</a><br>主要特点：</p>
-<blockquote>
-<ul>
-<li>1.网络结构更深。</li>
-<li>2.普遍使用小卷积核。</li>
-</ul>
-</blockquote>
-</li>
-<li><p>3 GoogLeNet<br>论文:<a href="https://arxiv.org/abs/1409.4842" target="_blank" rel="noopener">Going Deeper with Convolutions</a><br>代码实现:<a href="https://github.com/tensorflow/tensorflow/blob/361a82d73a50a800510674b3aaa20e4845e56434/tensorflow/contrib/slim/python/slim/nets/inception_v1.py" target="_blank" rel="noopener">tensorflow</a><br>主要特点：</p>
-<blockquote>
-<ul>
-<li>1.增强卷积模块功能。<br>主要的创新在于他的Inception，这是一种网中网（Network In Network）的结构，即原来的结点也是一个网络。Inception一直在不断发展，目前已经V2、V3、V4。其中1*1卷积主要用来降维，用了Inception之后整个网络结构的宽度和深度都可扩大，能够带来2-3倍的性能提升。</li>
-<li>2.连续小卷积代替大卷积，保证感受野不变的同时，减少了参数数目。</li>
-</ul>
-</blockquote>
-</li>
-<li>4 ResNet<br>论文:<a href="https://arxiv.org/abs/1512.03385" target="_blank" rel="noopener">Deep Residual Learning for Image Recognition</a><br>代码实现:<a href="https://github.com/tensorflow/tensorflow/blob/361a82d73a50a800510674b3aaa20e4845e56434/tensorflow/contrib/slim/python/slim/nets/inception_v1.py" target="_blank" rel="noopener">tensorflow</a><br>主要特点:<blockquote>
-<p>解决了“退化”问题，即当模型的层次加深时，错误率却提高了。</p>
-</blockquote>
-</li>
-<li>5 SeNet<br>论文:<a href="https://arxiv.org/abs/1709.01507" target="_blank" rel="noopener">Squeeze-and-Excitation Networks</a><br>代码实现:<a href="https://github.com/ry/tensorflow-resnet" target="_blank" rel="noopener">tensorflow</a><br>主要特点:<blockquote>
-<p>提出了feature recalibration，通过引入 attention 重新加权，可以得到抑制无效特征，提升有效特征的权重，并很容易地和现有网络结合，提升现有网络性能，而计算量不会增加太多。</p>
-</blockquote>
-</li>
-</ul>
-</blockquote>
-<p><strong>CV领域网络结构演进历程：</strong><br><img src="/img/ch12/网络结构演进.png" alt="CV领域网络结构演进历程"></p>
-<p><strong>ILSVRC挑战赛历年冠军:</strong><br><img src="/img/ch12/历年冠军.png" alt="ILSVRC挑战赛历年冠军"></p>
-<p>此后，ILSVRC挑战赛的名次一直是衡量一个研究机构或企业技术水平的重要标尺。<br>ILSVRC 2017 已是最后一届举办.2018年起，将由WebVision竞赛（Challenge on Visual Understanding by Learning from Web Data）来接棒。因此，即使ILSVRC挑战赛停办了，但其对深度学习的深远影响和巨大贡献，将永载史册。</p>
-<h2 id="10-6-网络训练有哪些技巧吗？"><a href="#10-6-网络训练有哪些技巧吗？" class="headerlink" title="10.6 网络训练有哪些技巧吗？"></a>10.6 网络训练有哪些技巧吗？</h2><h3 id="10-6-1-合适的数据集。"><a href="#10-6-1-合适的数据集。" class="headerlink" title="10.6.1.合适的数据集。"></a>10.6.1.合适的数据集。</h3><ul>
-<li>1 没有明显脏数据(可以极大避免Loss输出为NaN)。</li>
-<li>2 样本数据分布均匀。</li>
-</ul>
-<h3 id="10-6-2-合适的预处理方法。"><a href="#10-6-2-合适的预处理方法。" class="headerlink" title="10.6.2.合适的预处理方法。"></a>10.6.2.合适的预处理方法。</h3><p>关于数据预处理，在Batch Normalization未出现之前预处理的主要做法是减去均值，然后除去方差。在Batch Normalization出现之后，减均值除方差的做法已经没有必要了。对应的预处理方法主要是数据筛查、数据增强等。</p>
-<h3 id="10-6-3-网络的初始化。"><a href="#10-6-3-网络的初始化。" class="headerlink" title="10.6.3.网络的初始化。"></a>10.6.3.网络的初始化。</h3><p>网络初始化最粗暴的做法是参数赋值为全0，这是绝对不可取的。因为如果所有的参数都是0，那么所有神经元的输出都将是相同的，那在back propagation的时候同一层内所有神经元的行为也是相同的，这可能会直接导致模型失效，无法收敛。吴恩达视频中介绍的方法是将网络权重初始化均值为0、方差为1符合的正态分布的随机数据。</p>
-<h3 id="10-6-4-小规模数据试练。"><a href="#10-6-4-小规模数据试练。" class="headerlink" title="10.6.4.小规模数据试练。"></a>10.6.4.小规模数据试练。</h3><p>在正式开始训练之前，可以先用小规模数据进行试练。原因如下：</p>
-<ul>
-<li>1 可以验证自己的训练流程对否。</li>
-<li>2 可以观察收敛速度，帮助调整学习速率。</li>
-<li>3 查看GPU显存占用情况，最大化batch_size(前提是进行了batch normalization，只要显卡不爆，尽量挑大的)。</li>
-</ul>
-<h3 id="10-6-5-设置合理Learning-Rate。"><a href="#10-6-5-设置合理Learning-Rate。" class="headerlink" title="10.6.5.设置合理Learning Rate。"></a>10.6.5.设置合理Learning Rate。</h3><ul>
-<li>1 太大。Loss爆炸、输出NaN等。</li>
-<li>2 太小。收敛速度过慢，训练时长大大延长。</li>
-<li>3 可变的学习速率。比如当输出准确率到达某个阈值后，可以让Learning Rate减半继续训练。</li>
-</ul>
-<h3 id="10-6-6-损失函数"><a href="#10-6-6-损失函数" class="headerlink" title="10.6.6.损失函数"></a>10.6.6.损失函数</h3><p>损失函数主要分为两大类:分类损失和回归损失</p>
-<blockquote>
-<p>1.回归损失：</p>
-<blockquote>
-<ul>
-<li>1 均方误差(MSE 二次损失 L2损失)<br>它是我们的目标变量与预测值变量差值平方。</li>
-<li>2 平均绝对误差(MAE L1损失)<br>它是我们的目标变量与预测值变量差值绝对值。<br>关于MSE与MAE的比较。MSE更容易解决问题，但是MAE对于异常值更加鲁棒。更多关于MAE和MSE的性能，可以参考<a href="https://rishy.github.io/ml/2015/07/28/l1-vs-l2-loss/" target="_blank" rel="noopener">L1vs.L2 Loss Function</a></li>
-</ul>
-</blockquote>
-<p>2.分类损失：</p>
-<blockquote>
-<ul>
-<li>1 交叉熵损失函数。<br>是目前神经网络中最常用的分类目标损失函数。</li>
-<li>2 合页损失函数<br>合页损失函数广泛在支持向量机中使用，有时也会在损失函数中使用。缺点:合页损失函数是对错误越大的样本施以更严重的惩罚，但是这样会导致损失函数对噪声敏感。</li>
-</ul>
-</blockquote>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/03/03/%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0_%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Kay">
-      <meta itemprop="description" content="千里之行，始于足下">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Home">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/03/%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0_%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">第十一章_迁移学习</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-03 12:29:59 / 修改时间：12:30:46" itemprop="dateCreated datePublished" datetime="2020-03-03T12:29:59+08:00">2020-03-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>[TOC]</p>
-<h1 id="第十一章-迁移学习"><a href="#第十一章-迁移学习" class="headerlink" title="第十一章 迁移学习"></a>第十一章 迁移学习</h1><p>​    本章主要简明地介绍了迁移学习的基本概念、迁移学习的必要性、研究领域和基本方法。重点介绍了几大类常用的迁移学习方法：数据分布自适应方法、特征选择方法、子空间学习方法、以及目前最热门的深度迁移学习方法。除此之外，我们也结合最近的一些研究成果对未来迁移学习进行了一些展望。并提供了一些迁移学习领域的常用学习资源，以方便感兴趣的读者快速开始学习。</p>
-<h2 id="11-1-迁移学习基础知识"><a href="#11-1-迁移学习基础知识" class="headerlink" title="11.1 迁移学习基础知识"></a>11.1 迁移学习基础知识</h2><h3 id="11-1-1-什么是迁移学习？"><a href="#11-1-1-什么是迁移学习？" class="headerlink" title="11.1.1 什么是迁移学习？"></a>11.1.1 什么是迁移学习？</h3><p>找到目标问题的相似性，迁移学习任务就是从相似性出发，将旧领域(domain)学习过的模型应用在新领域上。</p>
-<h3 id="11-1-2-为什么需要迁移学习？"><a href="#11-1-2-为什么需要迁移学习？" class="headerlink" title="11.1.2 为什么需要迁移学习？"></a>11.1.2 为什么需要迁移学习？</h3><ol>
-<li><strong>大数据与少标注的矛盾</strong>：虽然有大量的数据，但往往都是没有标注的，无法训练机器学习模型。人工进行数据标定太耗时。</li>
-<li><strong>大数据与弱计算的矛盾</strong>：普通人无法拥有庞大的数据量与计算资源。因此需要借助于模型的迁移。</li>
-<li><strong>普适化模型与个性化需求的矛盾</strong>：即使是在同一个任务上，一个模型也往往难以满足每个人的个性化需求，比如特定的隐私设置。这就需要在不同人之间做模型的适配。</li>
-<li><strong>特定应用（如冷启动）的需求</strong>。</li>
-</ol>
-<h3 id="11-1-3-迁移学习的基本问题有哪些？"><a href="#11-1-3-迁移学习的基本问题有哪些？" class="headerlink" title="11.1.3 迁移学习的基本问题有哪些？"></a>11.1.3 迁移学习的基本问题有哪些？</h3><p>基本问题主要有3个：</p>
-<ul>
-<li><strong>How to transfer</strong>： 如何进行迁移学习？（设计迁移方法）</li>
-<li><strong>What to transfer</strong>： 给定一个目标领域，如何找到相对应的源领域，然后进行迁移？（源领域选择）</li>
-<li><strong>When to transfer</strong>： 什么时候可以进行迁移，什么时候不可以？（避免负迁移）</li>
-</ul>
-<h3 id="11-1-4-迁移学习有哪些常用概念？"><a href="#11-1-4-迁移学习有哪些常用概念？" class="headerlink" title="11.1.4 迁移学习有哪些常用概念？"></a>11.1.4 迁移学习有哪些常用概念？</h3><ul>
-<li>基本定义<ul>
-<li><strong>域(Domain)</strong>：数据特征和特征分布组成，是学习的主体<ul>
-<li><strong>源域 (Source domain)</strong>：已有知识的域</li>
-<li><strong>目标域 (Target domain)</strong>：要进行学习的域</li>
-</ul>
-</li>
-<li><strong>任务 (Task)</strong>：由目标函数和学习结果组成，是学习的结果</li>
-</ul>
-</li>
-<li>按特征空间分类<ul>
-<li><strong>同构迁移学习（Homogeneous TL）</strong>： 源域和目标域的特征空间相同，$D_s=D_t$</li>
-<li><strong>异构迁移学习（Heterogeneous TL）</strong>：源域和目标域的特征空间不同，$D_s\ne D_t$</li>
-</ul>
-</li>
-<li>按迁移情景分类<ul>
-<li><strong>归纳式迁移学习（Inductive TL）</strong>：源域和目标域的学习任务不同</li>
-<li><strong>直推式迁移学习（Transductive TL)</strong>：源域和目标域不同，学习任务相同</li>
-<li><strong>无监督迁移学习（Unsupervised TL)</strong>：源域和目标域均没有标签</li>
-</ul>
-</li>
-<li>按迁移方法分类<ul>
-<li><strong>基于实例的迁移 (Instance based TL)</strong>：通过权重重用源域和目标域的样例进行迁移</li>
-<li><strong>基于特征的迁移 (Feature based TL)</strong>：将源域和目标域的特征变换到相同空间</li>
-<li><strong>基于模型的迁移 (Parameter based TL)</strong>：利用源域和目标域的参数共享模型</li>
-<li><strong>基于关系的迁移 (Relation based TL)</strong>：利用源域中的逻辑网络关系进行迁移</li>
-</ul>
-</li>
-</ul>
-<p><img src="/img/ch11/1542972502781.png" alt="1542972502781"></p>
-<p><img src="/img/ch11/1542974131814.png" alt="1542974131814"></p>
-<h3 id="11-1-5-迁移学习与传统机器学习有什么区别？"><a href="#11-1-5-迁移学习与传统机器学习有什么区别？" class="headerlink" title="11.1.5 迁移学习与传统机器学习有什么区别？"></a>11.1.5 迁移学习与传统机器学习有什么区别？</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th></th>
-<th>迁移学习</th>
-<th>传统机器学习</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>数据分布</td>
-<td>训练和测试数据不需要同分布</td>
-<td>训练和测试数据同分布</td>
-</tr>
-<tr>
-<td>数据标签</td>
-<td>不需要足够的数据标注</td>
-<td>足够的数据标注</td>
-</tr>
-<tr>
-<td>建模</td>
-<td>可以重用之前的模型</td>
-<td>每个任务分别建模</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><img src="/img/ch11/1542973960796.png" alt="1542973960796"></p>
-<h3 id="11-1-6-迁移学习的核心及度量准则？"><a href="#11-1-6-迁移学习的核心及度量准则？" class="headerlink" title="11.1.6 迁移学习的核心及度量准则？"></a>11.1.6 迁移学习的核心及度量准则？</h3><p><strong>迁移学习的总体思路可以概括为</strong>：开发算法来最大限度地利用有标注的领域的知识，来辅助目标领域的知识获取和学习。</p>
-<p><strong>迁移学习的核心是</strong>：找到源领域和目标领域之间的相似性，并加以合理利用。这种相似性非常普遍。比如，不同人的身体构造是相似的；自行车和摩托车的骑行方式是相似的；国际象棋和中国象棋是相似的；羽毛球和网球的打球方式是相似的。这种相似性也可以理解为不变量。以不变应万变，才能立于不败之地。</p>
-<p><strong>有了这种相似性后，下一步工作就是， 如何度量和利用这种相似性。</strong>度量工作的目标有两点：一是很好地度量两个领域的相似性，不仅定性地告诉我们它们是否相似，更定量地给出相似程度。二是以度量为准则，通过我们所要采用的学习手段，增大两个领域之间的相似性，从而完成迁移学习。</p>
-<p><strong>一句话总结： 相似性是核心，度量准则是重要手段。</strong></p>
-<h3 id="11-1-7-迁移学习与其他概念的区别？"><a href="#11-1-7-迁移学习与其他概念的区别？" class="headerlink" title="11.1.7 迁移学习与其他概念的区别？"></a>11.1.7 迁移学习与其他概念的区别？</h3><ol>
-<li>迁移学习与多任务学习关系：<ul>
-<li><strong>多任务学习</strong>：多个相关任务一起协同学习；</li>
-<li><strong>迁移学习</strong>：强调信息复用，从一个领域(domain)迁移到另一个领域。</li>
-</ul>
-</li>
-<li>迁移学习与领域自适应：<strong>领域自适应</strong>：使两个特征分布不一致的domain一致。</li>
-<li>迁移学习与协方差漂移：<strong>协方差漂移</strong>：数据的条件概率分布发生变化。</li>
-</ol>
-<p>Reference： </p>
-<ol>
-<li><a href="https：//github.com/jindongwang/transferlearning-tutorial">王晋东，迁移学习简明手册</a></li>
-<li>Ben-David, S., Blitzer, J., Crammer, K., Kulesza, A., Pereira, F., &amp; Vaughan, J. W. (2010). A theory of learning from different domains. Machine learning, 79(1-2), 151-175.</li>
-<li>Tan, B., Song, Y., Zhong, E. and Yang, Q., 2015, August. Transitive transfer learning. In Proceedings of the 21th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (pp. 1155-1164). ACM.</li>
-</ol>
-<h3 id="11-1-8-什么是负迁移？产生负迁移的原因有哪些？"><a href="#11-1-8-什么是负迁移？产生负迁移的原因有哪些？" class="headerlink" title="11.1.8 什么是负迁移？产生负迁移的原因有哪些？"></a>11.1.8 什么是负迁移？产生负迁移的原因有哪些？</h3><p>负迁移(Negative Transfer)指的是，在源域上学习到的知识，对于目标域上的学习产生负面作用。</p>
-<p>产生负迁移的原因主要有：</p>
-<ul>
-<li>数据问题：源域和目标域压根不相似，谈何迁移？</li>
-<li>方法问题：源域和目标域是相似的，但是，迁移学习方法不够好，没找到可迁移的成分。</li>
-</ul>
-<p>负迁移给迁移学习的研究和应用带来了负面影响。在实际应用中，找到合理的相似性，并且选择或开发合理的迁移学习方法，能够避免负迁移现象。</p>
-<h3 id="11-1-9-迁移学习的基本思路？"><a href="#11-1-9-迁移学习的基本思路？" class="headerlink" title="11.1.9 迁移学习的基本思路？"></a>11.1.9 迁移学习的基本思路？</h3><p>迁移学习的总体思路可以概括为：开发算法来最大限度地利用有标注的领域的知识，来辅助目标领域的知识获取和学习。</p>
-<ol>
-<li>找到目标问题的相似性，迁移学习任务就是从相似性出发，将旧领域(domain)学习过的模型应用在新领域上。</li>
-<li>迁移学习，是指利用数据、任务、或模型之间的相似性，将在旧领域学习过的模型，应用于新领域的一种学习过程。</li>
-<li>迁移学习<strong>最有用的场合</strong>是，如果你尝试优化任务B的性能，通常这个任务数据相对较少。<br>例如，在放射科中你知道很难收集很多射线扫描图来搭建一个性能良好的放射科诊断系统，所以在这种情况下，你可能会找一个相关但不同的任务，如图像识别，其中你可能用 1 百万张图片训练过了，并从中学到很多低层次特征，所以那也许能帮助网络在任务在放射科任务上做得更好，尽管任务没有这么多数据。</li>
-<li>迁移学习什么时候是有意义的？它确实可以<strong>显著提高</strong>你的<strong>学习任务的性能</strong>，但我有时候也见过有些场合使用迁移学习时，任务实际上数据量比任务要少， 这种情况下增益可能不多。<blockquote>
-<p>什么情况下可以使用迁移学习？</p>
-<p>假如两个领域之间的区别特别的大，<strong>不可以直接采用迁移学习</strong>，因为在这种情况下效果不是很好。在这种情况下，推荐使用[3]的工作，在两个相似度很低的domain之间一步步迁移过去（踩着石头过河）。</p>
-</blockquote>
-</li>
-</ol>
-<blockquote>
-<ol>
-<li>迁移学习主要解决方案有哪些？</li>
-<li>除直接看infer的结果的Accurancy以外，如何衡量迁移学习学习效果？</li>
-<li>对抗网络是如何进行迁移的？</li>
-</ol>
-</blockquote>
-<p>Reference： </p>
-<ol>
-<li><a href="https：//github.com/jindongwang/transferlearning-tutorial">王晋东，迁移学习简明手册</a></li>
-<li>Ben-David, S., Blitzer, J., Crammer, K., Kulesza, A., Pereira, F., &amp; Vaughan, J. W. (2010). A theory of learning from different domains. Machine learning, 79(1-2), 151-175.</li>
-<li>Tan, B., Song, Y., Zhong, E. and Yang, Q., 2015, August. Transitive transfer learning. In Proceedings of the 21th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (pp. 1155-1164). ACM.</li>
-</ol>
-<h2 id="11-2-迁移学习的基本思路有哪些？"><a href="#11-2-迁移学习的基本思路有哪些？" class="headerlink" title="11.2 迁移学习的基本思路有哪些？"></a>11.2 迁移学习的基本思路有哪些？</h2><p>​    迁移学习的基本方法可以分为四种。这四种基本的方法分别是：基于样本的迁移， 基于模型 的迁移， 基于特征的迁移，及基于关系的迁移。</p>
-<h3 id="11-2-1-基于样本迁移"><a href="#11-2-1-基于样本迁移" class="headerlink" title="11.2.1 基于样本迁移"></a>11.2.1 基于样本迁移</h3><p>​    基于样本的迁移学习方法 (Instance based Transfer Learning) 根据一定的权重生成规则，对数据样本进行重用，来进行迁移学习。图<a href="#bookmark90">14</a>形象地表示了基于样本迁移方法的思想源域中存在不同种类的动物，如狗、鸟、猫等，目标域只有狗这一种类别。在迁移时，为了最大限度地和目标域相似，我们可以人为地提高源域中属于狗这个类别的样本权重。</p>
-<p><img src="./media/631e5aab4e0680c374793804817bfbb6.jpg" alt=""></p>
-<p><center>图 14: 基于样本的迁移学习方法示意图</p>
-<p>​    在迁移学习中，对于源域D~s~和目标域D~t~，通常假定产生它们的概率分布是不同且未知的(P(X~s~) =P(X~t~))。另外，由于实例的维度和数量通常都非常大，因此，直接对 P(X~s~) 和P(X~t~) 进行估计是不可行的。因而，大量的研究工作 [<a href="#bookmark267">Khan and Heisterkamp,2016</a>, <a href="#bookmark319">Zadrozny, 2004</a>, <a href="#bookmark242">Cortes et al.,2008</a>, <a href="#bookmark243">Dai et al., 2007</a>, <a href="#bookmark302">Tan et al.,2015</a>, <a href="#bookmark303">Tan et al., 2017</a>] 着眼于对源域和目标域的分布比值进行估计(P(<strong>X</strong>t)/P(<strong>X</strong>s))。所估计得到的比值即为样本的权重。这些方法通常都假设P(<strong>x</strong>s) \&lt;并且源域和目标域的条件概率分布相同(P(y|x~s~)=<em>P</em>(y|x~t~))。特别地，上海交通大学Dai等人[<a href="#bookmark243">Dai et al.,2007</a>]提出了 TrAdaboost方法，将AdaBoost的思想应用于迁移学习中，提高有利于目标分类任务的实例权重、降低不利于目标分类任务的实例权重，并基于PAC理论推导了模型的泛化误差上界。TrAdaBoost方法是此方面的经典研究之一。文献 [<a href="#bookmark264">Huang et al., 2007</a>]提出核均值匹配方法 (Kernel Mean atching, KMM)对于概率分布进行估计，目标是使得加权后的源域和目标域的概率分布尽可能相近。在最新的研究成果中，香港科技大学的Tan等人扩展了实例迁移学习方法的应用场景，提出 了传递迁移学习方法(Transitive Transfer Learning, TTL) [<a href="#bookmark302">Tan etal., 2015</a>] 和远域迁移学习 (Distant Domain Transfer Learning,DDTL) [<a href="#bookmark303">Tan et al., 2017</a>]，利用联合矩阵分解和深度神经网络，将迁移学习应用于多个不相似的领域之间的知识共享，取得了良好的效果。</p>
-<p>​    虽然实例权重法具有较好的理论支撑、容易推导泛化误差上界，但这类方法通常只在领域间分布差异较小时有效，因此对自然语言处理、计算机视觉等任务效果并不理想。而基于特征表示的迁移学习方法效果更好,是我们研究的重点。</p>
-<h3 id="11-2-2-基于特征迁移"><a href="#11-2-2-基于特征迁移" class="headerlink" title="11.2.2 基于特征迁移"></a>11.2.2 基于特征迁移</h3><p>​    基于特征的迁移方法 (Feature based Transfer Learning) 是指将通过特征变换的方式互相迁移 [<a href="#bookmark272">Liu et al., 2011</a>, <a href="#bookmark327">Zheng et al.,2008</a>, <a href="#bookmark263">Hu and Yang, 2011</a>],来减少源域和目标域之间的差距；或者将源域和目标域的数据特征变换到统一特征空间中 [<a href="#bookmark288">Pan et al.,2011</a>, <a href="#bookmark278">Long et al., 2014b</a>, <a href="#bookmark248">Duan et al.,2012</a>],然后利用传统的机器学习方法进行分类识别。根据特征的同构和异构性,又可以分为同构和异构迁移学习。图<a href="#bookmark93">15</a>很形象地表示了两种基于特 征的迁移学习方法。</p>
-<p><img src="./media/fa08900e89bfd53cc28345d21bc6aca0.jpg" alt=""></p>
-<p><center>图 15: 基于特征的迁移学习方法示意图</p>
-<p>​    基于特征的迁移学习方法是迁移学习领域中最热门的研究方法,这类方法通常假设源域和目标域间有一些交叉的特征。香港科技大学的 Pan 等人 [<a href="#bookmark288">Pan et al.,2011</a>] 提出的迁移 成分分析方法 (Transfer Component Analysis, TCA)是其中较为典型的一个方法。该方法的 核心内容是以最大均值差异 (Maximum MeanDiscrepancy, MMD) [<a href="#bookmark236">Borgwardt et al., 2006</a>]作为度量准则,将不同数据领域中的分布差异最小化。加州大学伯克利分校的 Blitzer 等人 [<a href="#bookmark235">Blitzer et al., 2006</a>] 提出了一种基于结构对应的学习方法(Structural Corresponding Learning,SCL),该算法可以通过映射将一个空间中独有的一些特征变换到其他所有空间中的轴特征上,然后在该特征上使用机器学习的算法进行分类预测。清华大学龙明盛等人[<a href="#bookmark278">Long et al.,2014b</a>]提出在最小化分布距离的同时，加入实例选择的迁移联合匹配(Tran-fer Joint Matching, TJM) 方法,将实例和特征迁移学习方法进行了有机的结合。澳大利亚卧龙岗大学的 Jing Zhang 等人 [<a href="#bookmark321">Zhang et al., 2017a</a>]提出对于源域和目标域各自训练不同 的变换矩阵,从而达到迁移学习的目标。</p>
-<h3 id="11-2-3-基于模型迁移"><a href="#11-2-3-基于模型迁移" class="headerlink" title="11.2.3 基于模型迁移"></a>11.2.3 基于模型迁移</h3><p>​    基于模型的迁移方法 (Parameter/Model based Transfer Learning) 是指从源域和目标域中找到他们之间共享的参数信息,以实现迁移的方法。这种迁移方式要求的假设条件是： 源域中的数据与目标域中的数据可以共享一些模型的参数。其中的代表性工作主要有［<a href="#bookmark324">Zhao et al., 2010</a>, <a href="#bookmark325">Zhao et al., 2011</a>, <a href="#bookmark287">Panet al., 2008b</a>, <a href="#bookmark286">Pan et al., 2008a</a>］。图<a href="#bookmark96">16</a>形象地 表示了基于模型的迁移学习方法的基本思想。</p>
-<p><img src="./media/602723a1d3ce0f3abe7c591a8e4bb6ec.jpg" alt=""></p>
-<p><center>图 16: 基于模型的迁移学习方法示意图</p>
-<p>​    其中，中科院计算所的Zhao等人[<a href="#bookmark325">Zhao et al., 2011</a>]提出了TransEMDT方法。该方法首先针对已有标记的数据，利用决策树构建鲁棒性的行为识别模型，然后针对无标定数据，利用K-Means聚类方法寻找最优化的标定参数。西安邮电大学的Deng等人[<a href="#bookmark245">Deng et al.,2014</a>] 也用超限学习机做了类似的工作。香港科技大学的Pan等人[<a href="#bookmark286">Pan etal., 2008a</a>]利用HMM，针对Wifi室内定位在不同设备、不同时间和不同空间下动态变化的特点，进行不同分布下的室内定位研究。另一部分研究人员对支持向量机 SVM 进行了改进研究 [<a href="#bookmark285">Nater et al.,2011</a>, <a href="#bookmark269">Li et al., 2012</a>]。这些方法假定 SVM中的权重向量 <strong>w</strong> 可以分成两个部分： <strong>w</strong> = <strong>wo</strong>+<strong>v</strong>， 其中 <strong>w</strong>0代表源域和目标域的共享部分， <strong>v</strong> 代表了对于不同领域的特定处理。在最新的研究成果中，香港科技大学的 Wei 等人 [<a href="#bookmark313">Wei et al., 2016b</a>]将社交信息加入迁移学习方法的 正则项中，对方法进行了改进。清华大学龙明盛等人[<a href="#bookmark275">Long et al., 2015a</a>, <a href="#bookmark276">Long et al., 2016</a>, <a href="#bookmark280">Long etal., 2017</a>]改进了深度网络结构，通过在网络中加入概率分布适配层，进一步提高了深度迁移学习网络对于大数据的泛化能力。</p>
-<h3 id="11-2-4-基于关系迁移"><a href="#11-2-4-基于关系迁移" class="headerlink" title="11.2.4 基于关系迁移"></a>11.2.4 基于关系迁移</h3><p>​    基于关系的迁移学习方法 (Relation Based Transfer Learning) 与上述三种方法具有截然不同的思路。这种方法比较关注源域和目标域的样本之间的关系。图<a href="#bookmark82">17</a>形象地表示了不 同领域之间相似的关系。</p>
-<p>​    就目前来说，基于关系的迁移学习方法的相关研究工作非常少，仅有几篇连贯式的文章讨论： [<a href="#bookmark283">Mihalkova et al., 2007</a>, <a href="#bookmark284">Mihalkova and Mooney,2008</a>, <a href="#bookmark244">Davis and Domingos, 2009</a>]。这些文章都借助于马尔科夫逻辑网络(Markov Logic Net)来挖掘不同领域之间的关系相似性。</p>
-<p>​    我们将重点讨论基于特征和基于模型的迁移学习方法，这也是目前绝大多数研究工作的热点。</p>
-<p><img src="./media/aa10d36f758430dd4ff72d2bf6a76a6c.jpg" alt=""></p>
-<p><center>图 17: 基于关系的迁移学习方法示意图</p>
-<p><img src="./media/1542812440636.png" alt="1542812440636"></p>
-<p><center>图 18: 基于马尔科夫逻辑网的关系迁移</p>
-<h2 id="11-3-迁移学习的常用方法"><a href="#11-3-迁移学习的常用方法" class="headerlink" title="11.3 迁移学习的常用方法"></a>11.3 迁移学习的常用方法</h2><h3 id="11-3-1-数据分布自适应"><a href="#11-3-1-数据分布自适应" class="headerlink" title="11.3.1 数据分布自适应"></a>11.3.1 数据分布自适应</h3><p>​    数据分布自适应 (Distribution Adaptation) 是一类最常用的迁移学习方法。这种方法的基本思想是,由于源域和目标域的数据概率分布不同,那么最直接的方式就是通过一些变换,将不同的数据分布的距离拉近。</p>
-<p>​    图 <a href="#bookmark84">19</a>形象地表示了几种数据分布的情况。简单来说，数据的边缘分布不同，就是数据整体不相似。数据的条件分布不同，就是数据整体相似，但是具体到每个类里，都不太相似。</p>
-<p><img src="./media/1542812748062.png" alt="1542812748062"></p>
-<p><center>图 19: 不同数据分布的目标域数据</p>
-<p>​    根据数据分布的性质,这类方法又可以分为边缘分布自适应、条件分布自适应、以及联合分布自适应。下面我们分别介绍每类方法的基本原理和代表性研究工作。介绍每类研究工作时,我们首先给出基本思路,然后介绍该类方法的核心,最后结合最近的相关工作介绍该类方法的扩展。</p>
-<h3 id="11-3-2-边缘分布自适应"><a href="#11-3-2-边缘分布自适应" class="headerlink" title="11.3.2 边缘分布自适应"></a>11.3.2 边缘分布自适应</h3><p>​    边缘分布自适应方法 (Marginal Distribution Adaptation) 的目标是减小源域和目标域的边缘概率分布的距离,从而完成迁移学习。从形式上来说,边缘分布自适应方法是用P(X~s~)和 P(X~t~)之间的距离来近似两个领域之间的差异。即：</p>
-<p>​    $DISTANCE(D~s~,D~t~)\approx\lVert P(X_s)-P(X_t)\Vert$ (6.1)</p>
-<p>​    边缘分布自适应对应于图<a href="#bookmark84">19</a>中由图<a href="#bookmark101">19(a)</a>迁移到图<a href="#bookmark83">19(b)</a>的情形。</p>
-<h3 id="11-3-3-条件分布自适应"><a href="#11-3-3-条件分布自适应" class="headerlink" title="11.3.3 条件分布自适应"></a>11.3.3 条件分布自适应</h3><p>​    条件分布自适应方法 (Conditional Distribution Adaptation) 的目标是减小源域和目标域的条件概率分布的距离，从而完成迁移学习。从形式上来说，条件分布自适应方法是用  P(y~s~|X~s~) 和 P (y~t~|X~t~) 之间的距离来近似两个领域之间的差异。即：</p>
-<p>​    $DISTANCE(D~s~,D~t~)\approx\lVert P(y_s|X_s)-P(y_t|X_t)\Vert$(6.8)</p>
-<p>​    条件分布自适应对应于图<a href="#bookmark84">19</a>中由图<a href="#bookmark101">19(a)</a>迁移到图<a href="#bookmark85">19(c)</a>的情形。</p>
-<p>​    目前单独利用条件分布自适应的工作较少，这些工作主要可以在 [<a href="#bookmark292">Saito et al.,2017</a>] 中找到。最近，中科院计算所的 Wang 等人提出了 STL 方法(Stratified Transfer Learn­ing) [<a href="#bookmark309">Wang tal.,2018</a>]。作者提出了类内迁移 (Intra-class Transfer)的思想。指出现有的 绝大多数方法都只是学习一个全局的特征变换(Global DomainShift)，而忽略了类内的相 似性。类内迁移可以利用类内特征，实现更好的迁移效果。</p>
-<p>​    STL 方法的基本思路如图所示。首先利用大多数投票的思想，对无标定的位置行为生成伪标；然后在再生核希尔伯特空间中，利用类内相关性进行自适应地空间降维，使得不同情境中的行为数据之间的相关性增大；最后，通过二次标定，实现对未知标定数据的精准标定。</p>
-<p><img src="./media/1542817481582.png" alt="1542817481582"></p>
-<p><center>图 21: STL 方法的示意图</p>
-<h3 id="11-3-4-联合分布自适应"><a href="#11-3-4-联合分布自适应" class="headerlink" title="11.3.4 联合分布自适应"></a>11.3.4 联合分布自适应</h3><p>​    联合分布自适应方法 (Joint Distribution Adaptation) 的目标是减小源域和目标域的联合概率分布的距离，从而完成迁移学习。从形式上来说，联合分布自适应方法是用<em>P</em>(<strong>x</strong>s) 和P(<strong>x</strong>t)之间的距离、以及P(ys|<strong>x</strong>s)和P(yt|<strong>x</strong>t)之间的距离来近似两个领域之间的差异。即:</p>
-<p>​    $DISTANCE(D~s~,D~t~)\approx\lVert P(X_s)-P(X_t)\Vert-\lVert P(y_s|X_s)-P(y_t|X_t)\Vert​$(6.10)</p>
-<p>​    联合分布自适应对应于图<a href="#bookmark84">19</a>中由图<a href="#bookmark101">19(a)</a>迁移到图<a href="#bookmark83">19(b)</a>的情形、以及图<a href="#bookmark101">19(a)</a>迁移到<br>图<a href="#bookmark85">19(c)</a>的情形。</p>
-<h3 id="11-3-4-概率分布自适应方法优劣性比较"><a href="#11-3-4-概率分布自适应方法优劣性比较" class="headerlink" title="11.3.4 概率分布自适应方法优劣性比较"></a>11.3.4 概率分布自适应方法优劣性比较</h3><p>综合上述三种概率分布自适应方法，我们可以得出如下的结论：</p>
-<ol>
-<li>精度比较： BDA >JDA >TCA >条件分布自适应。</li>
-<li>将不同的概率分布自适应方法用于神经网络，是一个发展趋势。图<a href="#bookmark119">23</a>展示的结果表明将概率分布适配加入深度网络中，往往会取得比非深度方法更好的结果。</li>
-</ol>
-<p><img src="./media/1542823019007.png" alt="1542823019007"></p>
-<p><center>图 22: BDA 方法的效果第二类方法：特征选择</p>
-<h3 id="11-3-6-特征选择"><a href="#11-3-6-特征选择" class="headerlink" title="11.3.6 特征选择"></a>11.3.6 特征选择</h3><p>​    特征选择法的基本假设是：源域和目标域中均含有一部分公共的特征，在这部分公共的特征，源领域和目标领域的数据分布是一致的。因此，此类方法的目标就是，通过机器学习方法，选择出这部分共享的特征，即可依据这些特征构建模型。</p>
-<p>​    图 <a href="#bookmark122">24</a>形象地表示了特征选择法的主要思路。</p>
-<p><img src="./media/1542823210556.png" alt="1542823210556"></p>
-<p><center>图 23: 不同分布自适应方法的精度比较</p>
-<p><img src="./media/a3db84158d9b6454adff88dbe4fa5d28.jpg" alt=""></p>
-<p><center>图 24: 特征选择法示意图</p>
-<p>​    这这个领域比较经典的一个方法是发表在 2006 年的 ECML-PKDD 会议上,作者提出了一个叫做 SCL 的方法 (Structural Correspondence Learning) [<a href="#bookmark235">Blitzer et al.,2006</a>]。这个方法的目标就是我们说的,找到两个领域公共的那些特征。作者将这些公共的特征叫做Pivot feature。找出来这些Pivot feature,就完成了迁移学习的任务。</p>
-<p><img src="./media/4abacd82901988c3e0a98bdb07b2abc6.jpg" alt=""></p>
-<p><center>图 25: 特征选择法中的 Pivot feature 示意图</p>
-<p>​    图 <a href="#bookmark124">25</a>形象地展示了 Pivot feature 的含义。 Pivot feature指的是在文本分类中,在不同领域中出现频次较高的那些词。总结起来：</p>
-<ul>
-<li>特征选择法从源域和目标域中选择提取共享的特征,建立统一模型</li>
-<li>通常与分布自适应方法进行结合</li>
-<li>通常采用稀疏表示 ||<strong>A</strong>||2,1 实现特征选择</li>
-</ul>
-<h3 id="11-3-5-统计特征对齐方法"><a href="#11-3-5-统计特征对齐方法" class="headerlink" title="11.3.5 统计特征对齐方法"></a>11.3.5 统计特征对齐方法</h3><p>​    统计特征对齐方法主要将数据的统计特征进行变换对齐。对齐后的数据，可以利用传统机器学习方法构建分类器进行学习。SA方法(Subspace Alignment，子空间对齐)[<a href="#bookmark249">Fernando et al.,2013</a>]是其中的代表性成果。SA方法直接寻求一个线性变换<strong>M</strong>，将不同的数据实现变换对齐。SA方法的优化目标如下：</p>
-<p><img src="./media/1542823438846.png" alt="1542823438846"></p>
-<p>则变换 <strong>M</strong> 的值为：</p>
-<p><img src="./media/1542823455820.png" alt="1542823455820"></p>
-<p>可以直接获得上述优化问题的闭式解：</p>
-<p><img src="./media/1542823474720.png" alt="1542823474720"></p>
-<p>​    SA 方法实现简单，计算过程高效，是子空间学习的代表性方法。</p>
-<h3 id="11-3-6-流形学习方法"><a href="#11-3-6-流形学习方法" class="headerlink" title="11.3.6 流形学习方法"></a>11.3.6 流形学习方法</h3><p><strong>什么是流形学习</strong></p>
-<p>​    流形学习自从 2000 年在 Science 上被提出来以后,就成为了机器学习和数据挖掘领域的热门问题。它的基本假设是,现有的数据是从一个高维空间中采样出来的,所以,它具有高维空间中的低维流形结构。流形就是是一种几何对象（就是我们能想像能观测到的）。通俗点说就是,我们无法从原始的数据表达形式明显看出数据所具有的结构特征,那我把它想像成是处在一个高维空间,在这个高维空间里它是有个形状的。一个很好的例子就是星座。满天星星怎么描述？我们想像它们在一个更高维的宇宙空间里是有形状的,这就有了各自星座,比如织女座、猎户座。流形学习的经典方法有Isomap、locally linear embedding、 laplacian eigenmap 等。</p>
-<p>​    流形空间中的距离度量：两点之间什么最短？在二维上是直线（线段）,可在三维呢？地球上的两个点的最短距离可不是直线,它是把地球展开成二维平面后画的那条直线。那条线在三维的地球上就是一条曲线。这条曲线就表示了两个点之间的最短距离,我们叫它测地线。更通俗一点, 两点之间，测地线最短。在流形学习中,我们遇到测量距离的时候更多的时候用的就是这个测地线。在我们要介绍的 GFK 方法中,也是利用了这个测地线距离。比如在下面的图中,从 A 到 C 最短的距离在就是展开后的线段,但是在三维球体上看它却是一条曲线。</p>
-<p><img src="./media/fcbe02803e45f6455a4602b645b472c5.jpg" alt=""></p>
-<p><center>图 28: 三维空间中两点之间的距离示意图</p>
-<p>​    由于在流形空间中的特征通常都有着很好的几何性质,可以避免特征扭曲,因此我们首先将原始空间下的特征变换到流形空间中。在众多已知的流形中, Grassmann 流形G（d） 可以通过将原始的 d 维子空间 （特征向量）看作它基础的元素,从而可以帮助学习分类 器。在 Grassmann流形中,特征变换和分布适配通常都有着有效的数值形式,因此在迁移学习问题中可以被很高效地表示和求解 [<a href="#bookmark260">Hamm and Lee,2008</a>]。因此,利用 Grassmann流形空间中来进行迁移学习是可行的。现存有很多方法可以将原始特征变换到流形空间 中[<a href="#bookmark257">Gopalan et al., 2011</a>, <a href="#bookmark230">Baktashmotlagh et al.,2014</a>]。</p>
-<p>​    在众多的基于流形变换的迁移学习方法中，GFK(Geodesic Flow Kernel)方法[<a href="#bookmark255">Gong et<br>al., 2012</a>]是最为代表性的一个。GFK是在2011年发表在ICCV上的SGF方法[<a href="#bookmark257">Gopalan et al.,<br>2011</a>]发展起来的。我们首先介绍SGF方法。</p>
-<p>​    SGF 方法从增量学习中得到启发：人类从一个点想到达另一个点，需要从这个点一步一步走到那一个点。那么，如果我们把源域和目标域都分别看成是高维空间中的两个点，由源域变换到目标域的过程不就完成了迁移学习吗？也就是说， 路是一步一步走出来的。</p>
-<p>​    于是 SGF 就做了这个事情。它是怎么做的呢？把源域和目标域分别看成高维空间 (即Grassmann流形)中的两个点，在这两个点的测地线距离上取d个中间点，然后依次连接起来。这样，源域和目标域就构成了一条测地线的路径。我们只需要找到合适的每一步的变换，就能从源域变换到目标域了。图 <a href="#bookmark133">29</a>是 SGF 方法的示意图。</p>
-<p><img src="./media/103de3658cbb97ad4c24bafe28f9d957.jpg" alt=""></p>
-<p><center>图 29: SGF 流形迁移学习方法示意图</p>
-<p>​    SGF 方法的主要贡献在于：提出了这种变换的计算及实现了相应的算法。但是它有很明显的缺点：到底需要找几个中间点？ SGF也没能给出答案，就是说这个参数d是没法估计的，没有一个好的方法。这个问题在 GFK 中被回答了。</p>
-<p>​    GFK方法首先解决SGF的问题：如何确定中间点的个数d。它通过提出一种核学习的方法，利用路径上的无穷个点的积分，把这个问题解决了。这是第一个贡献。然后，它又解决了第二个问题：当有多个源域的时候，我们如何决定使用哪个源域跟目标域进行迁移？ GFK通过提出Rank of Domain度量，度量出跟目标域最近的源域，来解决这个问题。图 <a href="#bookmark134">30</a>是 GFK 方法的示意图。</p>
-<p><img src="./media/e654d14df0b44ee4e8a0e505c654044b.jpg" alt=""></p>
-<p><center>图 30: GFK 流形迁移学习方法示意图</p>
-<p>​    用Ss和St分别表示源域和目标域经过主成分分析(PCA)之后的子空间，则G可以视为所有的d维子空间的集合。每一个d维的原始子空间都可以被看作G上的一个点。因此，在两点之间的测地线｛\$(t) :0 \&lt; t \&lt;1｝可以在两个子空间之间构成一条路径。如果我 们令Ss = \$(0)，St =\$(1)，则寻找一条从\$(0)到\$(1)的测地线就等同于将原始的特征变换到一个无穷维度的空间中，最终减小域之间的漂移现象。这种方法可以被看作是一种从\$(0)到\$(1)的増量式“行走”方法。</p>
-<p>​    特别地，流形空间中的特征可以被表示为<strong>z</strong> =\$(t)T<strong>x</strong>。变换后的特征<strong>Z</strong>i和<strong>Z</strong>j的内积定义了一个半正定 (positive semidefinite) 的测地线流式核</p>
-<p><img src="./media/1542823895008.png" alt="1542823895008"></p>
-<p>​    GFK 方法详细的计算过程可以参考原始的文章，我们在这里不再赘述。</p>
-<h3 id="11-3-7-什么是finetune？"><a href="#11-3-7-什么是finetune？" class="headerlink" title="11.3.7 什么是finetune？"></a>11.3.7 什么是finetune？</h3><p>​    深度网络的finetune也许是最简单的深度网络迁移方法。<strong>Finetune</strong>,也叫微调、fine-tuning, 是深度学习中的一个重要概念。简而言之，finetune就是利用别人己经训练好的网络，针对自己的任务再进行调整。从这个意思上看，我们不难理解finetune是迁移学习的一部分。</p>
-<p><strong>为什么需要已经训练好的网络？</strong></p>
-<p>​    在实际的应用中,我们通常不会针对一个新任务,就去从头开始训练一个神经网络。这样的操作显然是非常耗时的。尤其是，我们的训练数据不可能像ImageNet那么大，可以训练出泛化能力足够强的深度神经网络。即使有如此之多的训练数据,我们从头开始训练,其代价也是不可承受的。</p>
-<p>​    那么怎么办呢？迁移学习告诉我们,利用之前己经训练好的模型,将它很好地迁移到自己的任务上即可。</p>
-<p><strong>为什么需要 finetune？</strong></p>
-<p>​    因为别人训练好的模型,可能并不是完全适用于我们自己的任务。可能别人的训练数据和我们的数据之间不服从同一个分布；可能别人的网络能做比我们的任务更多的事情；可能别人的网络比较复杂,我们的任务比较简单。</p>
-<p>​    举一个例子来说,假如我们想训练一个猫狗图像二分类的神经网络,那么很有参考价值的就是在 CIFAR-100 上训练好的神经网络。但是 CIFAR-100 有 100 个类别,我们只需要 2个类别。此时,就需要针对我们自己的任务,固定原始网络的相关层,修改网络的输出层以使结果更符合我们的需要。</p>
-<p>​    图<a href="#bookmark148">36</a>展示了一个简单的finetune过程。从图中我们可以看到，我们采用的预训练好的网络非常复杂,如果直接拿来从头开始训练,则时间成本会非常高昂。我们可以将此网络进行改造,固定前面若干层的参数,只针对我们的任务,微调后面若干层。这样,网络训练速度会极大地加快,而且对提高我们任务的表现也具有很大的促进作用。</p>
-<p><img src="./media/b1630ca5d004d4b430672c8b8ce7fb90.jpg" alt=""></p>
-<p><center>图 36: 一个简单的 finetune 示意图<br><strong>Finetune 的优势</strong></p>
-<p>​    Finetune 的优势是显然的，包括:</p>
-<ul>
-<li>不需要针对新任务从头开始训练网络，节省了时间成本；</li>
-<li>预训练好的模型通常都是在大数据集上进行的，无形中扩充了我们的训练数据，使得模型更鲁棒、泛化能力更好；</li>
-<li>Finetune 实现简单，使得我们只关注自己的任务即可。</li>
-</ul>
-<p><strong>Finetune 的扩展</strong></p>
-<p>​    在实际应用中，通常几乎没有人会针对自己的新任务从头开始训练一个神经网络。Fine-tune 是一个理想的选择。</p>
-<p>​    Finetune 并不只是针对深度神经网络有促进作用，对传统的非深度学习也有很好的效果。例如， finetune对传统的人工提取特征方法就进行了很好的替代。我们可以使用深度网络对原始数据进行训练，依赖网络提取出更丰富更有表现力的特征。然后，将这些特征作为传统机器学习方法的输入。这样的好处是显然的: 既避免了繁复的手工特征提取，又能自动地提取出更有表现力的特征。</p>
-<p>​    比如，图像领域的研究，一直是以 SIFT、SURF 等传统特征为依据的，直到 2014 年，伯克利的研究人员提出了 DeCAF特征提取方法［<a href="#bookmark246">Donahue et al.,2014</a>］，直接使用深度卷积神经网络进行特征提取。实验结果表明，该特征提取方法对比传统的图像特征，在精度上有着无可匹敌的优势。另外，也有研究人员用卷积神经网络提取的特征作为SVM分类器的输 入［<a href="#bookmark291">Razavian et al.,014</a>］，显著提升了图像分类的精度。</p>
-<h3 id="11-3-8-finetune为什么有效？"><a href="#11-3-8-finetune为什么有效？" class="headerlink" title="11.3.8 finetune为什么有效？"></a>11.3.8 finetune为什么有效？</h3><p>​    随着 AlexNet [<a href="#bookmark268">Krizhevsky et al., 2012</a>] 在 2012 年的 ImageNet大赛上获得冠军，深度学习开始在机器学习的研究和应用领域大放异彩。尽管取得了很好的结果，但是神经网络本身就像一个黑箱子，看得见，摸不着，解释性不好。由于神经网络具有良好的层次结构很自然地就有人开始关注，能否通过这些层次结构来很好地解释网络？于是，有了我们熟知的例子：假设一个网络要识别一只猫，那么一开始它只能检测到一些边边角角的东西，和猫根本没有关系；然后可能会检测到一些线条和圆形；慢慢地，可以检测到有猫的区域；接着是猫腿、猫脸等等。图 <a href="#bookmark137">32</a>是一个简单的示例。</p>
-<p><img src="./media/1542824195602.png" alt="1542824195602"></p>
-<p><center>图 32: 深度神经网络进行特征提取到分类的简单示例</p>
-<p>​    这表达了一个什么事实呢？概括来说就是：前面几层都学习到的是通用的特征（general feature）；随着网络层次的加深，后面的网络更偏重于学习任务特定的特征（specific feature）。<br>这非常好理解，我们也都很好接受。那么问题来了：如何得知哪些层能够学习到 general feature，哪些层能够学习到specific feature。更进一步：如果应用于迁移学习，如何决定该迁移哪些层、固定哪些层？</p>
-<p>​    这个问题对于理解神经网络以及深度迁移学习都有着非常重要的意义。</p>
-<p>​    来自康奈尔大学的 Jason Yosinski 等人 [<a href="#bookmark318">Yosinski et al., 2014</a>]率先进行了深度神经网络可迁移性的研究，将成果发表在2014年机器学习领域顶级会议NIPS上并做了口头汇报。该论文是一篇实验性质的文章（通篇没有一个公式）。其目的就是要探究上面我们提到的几个关键性问题。因此，文章的全部贡献都来自于实验及其结果。（别说为啥做实验也能发文章：都是高考，我只上了个普通一本，我高中同学就上了清华）</p>
-<p>​    在ImageNet的1000类上，作者把1000类分成两份（A和B），每份500个类别。然后，分别对A和B基于Caffe训练了一个AlexNet网络。一个AlexNet网络一共有8层， 除去第8层是类别相关的网络无法迁移以外，作者在 1 到 7这 7层上逐层进行 finetune 实验，探索网络的可迁移性。</p>
-<p>​    为了更好地说明 finetune 的结果，作者提出了有趣的概念： AnB 和 BnB。</p>
-<p>​    迁移A网络的前n层到B （AnB） vs固定B网络的前n层（BnB）</p>
-<p>​    简单说一下什么叫AnB:（所有实验都是针对数据B来说的）将A网络的前n层拿来并将它frozen，剩下的8 - n层随机初始化，然后对B进行分类。</p>
-<p>​    相应地，有BnB:把训练好的B网络的前n层拿来并将它frozen，剩下的8 - n层随机初始化，然后对 B 进行分类。</p>
-<p>​    <strong>实验结果</strong></p>
-<p>​    实验结果如下图（图<a href="#bookmark145">33</a>） 所示:</p>
-<p>​    这个图说明了什么呢？我们先看蓝色的BnB和BnB+（就是BnB加上finetune）。对 BnB而言，原训练好的 B 模型的前 3 层直接拿来就可以用而不会对模型精度有什么损失到了第4 和第5 层，精度略有下降，不过还是可以接受。然而到了第6 第第7层，精度居然奇迹般地回升了！这是为什么？原因如下:对于一开始精度下降的第4 第 5 层来说，确</p>
-<p><img src="./media/1542824318155.png" alt="1542824318155"></p>
-<p><center>图 33: 深度网络迁移实验结果 1</p>
-<p>实是到了这一步，feature变得越来越specific,所以下降了。那对于第6第7层为什么精度又不变了？那是因为，整个网络就8层，我们固定了第6第7层，这个网络还能学什么呢？所以很自然地，精度和原来的 B 网络几乎一致！</p>
-<p>​    对 BnB+ 来说，结果基本上都保持不变。说明 finetune 对模型结果有着很好的促进作用！</p>
-<p>​    我们重点关注AnB和AnB+。对AnB来说，直接将A网络的前3层迁移到B,貌似不会有什么影响，再一次说明，网络的前3层学到的几乎都是general feature!往后，到了第4第5层的时候，精度开始下降，我们直接说：一定是feature不general 了！然而，到了第6第7层，精度出现了小小的提升后又下降，这又是为什么？作者在这里提出两点co-adaptation和feature representation。就是说，第4第5层精度下降的时候，主要是由于A和B两个数据集的差异比较大，所以会下降；至I」了第6第7层，由于网络几乎不迭代了，学习能力太差，此时 feature 学不到，所以精度下降得更厉害。</p>
-<p>​    再看AnB+。加入了 finetune以后，AnB+的表现对于所有的n几乎都非常好，甚至 比baseB<br>（最初的B）还要好一些！这说明：finetune对于深度迁移有着非常好的促进作用!</p>
-<p>​    把上面的结果合并就得到了下面一张图 （图<a href="#bookmark138">34</a>）：</p>
-<p>​    至此， AnB 和 BnB 基本完成。作者又想，是不是我分 A 和 B 数据的时候，里面存在一些比较相似的类使结果好了？比如说A里有猫，B里有狮子，所以结果会好？为了排除这些影响，作者又分了一下数据集，这次使得A和B里几乎没有相似的类别。在这个条件下再做AnB,与原来精度比较（0%为基准）得到了下图（图<a href="#bookmark139">35</a>）:</p>
-<p>​    这个图说明了什么呢？简单：随着可迁移层数的增加，模型性能下降。但是，前3层仍然还是可以迁移的！同时,与随机初始化所有权重比较,迁移学习的精度是很高的!总之：</p>
-<ul>
-<li>深度迁移网络要比随机初始化权重效果好；</li>
-</ul>
-<ul>
-<li>网络层数的迁移可以加速网络的学习和优化。</li>
-</ul>
-<h3 id="11-3-9-什么是深度网络自适应？"><a href="#11-3-9-什么是深度网络自适应？" class="headerlink" title="11.3.9 什么是深度网络自适应？"></a>11.3.9 什么是深度网络自适应？</h3><p><strong>基本思路</strong></p>
-<p>​    深度网络的 finetune 可以帮助我们节省训练时间，提高学习精度。但是 finetune 有它的先天不足:它无法处理训练数据和测试数据分布不同的情况。而这一现象在实际应用中比比皆是。因为 finetune 的基本假设也是训练数据和测试数据服从相同的数据分布。这在迁移学习中也是不成立的。因此，我们需要更进一步，针对深度网络开发出更好的方法使之更好地完成迁移学习任务。</p>
-<p>​    以我们之前介绍过的数据分布自适应方法为参考，许多深度学习方法［<a href="#bookmark307">Tzeng et al.,2014</a>, <a href="#bookmark275">Long et al.,2015a</a>］都开发出了自适应层(AdaptationLayer)来完成源域和目标域数据的自适应。自适应能够使得源域和目标域的数据分布更加接近，从而使得网络的效果更好。</p>
-<p>​    从上述的分析我们可以得出，深度网络的自适应主要完成两部分的工作:</p>
-<p>​    一是哪些层可以自适应，这决定了网络的学习程度；</p>
-<p>​    二是采用什么样的自适应方法 (度量准则)，这决定了网络的泛化能力。</p>
-<p>​    深度网络中最重要的是网络损失的定义。绝大多数深度迁移学习方法都采用了以下的损失定义方式:</p>
-<p><img src="./media/1542824918145.png" alt="1542824918145"></p>
-<p>​    其中，I表示网络的最终损失，lc(Ds,<strong>y</strong>s)表示网络在有标注的数据(大部分是源域)上的常规分类损失(这与普通的深度网络完全一致)，Ia(Ds,Dt)表示网络的自适应损失。最后一部分是传统的深度网络所不具有的、迁移学习所独有的。此部分的表达与我们先前讨论过的源域和目标域的分布差异，在道理上是相同的。式中的A是权衡两部分的权重参数。</p>
-<p>​    上述的分析指导我们设计深度迁移网络的基本准则：决定自适应层，然后在这些层加入自适应度量，最后对网络进行 finetune。</p>
-<h3 id="11-3-10-GAN在迁移学习中的应用"><a href="#11-3-10-GAN在迁移学习中的应用" class="headerlink" title="11.3.10 GAN在迁移学习中的应用"></a>11.3.10 GAN在迁移学习中的应用</h3><p>生成对抗网络 GAN(Generative Adversarial Nets) [<a href="#bookmark256">Goodfellow et al.,2014</a>] 是目前人工智能领域最炙手可热的概念之一。其也被深度学习领军人物 Yann Lecun 评为近年来最令人欣喜的成就。由此发展而来的对抗网络，也成为了提升网络性能的利器。本小节介绍深度对抗网络用于解决迁移学习问题方面的基本思路以及代表性研究成果。</p>
-<p><strong>基本思路</strong></p>
-<p>​    GAN 受到自博弈论中的二人零和博弈 (two-player game) 思想的启发而提出。它一共包括两个部分：一部分为生成网络(Generative Network)，此部分负责生成尽可能地以假乱真的样本，这部分被成为生成器(Generator)；另一部分为判别网络(Discriminative Network), 此部分负责判断样本是真实的，还是由生成器生成的，这部分被成为判别器(Discriminator) 生成器和判别器的互相博弈，就完成了对抗训练。</p>
-<p>​    GAN 的目标很明确：生成训练样本。这似乎与迁移学习的大目标有些许出入。然而，由于在迁移学习中，天然地存在一个源领域，一个目标领域，因此，我们可以免去生成样本的过程，而直接将其中一个领域的数据 (通常是目标域) 当作是生成的样本。此时，生成器的职能发生变化，不再生成新样本，而是扮演了特征提取的功能：不断学习领域数据的特征使得判别器无法对两个领域进行分辨。这样，原来的生成器也可以称为特征提取器<br>(Feature Extractor)。</p>
-<p>​    通常用 Gf 来表示特征提取器，用 Gd 来表示判别器。正是基于这样的领域对抗的思想，深度对抗网络可以被很好地运用于迁移学习问题中。与深度网络自适应迁移方法类似，深度对抗网络的损失也由两部分构成：网络训练的损失lc*和领域判别损失Id：</p>
-<p><img src="./media/1542826334834.png" alt="1542826334834"></p>
-<p><strong>DANN</strong></p>
-<p>Yaroslav Ganin 等人 [<a href="#bookmark251">Ganin et al., 2016</a>]首先在神经网络的训练中加入了对抗机制，作者将他们的网络称之为DANN(Domain-Adversarial Neural Network)。在此研宄中，网络的学习目标是：生成的特征尽可能帮助区分两个领域的特征，同时使得判别器无法对两个领域的差异进行判别。该方法的领域对抗损失函数表示为：</p>
-<p><img src="./media/1542826461988.png" alt="1542826461988"></p>
-<p>Id = max 其中的 Ld 表示为</p>
-<p><img src="./media/1542826475517.png" alt="1542826475517"></p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>王晋东，迁移学习简明手册</p>
-<p>[Baktashmotlagh et al., 2013] Baktashmotlagh, M., Harandi, M. T., Lovell, B. C.,and Salz- mann, M. (2013). Unsupervised domain adaptation by domain invariant projection. In <em>ICCV,</em> pages 769-776.</p>
-<p>[Baktashmotlagh et al., 2014] Baktashmotlagh, M., Harandi, M. T., Lovell, B. C., and Salz- mann, M. (2014). Domain adaptation on the statistical manifold. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition*,pages 2481-2488.</p>
-<p>[Ben-David et al., 2010] Ben-David, S., Blitzer, J., Crammer, K., Kulesza, A., Pereira, F., and Vaughan, J. W. (2010). A theory of learning from different domains. <em>Machine learning,</em> 79(1-2):151-175.</p>
-<p>[Ben-David et al., 2007] Ben-David, S., Blitzer, J., Crammer, K., and Pereira, F. (2007). Analysis of representations for domain adaptation. In <em>NIPS</em>, pages 137-144.</p>
-<p>[Blitzer et al., 2008] Blitzer, J., Crammer, K., Kulesza, A., Pereira, F., and Wortman, J. (2008). Learning bounds for domain adaptation. In <em>Advances in neural information processing systems</em>, pages 129-136.</p>
-<p>[Blitzer et al., 2006] Blitzer, J., McDonald, R., and Pereira, F. (2006). Domain adaptation with structural correspondence learning. In <em>Proceedings of the 2006 conference on empiri­cal methods in natural language processing</em>, pages 120-128. Association for Computational Linguistics.</p>
-<p>[Borgwardt et al., 2006] Borgwardt, K. M., Gretton, A., Rasch, M. J., Kriegel, H.-P., Scholkopf, B., and Smola, A. J. (2006). Integrating structured biological data by kernel maximum mean discrepancy. <em>Bioinformatics</em>, 22(14):e49-e57.</p>
-<p>[Bousmalis et al., 2016] Bousmalis, K., Trigeorgis, G., Silberman, N., Krishnan, D., and Erhan, D. (2016). Domain separation networks. In <em>Advances in Neural Information Processing Systems</em>, pages 343-351.</p>
-<p>[Cai et al., 2011] Cai, D., He, X., Han, J., and Huang, T. S. (2011). Graph regularized nonnegative matrix factorization for data representation. <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>, 33(8):1548-1560.</p>
-<p>[Cao et al., 2017] Cao, Z., Long, M., Wang, J., and Jordan, M. I. (2017). Partial transfer learning with selective adversarial networks. <em>arXiv preprint arXiv:1707.07901</em>.</p>
-<p>[Carlucci et al., 2017] Carlucci, F. M., Porzi, L., Caputo, B., Ricci, E., and Bulo, S. R. (2017). Autodial: Automatic domain alignment layers. In International Conference on* Computer Vision.</p>
-<p>[Cook et al., 2013] Cook, D., Feuz, K. D., and Krishnan, N. C. (2013). Transfer learning for activity recognition: A survey. <em>Knowledge and information systems</em>, 36(3):537-556.</p>
-<p>[Cortes et al., 2008] Cortes, C., Mohri, M., Riley, M., and Rostamizadeh, A. (2008). Sample selection bias correction theory. In <em>International Conference on Algorithmic Learning Theory</em>, pages 38-53, Budapest, Hungary. Springer.</p>
-<p>[Dai et al., 2007] Dai, W., Yang, Q., Xue, G.-R., and Yu, Y. (2007). Boosting for transfer learning. In <em>ICML</em>, pages 193-200. ACM.</p>
-<p>[Davis and Domingos, 2009] Davis, J. and Domingos, P. (2009). Deep transfer via second- order markov logic. In <em>Proceedings of the 26th annual international conference on machine learning</em>, pages 217-224. ACM.</p>
-<p>[Denget al., 2014] Deng,W.,Zheng,Q.,andWang,Z.(2014).Cross-personactivityrecog-nition using reduced kernel extreme learning machine. <em>Neural Networks,</em> 53:1-7.</p>
-<p>[Donahue et al., 2014] Donahue, J., Jia, Y., et al. (2014). Decaf: A deep convolutional activation feature for generic visual recognition. In <em>ICML</em>, pages 647-655.</p>
-<p>[Dorri and Ghodsi, 2012] Dorri, F. and Ghodsi, A. (2012). Adapting component analysis. In <em>Data Mining (ICDM), 2012 IEEE 12th International Conference on</em>, pages 846-851. IEEE.</p>
-<p>[Duan et al., 2012] Duan, L., Tsang, I. W., and Xu, D. (2012). Domain transfer multi­ple kernel learning. <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>, 34(3):465-479.</p>
-<p>[Fernando et al., 2013] Fernando, B., Habrard, A., Sebban, M., and Tuytelaars, T. (2013). Unsupervised visual domain adaptation using subspace alignment. In ICCV*, pages 2960­2967.</p>
-<p>[Fodor, 2002] Fodor, I. K. (2002). A survey of dimension reduction techniques. Center for Applied Scientific Computing, Lawrence Livermore National Laboratory*, 9:1-18.</p>
-<p>[Ganin et al., 2016] Ganin, Y., Ustinova, E., Ajakan, H., Germain, P., Larochelle, H., Lavi- olette, F., Marchand, M., and Lempitsky, V. (2016).Domain-adversarial training of neural networks. <em>Journal of Machine Learning<br>Research</em>, 17(59):1-35.</p>
-<p>[Gao et al., 2012] Gao, C., Sang, N., and Huang, R. (2012). Online transfer boosting for object tracking. In <em>Pattern Recognition (ICPR), 2012 21st International Conference on</em>, pages 906-909. IEEE.</p>
-<p>[Ghifary et al., 2017] Ghifary, M., Balduzzi, D., Kleijn, W. B., and Zhang, M. (2017). Scat­ter component analysis: A unified framework for domain adaptation and domain general­ization. <em>IEEE transactions on pattern analysis and machine intelligence</em>, 39(7):1414-1430.</p>
-<p>[Ghifary et al., 2014] Ghifary, M., Kleijn, W. B., and Zhang, M. (2014). Domain adaptive neural networks for object recognition. In <em>PRICAI</em>, pages 898-904.</p>
-<p>[Gong et al., 2012] Gong, B., Shi, Y., Sha, F., and Grauman, K. (2012). Geodesic flow kernel for unsupervised domain adaptation. In <em>CVPR</em>, pages 2066-2073.</p>
-<p>[Goodfellow et al., 2014] Goodfellow, I., Pouget-Abadie, J., Mirza, M., Xu, B.,  Warde- Farley, D., Ozair, S., Courville, A., and Bengio, Y. (2014). Generative adversarial nets. In <em>Advances in neural information processing systems</em>, pages 2672-2680.</p>
-<p>[Gopalan et al., 2011] Gopalan, R., Li, R., and Chellappa, R. (2011). Domain adaptation for object recognition: An unsupervised approach. In <em>ICCV</em>, pages 999-1006. IEEE.</p>
-<p>[Gretton et al., 2012] Gretton, A., Sejdinovic, D., Strathmann, H., Balakrishnan, S., Pontil, M., Fukumizu, K., and Sriperumbudur, B. K. (2012). Optimal kernel choice for large- scale two-sample tests. In <em>Advances in neural information processing systems</em>, pages 1205-1213.</p>
-<p>[Gu et al., 2011] Gu, Q., Li, Z., Han, J., et al. (2011). Joint feature selection and subspace learning. In <em>IJCAI Proceedings-International Joint Conference on Artificial Intel ligence</em>, volume 22, page 1294.</p>
-<p>[Hamm and Lee, 2008] Hamm, J. and Lee, D. D. (2008). Grassmann discriminant analysis: a unifying view on subspace-based learning. In <em>ICML</em>, pages 376-383. ACM.</p>
-<p>[Hou et al., 2015] Hou, C.-A., Yeh, Y.-R., and Wang, Y.-C. F. (2015). An unsupervised domain adaptation approach for cross-domain visual classification. In <em>Advanced Video and Signal Based Surveil lance (AVSS), 2015 12th IEEE International Conference on</em>,pages 1-6. IEEE.</p>
-<p>[Hsiao et al., 2016] Hsiao, P.-H., Chang, F.-J., and Lin, Y.-Y. (2016). Learning discrim­inatively reconstructed source data for object recognition with few examples. <em>IEEE</em>Transactions on Image Processing*, 25(8):3518-3532.</p>
-<p>[Hu and Yang, 2011] Hu, D. H. and Yang, Q. (2011). Transfer learning for activity recog­nition via sensor mapping. In <em>IJCAI Proceedings-International Joint Conference on Artificial Intelligence</em>, volume 22, page 1962, Barcelona, Catalonia, Spain. IJCAI.</p>
-<p>[Huang et al., 2007] Huang, J., Smola, A. J., Gretton, A., Borgwardt, K. M., Scholkopf, B., et al. (2007). Correcting sample selection bias by unlabeled  data. <em>Advances in neural information processing systems</em>, 19:601.</p>
-<p>[Jaini et al., 2016] Jaini, P., Chen, Z., Carbajal, P., Law, E., Middleton, L., Regan, K., Schaekermann, M., Trimponias, G., Tung, J., and Poupart, P. (2016). Online bayesian transfer learning for sequential data modeling. In <em>ICLR 2017</em>.</p>
-<p>[Kermany et al., 2018] Kermany, D. S., Goldbaum, M., Cai, W., Valentim, C. C., Liang, H., Baxter, S. L., McKeown, A., Yang, G., Wu, X., Yan, F., et al. (2018). Identifying medical diagnoses and treatable diseases by image-based deep learning. <em>Cell</em>, 172(5):1122-1131.</p>
-<p>[Khan and Heisterkamp, 2016] Khan, M. N. A. and Heisterkamp, D. R. (2016). Adapting instance weights for unsupervised domain adaptation using quadratic mutual informa­tion and subspace learning. In <em>Pattern Recognition (ICPR), 2016 23rd International Conference on</em>, pages 1560-1565, Mexican City. IEEE.</p>
-<p>[Krizhevsky et al., 2012] Krizhevsky, A., Sutskever, I., and Hinton, G. E. (2012). Imagenet classification with deep convolutional neural networks. In Advances in neural information processing systems*, pages 1097-1105.</p>
-<p>[Li et al., 2012] Li, H., Shi, Y., Liu, Y., Hauptmann, A. G., and Xiong, Z. (2012). Cross­domain video concept detection: A joint discriminative and generative active learning approach. <em>Expert Systems with Applications</em>,<br>39(15):12220-12228.</p>
-<p>[Li et al., 2016] Li, J., Zhao, J., and Lu, K. (2016). Joint feature selection and structure preservation for domain adaptation. In <em>Proceedings of the Twenty-Fifth International Joint Conference on Artificial Intelligence</em>, pages<br>1697-1703. AAAI Press.</p>
-<p>[Li et al., 2018] Li, Y., Wang, N., Shi, J., Hou, X., and Liu, J. (2018). Adaptive batch normalization for practical domain adaptation. <em>Pattern Recognition</em>, 80:109-117.</p>
-<p>[Liu et al., 2011] Liu, J., Shah, M., Kuipers, B., and Savarese, S. (2011). Cross-view action recognition via view knowledge transfer. In <em>Computer Vision and Pattern Recognition (CVPR), 2011 IEEE Conference on</em>, pages 3209-3216, Colorado Springs, CO, USA. IEEE.</p>
-<p>[Liu and Tuzel, 2016] Liu, M.-Y. and Tuzel, O. (2016). Coupled generative adversarial networks. In <em>Advances in neural information processing systems</em>, pages 469-477.</p>
-<p>[Liu et al., 2017] Liu, T., Yang, Q., and Tao, D. (2017). Understanding how  feature struc­ture transfers in transfer learning. In <em>IJCAI</em>.</p>
-<p>[Long et al., 2015a] Long, M., Cao, Y., Wang, J., and Jordan, M. (2015a). Learning trans­ferable features with deep adaptation networks. In <em>ICML</em>, pages 97-105.</p>
-<p>[Long et al., 2016] Long, M., Wang, J., Cao, Y., Sun, J., and Philip, S. Y. (2016). Deep learning of transferable representation for scalable domain  adaptation. <em>IEEE Transac­tions on Knowledge and Data Engineering</em>,<br>28(8):2027-2040.</p>
-<p>[Long et al., 2014a] Long, M., Wang, J., Ding, G., Pan, S. J., and Yu, P. S. (2014a). Adaptation regularization: A general framework for transfer learning.*IEEE TKDE, 26(5):1076-1089.</p>
-<p>[Long et al., 2014b] Long, M., Wang, J., Ding, G., Sun, J., and Yu, P. S. (2014b). Transfer joint matching for unsupervised domain adaptation. In *CVPR ,pages 1410-1417.</p>
-<p>[Long et al., 2013] Long, M., Wang, J., et al. (2013). Transfer feature learning with joint distribution adaptation. In <em>ICCV</em>, pages 2200-2207.</p>
-<p>[Long et al., 2017] Long, M., Wang, J., and Jordan, M. I. (2017). Deep transfer learning with joint adaptation networks. In <em>ICML</em>, pages 2208-2217.</p>
-<p>[Long et al., 2015b] Long, M., Wang, J., Sun, J., and Philip, S. Y. (2015b). Domain invari­ant transfer kernel learning. <em>IEEE Transactions on Knowledge and Data Engineering</em>, 27(6):1519-1532.</p>
-<p>[Luo et al., 2017] Luo, Z., Zou, Y., Hoffman, J., and Fei-Fei, L. F. (2017). Label efficient learning of transferable representations acrosss domains and tasks. In <em>Advances in Neural Information Processing Systems</em>, pages 164-176.</p>
-<p>[Mihalkova et al., 2007] Mihalkova, L., Huynh, T., and Mooney, R. J. (2007). Mapping and revising markov logic networks for transfer learning. In <em>AAAI</em>, volume 7, pages 608-614.</p>
-<p>[Mihalkova and Mooney, 2008] Mihalkova, L. and Mooney, R. J. (2008). Transfer learning by mapping with minimal target data. In <em>Proceedings of the AAAI-08 workshop on transfer learning for complex tasks</em>.</p>
-<p>[Nater et al., 2011] Nater, F., Tommasi, T., Grabner, H., Van Gool, L., and Caputo, B. (2011). Transferring activities: Updating human behavior analysis. In <em>Computer Vision Workshops (ICCV Workshops), 2011 IEEE International Conference on</em>, pages 1737­1744, Barcelona, Spain. IEEE.</p>
-<p>[Pan et al., 2008a] Pan, S. J., Kwok, J. T., and Yang, Q. (2008a). Transfer learning via dimensionality reduction. In <em>Proceedings of the 23rd AAAI conference on Artificial in­telligence</em>, volume 8, pages 677-682.</p>
-<p>[Pan et al., 2008b] Pan, S. J., Shen, D., Yang, Q., and Kwok, J. T. (2008b). Transferring localization models across space. In <em>Proceedings of the 23rd AAAI Conference on Artificial Intelligence</em>, pages 1383-1388.</p>
-<p>[Pan et al., 2011] Pan, S. J., Tsang, I. W., Kwok, J. T., and Yang, Q. (2011). Domain adaptation via transfer component analysis. <em>IEEE TNN</em>, 22(2):199-210.</p>
-<p>[PanandYang, 2010] Pan,S.J.andYang,Q.(2010). A survey on transfer learning. IEEE TKDE*, 22(10):1345-1359.</p>
-<p>[Patil and Phursule, 2013] Patil, D. M. and Phursule, R. (2013). Knowledge transfer using cost sensitive online learning classification. <em>International Journal of Science and Research</em>, pages 527-529.</p>
-<p>[Razavian et al., 2014] Razavian, A. S., Azizpour, H., Sullivan, J., and Carlsson, S. (2014). Cnn features off-the-shelf: an astounding baseline for recognition. In <em>Computer Vision and Pattern Recognition Workshops (CVPRW), 2014 IEEE Conference on</em>, pages 512­519. IEEE.</p>
-<p>[Saito et al., 2017] Saito, K., Ushiku, Y., and Harada, T. (2017). Asymmetric tri-training for unsupervised domain adaptation. In <em>International Conference on Machine Learning</em>.</p>
-<p>[Sener et al., 2016] Sener, O., Song, H. O., Saxena, A., and Savarese, S. (2016). Learning transferrable representations for unsupervised domain adaptation. In <em>Advances in Neural Information Processing Systems</em>, pages 2110-2118.</p>
-<p>[Shen et al., 2018] Shen, J., Qu, Y., Zhang, W., and Yu, Y. (2018). Wasserstein distance guided representation learning for domain adaptation. In <em>AAAI</em>.</p>
-<p>[Si et al., 2010] Si, S., Tao, D., and Geng, B. (2010). Bregman divergence-based regu­larization for transfer subspace learning. <em>IEEE Transactions on Knowledge and Data Engineering</em>, 22(7):929-942.</p>
-<p>[Silver et al., 2017] Silver, D., Schrittwieser, J., Simonyan, K., Antonoglou, I., Huang, A., Guez, A., Hubert, T., Baker, L., Lai, M., Bolton, A., et al. (2017). Mastering the game of go without human knowledge. <em>Nature</em>, 550(7676):354.</p>
-<p>[Stewart and Ermon, 2017] Stewart, R. and Ermon, S. (2017). Label-free supervision of neural networks with physics and domain knowledge. In <em>AAAI</em>, pages 2576-2582.</p>
-<p>[Sun et al., 2016] Sun, B., Feng, J., and Saenko, K. (2016). Return of frustratingly easy domain adaptation. In <em>AAAI</em>, volume 6, page 8.</p>
-<p>[Sun and Saenko, 2015] Sun, B. and Saenko, K. (2015). Subspace distribution alignment for unsupervised domain adaptation. In <em>BMVC</em>, pages 24-1.</p>
-<p>[Sun and Saenko, 2016] Sun, B. and Saenko, K. (2016). Deep coral: Correlation alignment for deep domain adaptation. In <em>European Conference on Computer Vision</em>, pages 443-450. Springer.</p>
-<p>[Tahmoresnezhad and Hashemi, 2016] Tahmoresnezhad, J. and Hashemi, S. (2016). Visual domain adaptation via transfer feature learning. <em>Knowledge and Information Systems</em>, pages 1-21.</p>
-<p>[Tan et al., 2015] Tan, B., Song, Y., Zhong, E., and Yang, Q. (2015). Transitive trans­fer learning. In <em>Proceedings of the 21th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</em>, pages 1155-1164. ACM.</p>
-<p>[Tan et al., 2017] Tan, B., Zhang, Y., Pan, S. J., and Yang, Q. (2017). Distant domain transfer learning. In <em>Thirty-First AAAI Conference on Artificial Intelligence</em>.</p>
-<p>[Taylor and Stone, 2009] Taylor, M. E. and Stone, P. (2009). Transfer learning for reinforce­ment learning domains: A survey. <em>Journal of Machine Learning Research</em>, 10(Jul):1633- 1685.</p>
-<p>[Tzeng et al., 2015] Tzeng, E., Hoffman, J., Darrell, T., and Saenko, K. (2015). Simulta­neous deep transfer across domains and tasks. In <em>Proceedings of the IEEE International Conference on Computer Vision</em>, pages 4068-4076, Santiago, Chile. IEEE.</p>
-<p>[Tzeng et al., 2017] Tzeng, E., Hoffman, J., Saenko, K., and Darrell, T. (2017). Adversarial discriminative domain adaptation. In <em>CVPR</em>, pages 2962-2971.</p>
-<p>[Tzeng et al., 2014] Tzeng, E., Hoffman, J., Zhang, N., et al. (2014). Deep domain confu­sion: Maximizing for domain invariance. <em>arXiv preprint arXiv:1412.3474</em>.</p>
-<p>[Wang et al., 2017] Wang, J., Chen, Y., Hao, S., et al. (2017). Balanced distribution adap­tation for transfer learning. In <em>ICDM</em>, pages 1129-1134.</p>
-<p>[Wang et al., 2018] Wang, J., Chen, Y., Hu, L., Peng, X., and Yu, P. S. (2018). Strati­fied transfer learning for cross-domain activity recognition. In <em>2018 IEEE International Conference on Pervasive Computing and Communications (PerCom)</em>.</p>
-<p>[Wang et al., 2014] Wang, J., Zhao, P., Hoi, S. C., and Jin, R. (2014). Online feature selection and its applications. <em>IEEE Transactions on Knowledge and Data Engineering</em>, 26(3):698-710.</p>
-<p>[Wei et al., 2016a] Wei, P., Ke, Y., and Goh, C. K. (2016a). Deep nonlinearfeature coding for unsupervised domain adaptation. In <em>IJCAI</em>, pages 2189-2195.</p>
-<p>[Wei et al., 2017] Wei, Y., Zhang, Y., and Yang, Q. (2017). Learning totransfer. <em>arXiv</em> preprint arXiv:1708.05629*.</p>
-<p>[Wei et al., 2016b] Wei, Y., Zhu, Y., Leung, C. W.-k., Song, Y., and Yang, Q. (2016b). Instilling social to physical: Co-regularized heterogeneous transfer learning. In <em>Thirtieth</em> AAAI Conference on Artificial Intelligence*.</p>
-<p>[Weiss et al., 2016] Weiss, K., Khoshgoftaar, T. M., and Wang, D. (2016). A survey of transfer learning. <em>Journal of Big Data</em>, 3(1):1-40.</p>
-<p>[Wu et al., 2017] Wu, Q., Zhou, X., Yan, Y., Wu, H., and Min, H. (2017). Online transfer learning by leveraging multiple source domains. <em>Knowledge and Information Systems</em>, 52(3):687-707.</p>
-<p>[xinhua, 2016] xinhua (2016). <a href="http://mp.weixin.qq.com/s?__biz=MjM5ODYzNzAyMQ==&amp;" target="_blank" rel="noopener">http://mp.weixin.qq.com/s?__biz=MjM5ODYzNzAyMQ==&amp;</a> mid=2651933920&amp;idx=1\\&amp;sn=ae2866bd12000f1644eae1094497837e.</p>
-<p>[Yan et al., 2017] Yan, Y., Wu, Q., Tan, M., Ng, M. K., Min, H., and Tsang, I. W. (2017). Online heterogeneous transfer by hedge ensemble of offline and online decisions. <em>IEEE transactions on neural networks and learning systems</em>.</p>
-<p>[Yosinski et al., 2014] Yosinski, J., Clune, J., Bengio, Y., and Lipson, H. (2014). How transferable are features in deep neural networks? In <em>Advances in neural information processing systems</em>, pages 3320-3328.</p>
-<p>[Zadrozny, 2004] Zadrozny, B. (2004). Learning and evaluating classifiers under sample selection bias. In <em>Proceedings of the twenty-first international conference on Machine learning</em>, page 114, Alberta, Canada. ACM.</p>
-<p>[Zellinger et al., 2017] Zellinger, W., Grubinger, T., Lughofer, E., Natschlager, T., and Saminger-Platz, S. (2017). Central moment discrepancy (cmd) for domain-invariant rep­resentation learning. <em>arXiv preprint arXiv:1702.08811</em>.</p>
-<p>[Zhang et al., 2017a] Zhang, J., Li, W., and Ogunbona, P. (2017a). Joint geometrical and statistical alignment for visual domain adaptation. In <em>CVPR</em>.</p>
-<p>[Zhang et al., 2017b] Zhang, X., Zhuang, Y., Wang, W., and Pedrycz, W. (2017b). On­line feature transformation learning for cross-domain object category recognition. <em>IEEE transactions on neural networks and learning systems</em>.</p>
-<p>[Zhao and Hoi, 2010] Zhao, P. and Hoi, S. C. (2010). Otl: A framework of online transfer learning. In <em>Proceedings of the 27th international conference on machine learning (ICML- 10)</em>, pages 1231-1238.</p>
-<p>[Zhao et al., 2010] Zhao, Z., Chen, Y., Liu, J., and Liu, M. (2010). Cross-mobile elm based activity recognition. <em>International Journal of Engineering and Industries</em>, 1(1):30-38.</p>
-<p>[Zhao et al., 2011] Zhao, Z., Chen, Y., Liu, J., Shen, Z., and Liu, M. (2011). Cross-people mobile-phone based activity recognition. In <em>Proceedings of the Twenty-Second interna­tional joint conference on Artificial Intelligence (IJCAI)</em>, volume 11, pages 2545-2550. Citeseer.</p>
-<p>[Zheng et al., 2009] Zheng, V. W., Hu, D. H., and Yang, Q. (2009). Cross-domain activity recognition. In <em>Proceedings of the 11th international conference on Ubiquitous computing</em>, pages 61-70. ACM.</p>
-<p>[Zheng et al., 2008] Zheng, V. W., Pan, S. J., Yang, Q., and Pan, J. J. (2008). Transferring multi-device localization models using latent multi-task learning. In <em>AAAI</em>, volume 8, pages 1427-1432, Chicago, Illinois, USA. AAAI.</p>
-<p>[Zhuang et al., 2015] Zhuang, F., Cheng, X., Luo, P., Pan, S. J., and He, Q. (2015). Su­pervised representation learning: Transfer learning with deep autoencoders. In <em>IJCAI</em>,pages 4119-4125.</p>
-<p>[Zhuo et al., 2017] Zhuo, J., Wang, S., Zhang, W., and Huang, Q. (2017). Deep unsuper­vised convolutional domain adaptation. In <em>Proceedings of the 2017 ACM on Multimedia Conference</em>, pages 261-269. ACM.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -4436,7 +3862,7 @@ E(g-f)^2&=E(g^2-2gf+f^2)
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
