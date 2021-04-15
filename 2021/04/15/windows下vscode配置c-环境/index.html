@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bassyess.github.io","root":"/","scheme":"Pisces","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Window7配置教程配置环境操作系统：Windows7vscode版本号：1.48.2 下载工具安装cpptools工具 打开vscode，点击Extensions； 搜索c++，选择第一个c&#x2F;c++(1.0.1) 点击install安装  安装code runner工具在VScode中编译文件，结束后并不会像我们经常使用的IDE一样，终端会停留在面前然后告诉你“按任意键继续”，在VScode中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows下vscode配置c++环境">
+<meta property="og:url" content="https://bassyess.github.io/2021/04/15/windows%E4%B8%8Bvscode%E9%85%8D%E7%BD%AEc-%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:site_name" content="Home">
+<meta property="og:description" content="Window7配置教程配置环境操作系统：Windows7vscode版本号：1.48.2 下载工具安装cpptools工具 打开vscode，点击Extensions； 搜索c++，选择第一个c&#x2F;c++(1.0.1) 点击install安装  安装code runner工具在VScode中编译文件，结束后并不会像我们经常使用的IDE一样，终端会停留在面前然后告诉你“按任意键继续”，在VScode中">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bassyess.github.io/images/c++%E9%85%8D%E7%BD%AE1.PNG">
+<meta property="og:image" content="https://bassyess.github.io/images/c++%E9%85%8D%E7%BD%AE2.PNG">
+<meta property="og:image" content="https://bassyess.github.io/images/c++%E9%85%8D%E7%BD%AE2.PNG">
+<meta property="og:image" content="https://bassyess.github.io/images/CodeRunner.png">
+<meta property="og:image" content="https://bassyess.github.io/images/CodeRunner1.png">
+<meta property="og:image" content="https://bassyess.github.io/images/CodeRunner2.png">
+<meta property="article:published_time" content="2021-04-15T07:56:20.000Z">
+<meta property="article:modified_time" content="2021-04-15T13:25:17.260Z">
+<meta property="article:author" content="Kay">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bassyess.github.io/images/c++%E9%85%8D%E7%BD%AE1.PNG">
+
+<link rel="canonical" href="https://bassyess.github.io/2021/04/15/windows%E4%B8%8Bvscode%E9%85%8D%E7%BD%AEc-%E7%8E%AF%E5%A2%83/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>windows下vscode配置c++环境 | Home</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2021/04/15/windows%E4%B8%8Bvscode%E9%85%8D%E7%BD%AEc-%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kay">
+      <meta itemprop="description" content="千里之行，始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          windows下vscode配置c++环境
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-15 15:56:20 / 修改时间：21:25:17" itemprop="dateCreated datePublished" datetime="2021-04-15T15:56:20+08:00">2021-04-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Window7配置教程"><a href="#Window7配置教程" class="headerlink" title="Window7配置教程"></a>Window7配置教程</h1><h2 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h2><p>操作系统：Windows7<br>vscode版本号：1.48.2</p>
+<h2 id="下载工具"><a href="#下载工具" class="headerlink" title="下载工具"></a>下载工具</h2><h3 id="安装cpptools工具"><a href="#安装cpptools工具" class="headerlink" title="安装cpptools工具"></a>安装cpptools工具</h3><ul>
+<li>打开vscode，点击Extensions；</li>
+<li>搜索c++，选择第一个c/c++(1.0.1)</li>
+<li>点击install安装<br><img src="/images/c++配置1.PNG" alt="安装cpptools工具"></li>
+</ul>
+<h3 id="安装code-runner工具"><a href="#安装code-runner工具" class="headerlink" title="安装code runner工具"></a>安装code runner工具</h3><p>在VScode中编译文件，结束后并不会像我们经常使用的IDE一样，终端会停留在面前然后告诉你“按任意键继续”，在VScode中，编译运行完成后往往cmd会一闪而过，然后直接：<br><code>The program ‘d:\MinGW\Projicts\test\test.exe’ has exited with code 0 (0x00000000).</code><br>这个时候我们往往会使用在结束的return语句前加上getchar() 或<br><code>system(“pause”)</code>（注意：使用这个的时候需要加上头文件<code>#include&lt;stdlib.h&gt;</code>）</p>
+<p>我们可以使用code runner工具来解决这个问题<br>首先和上面一样 找到这个插件并安装它<br><img src="/images/c++配置2.PNG" alt="安装code runner工具"></p>
+<h3 id="下载MinGW"><a href="#下载MinGW" class="headerlink" title="下载MinGW"></a>下载MinGW</h3><p>下载地址：<a href="https://sourceforge.net/projects/mingw-w64/files/" target="_blank" rel="noopener">https://sourceforge.net/projects/mingw-w64/files/</a><br>下载的文件：进入网站后不要点击 “Download Lasted Version”，往下滑，找到最新版的<code>x86_64-posix-seh</code>。<br>安装MinGW：下载后是一个7z的压缩包，解压后移动到你想安装的位置即可。</p>
+<h2 id="配置MinGW环境变量"><a href="#配置MinGW环境变量" class="headerlink" title="配置MinGW环境变量"></a>配置MinGW环境变量</h2><p>配置对象：WinGW，就是把刚刚安装WinGW的路径拷贝一下<br>右键点击，计算机 → 属性 → 高级系统设置 → 环境变量 → 双击系统变量Path → 复制MinGW安装路径的bin文件夹<br>例如我的是：<code>D:\MinGW\mingw64\bin</code><br>记得每一步都要点确定，配置完成后我们使用命令行检验一下是否配置成功<br><code>win+R</code> 输入<code>cmd</code>后回车打开命令行，输入<code>g++ -v</code><br>出现下图界面说明配置成功<br><img src="/images/c++配置2.PNG" alt="配置MinGW环境变量"><br>然后打开以下界面进行操作<br><img src="/images/CodeRunner.png" alt=""><br><img src="/images/CodeRunner1.png" alt=""><br><img src="/images/CodeRunner2.png" alt=""><br>即可</p>
+<h2 id="配置C-环境"><a href="#配置C-环境" class="headerlink" title="配置C++环境"></a>配置C++环境</h2><h3 id="创建一个c-cpp文件"><a href="#创建一个c-cpp文件" class="headerlink" title="创建一个c/cpp文件"></a>创建一个c/cpp文件</h3><p>首先随便打开或者新建一个文件夹CppCode, 然后在文件夹里创建一个c或cpp文件<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"Hello World"</span>&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    getchar();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="创建json文件"><a href="#创建json文件" class="headerlink" title="创建json文件"></a>创建json文件</h3><p>先创建一个你打算存放代码的文件夹（称作工作区），路径不能含有中文和空格和引号。c语言和c++需要建立不同的工作区（除非你懂得下面json文件的某些选项，则可以做到一个工作区使用不同的build task）。</p>
+<p>打开VS Code，选打开文件夹（不要选“添加工作区文件夹”，理由见上一句），选择刚才那个文件夹，点VS Code上的新建文件夹，名称为.vscode（这样做的原因是Windows的Explorer不允许创建的文件夹第一个字符是点），然后创建<code>launch.json，tasks.json，settings.json，c_cpp_properties.json</code>放到.vscode文件夹下。<br><code>特别注意：C/C++文件放在与.vscode 的所在的同级目录中，.vscode 只放置4个json文件。</code></p>
+<h4 id="launch-json配置文件"><a href="#launch-json配置文件" class="headerlink" title="launch.json配置文件"></a>launch.json配置文件</h4><p>stopAtEntry可根据自己喜好修改；cwd可以控制程序运行时的相对路径，如有需要可以改为${fileDirname}。其他无需更改，除非你不用windows，则可以用lldb调试（需要自己装）。type和request不变色是正常现象。<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"version"</span>: <span class="string">"0.2.0"</span>,</span><br><span class="line">    <span class="attr">"configurations"</span>: [</span><br><span class="line"></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"g++.exe build and debug active file"</span>, <span class="comment">// 配置名称，将会在启动配置的下拉菜单中显示</span></span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"cppdbg"</span>, <span class="comment">// 配置类型，这里只能为cppdbg</span></span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"launch"</span>, <span class="comment">// 请求配置类型，可以为launch（启动）或attach（附加）</span></span><br><span class="line">            <span class="attr">"program"</span>: <span class="string">"$&#123;fileDirname&#125;/$&#123;fileBasenameNoExtension&#125;.exe"</span>, <span class="comment">// 将要进行调试的程序的路径</span></span><br><span class="line">            <span class="attr">"args"</span>: [], <span class="comment">// 程序调试时传递给程序的命令行参数，一般设为空即可</span></span><br><span class="line">            <span class="attr">"stopAtEntry"</span>: <span class="literal">true</span>, <span class="comment">// 设为true时程序将暂停在程序入口处，我一般设置为true</span></span><br><span class="line">            <span class="attr">"cwd"</span>: <span class="string">"$&#123;workspaceFolder&#125;"</span>, <span class="comment">// 调试程序时的工作目录</span></span><br><span class="line">            <span class="attr">"environment"</span>: [], <span class="comment">// （环境变量？）</span></span><br><span class="line">            <span class="attr">"externalConsole"</span>: <span class="literal">true</span>, <span class="comment">// 调试时是否显示控制台窗口，一般设置为true显示控制台</span></span><br><span class="line">            <span class="attr">"internalConsoleOptions"</span>: <span class="string">"neverOpen"</span>, <span class="comment">// 如果不设为neverOpen，调试时会跳到“调试控制台”选项卡，你应该不需要对gdb手动输命令吧？</span></span><br><span class="line">            <span class="attr">"MIMode"</span>: <span class="string">"gdb"</span>, <span class="comment">// 指定连接的调试器，可以为gdb或lldb。但目前lldb在windows下没有预编译好的版本。</span></span><br><span class="line">            <span class="attr">"miDebuggerPath"</span>: <span class="string">"D:/MinGW/mingw64/bin/gdb.exe"</span>, <span class="comment">// 调试器路径。</span></span><br><span class="line">            <span class="attr">"setupCommands"</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"description"</span>: <span class="string">"Enable pretty-printing for gdb"</span>,</span><br><span class="line">                    <span class="attr">"text"</span>: <span class="string">"-enable-pretty-printing"</span>,</span><br><span class="line">                    <span class="attr">"ignoreFailures"</span>: <span class="literal">false</span></span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"preLaunchTask"</span>: <span class="string">"task g++"</span> <span class="comment">// 调试会话开始前执行的任务，一般为编译程序。与tasks.json的label相对应</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="tasks-json配置文件"><a href="#tasks-json配置文件" class="headerlink" title="tasks.json配置文件"></a>tasks.json配置文件</h4><p>reveal可根据自己喜好修改，即使设为never，也只是编译时不跳转到“终端”而已，手动点进去还是可以看到，我个人设为never。<br>命令行参数方面，-std根据自己的需要修改。如果使用Clang编写C语言，把command的值改成clang。<br>如果使用MinGW，编译C用gcc，编译c++用g++，并把-target和-fcolor那两条删去。如果不想要额外警告，把-Wall那一条删去。<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"version"</span>: <span class="string">"2.0.0"</span>,</span><br><span class="line">    <span class="attr">"tasks"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"label"</span>: <span class="string">"task g++"</span>, <span class="comment">// 任务名称，与launch.json的preLaunchTask相对应</span></span><br><span class="line">            <span class="attr">"command"</span>: <span class="string">"D:/MinGW/mingw64/bin/g++.exe"</span>, <span class="comment">// 要使用的编译器</span></span><br><span class="line">            <span class="attr">"args"</span>: [</span><br><span class="line">                <span class="string">"$&#123;file&#125;"</span>,</span><br><span class="line">                <span class="string">"-o"</span>, <span class="comment">// 指定输出文件名，不加该参数则默认输出a.exe</span></span><br><span class="line">                <span class="string">"$&#123;fileDirname&#125;/$&#123;fileBasenameNoExtension&#125;.exe"</span>,</span><br><span class="line">                <span class="string">"-g"</span>, <span class="comment">// 生成和调试有关的信息</span></span><br><span class="line">                <span class="string">"-Wall"</span>, <span class="comment">// 开启额外警告</span></span><br><span class="line">                <span class="string">"-static-libgcc"</span>, <span class="comment">// 静态链接</span></span><br><span class="line">                <span class="comment">//"-fcolor-diagnostics",</span></span><br><span class="line">                <span class="comment">//"--target=x86_64-w64-mingw", // 默认target为msvc，不加这一条就会找不到头文件</span></span><br><span class="line">                <span class="string">"-std=c++17"</span> <span class="comment">// C语言最新标准为c11，或根据自己的需要进行修改</span></span><br><span class="line">            ], <span class="comment">// 编译命令参数</span></span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"shell"</span>,</span><br><span class="line">            <span class="attr">"group"</span>: &#123;</span><br><span class="line">                <span class="attr">"kind"</span>: <span class="string">"build"</span>,</span><br><span class="line">                <span class="attr">"isDefault"</span>: <span class="literal">true</span> <span class="comment">// 设为false可做到一个tasks.json配置多个编译指令，需要自己修改本文件，我这里不多提</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"presentation"</span>: &#123;</span><br><span class="line">                <span class="attr">"echo"</span>: <span class="literal">true</span>,</span><br><span class="line">                <span class="attr">"reveal"</span>: <span class="string">"always"</span>, <span class="comment">// 在“终端”中显示编译信息的策略，可以为always，silent，never。具体参见VSC的文档</span></span><br><span class="line">                <span class="attr">"focus"</span>: <span class="literal">false</span>, <span class="comment">// 设为true后可以使执行task时焦点聚集在终端，但对编译c和c++来说，设为true没有意义</span></span><br><span class="line">                <span class="attr">"panel"</span>: <span class="string">"shared"</span> <span class="comment">// 不同的文件的编译信息共享一个终端面板</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"options"</span>: &#123;</span><br><span class="line">                <span class="attr">"cwd"</span>: <span class="string">"D:/MinGW/mingw64/bin"</span></span><br><span class="line">              &#125;,</span><br><span class="line">            <span class="attr">"problemMatcher"</span>: [</span><br><span class="line">                <span class="string">"$gcc"</span></span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="c-cpp-properties-json配置文件"><a href="#c-cpp-properties-json配置文件" class="headerlink" title="c_cpp_properties.json配置文件"></a>c_cpp_properties.json配置文件</h4><p>此文件内容来自于 Microsoft/vscode-cpptools ；这个json不允许有注释（其实按照标准本来就不能有）。</p>
+<p>如果你没有合并Clang和MinGW，则该文件中的compilerPath必需修改成MinGW的完整路径，精确到gcc.exe，否则会提示找不到头文件；Linux下应该是/usr/bin/gcc。<br>没有该文件运行时，会报错”includepath”设置问题<br>记得把路径修改为你自己的路径，查找自己路径方法为打开cmd 输入:<code>gcc -v -E -x c++ -</code><br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"configurations"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"MinGW"</span>,</span><br><span class="line">            <span class="attr">"includePath"</span>: [</span><br><span class="line">                <span class="string">"$&#123;workspaceRoot&#125;"</span>,</span><br><span class="line">                <span class="string">"D:/MinGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"</span>,</span><br><span class="line">                <span class="string">"D:/MinGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"</span>,</span><br><span class="line">                <span class="string">"D:/MinGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"</span>,</span><br><span class="line">                <span class="string">"D:/MinGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"</span>,</span><br><span class="line">                <span class="string">"D:/MinGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"</span>,</span><br><span class="line">                <span class="string">"D:/MinGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"defines"</span>: [</span><br><span class="line">                <span class="string">"_DEBUG"</span>,</span><br><span class="line">                <span class="string">"UNICODE"</span>,</span><br><span class="line">                <span class="string">"__GNUC__=6"</span>,</span><br><span class="line">                <span class="string">"__cdecl=__attribute__((__cdecl__))"</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"intelliSenseMode"</span>: <span class="string">"msvc-x64"</span>,</span><br><span class="line">            <span class="attr">"browse"</span>: &#123;</span><br><span class="line">                <span class="attr">"limitSymbolsToIncludedHeaders"</span>: <span class="literal">true</span>,</span><br><span class="line">                <span class="attr">"databaseFilename"</span>: <span class="string">""</span>,</span><br><span class="line">                <span class="attr">"path"</span>: [</span><br><span class="line">                <span class="string">"$&#123;workspaceRoot&#125;"</span>,</span><br><span class="line">                <span class="string">"D:/MinGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"</span>,</span><br><span class="line">                <span class="string">"D:/MinGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"</span>,</span><br><span class="line">                <span class="string">"D:/MinGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"</span>,</span><br><span class="line">                <span class="string">"D:/MinGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"</span>,</span><br><span class="line">                <span class="string">"D:/MinGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"</span>,</span><br><span class="line">                <span class="string">"D:/MinGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"</span></span><br><span class="line">                ]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"version"</span>: <span class="number">4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="运行文件"><a href="#运行文件" class="headerlink" title="运行文件"></a>运行文件</h4><p>这个时候我们已经配置完成，可以开始运行我们刚才创建的测试代码啦<br>F5：VScode调试<br>CTRL+ALT+N:code runner调试</p>
+<p>注意：若出现<code>标记“&amp;&amp;”不是此版本中的有效语句分隔符</code>错误，<br>选择 File-&gt; Preferences -&gt; Settings，在搜索框输入setting.json。<br>进入setting.json，添加这一句话<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">terminal.integrated.shell.windows&quot;: &quot;powershell.exe&quot;,</span><br></pre></td></tr></table></figure><br>使用powershell的格式来进行编译执行，会自动将 &amp;&amp; 符号换为 ;  号，即可解决。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/23/C++%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="prev" title="C++基础知识">
+      <i class="fa fa-chevron-left"></i> C++基础知识
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Window7配置教程"><span class="nav-number">1.</span> <span class="nav-text">Window7配置教程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置环境"><span class="nav-number">1.1.</span> <span class="nav-text">配置环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载工具"><span class="nav-number">1.2.</span> <span class="nav-text">下载工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装cpptools工具"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装cpptools工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装code-runner工具"><span class="nav-number">1.2.2.</span> <span class="nav-text">安装code runner工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载MinGW"><span class="nav-number">1.2.3.</span> <span class="nav-text">下载MinGW</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置MinGW环境变量"><span class="nav-number">1.3.</span> <span class="nav-text">配置MinGW环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置C-环境"><span class="nav-number">1.4.</span> <span class="nav-text">配置C++环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个c-cpp文件"><span class="nav-number">1.4.1.</span> <span class="nav-text">创建一个c&#x2F;cpp文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建json文件"><span class="nav-number">1.4.2.</span> <span class="nav-text">创建json文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#launch-json配置文件"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">launch.json配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tasks-json配置文件"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">tasks.json配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-cpp-properties-json配置文件"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">c_cpp_properties.json配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行文件"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">运行文件</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Kay</p>
+  <div class="site-description" itemprop="description">千里之行，始于足下</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kay</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
