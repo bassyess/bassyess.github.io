@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bassyess.github.io","root":"/","scheme":"Pisces","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="C++基础知识static 静态变量全局静态变量在整个程序运行期间一直存在。初始化：未经初始化的全局静态变量会被自动初始化为0（自动对象的值是任意的，除非他被显式初始化）；作用域：全局静态变量在声明他的文件之外是不可见的，准确地说是从定义之处开始，到文件结尾。 局部静态变量存储在静态存储区初始化：未经初始化的全局静态变量会被自动初始化为0（自动对象的值是任意的，除非他被显式初始化）；作用域：作用域">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++基础知识">
+<meta property="og:url" content="https://bassyess.github.io/2020/08/23/C++%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="Home">
+<meta property="og:description" content="C++基础知识static 静态变量全局静态变量在整个程序运行期间一直存在。初始化：未经初始化的全局静态变量会被自动初始化为0（自动对象的值是任意的，除非他被显式初始化）；作用域：全局静态变量在声明他的文件之外是不可见的，准确地说是从定义之处开始，到文件结尾。 局部静态变量存储在静态存储区初始化：未经初始化的全局静态变量会被自动初始化为0（自动对象的值是任意的，除非他被显式初始化）；作用域：作用域">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-23T13:21:04.000Z">
+<meta property="article:modified_time" content="2023-01-08T03:10:37.121Z">
+<meta property="article:author" content="Kay">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://bassyess.github.io/2020/08/23/C++%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>C++基础知识 | Home</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/08/23/C++%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kay">
+      <meta itemprop="description" content="千里之行，始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++基础知识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-23 21:21:04" itemprop="dateCreated datePublished" datetime="2020-08-23T21:21:04+08:00">2020-08-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-08 11:10:37" itemprop="dateModified" datetime="2023-01-08T11:10:37+08:00">2023-01-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="C-基础知识"><a href="#C-基础知识" class="headerlink" title="C++基础知识"></a>C++基础知识</h1><h2 id="static-静态变量"><a href="#static-静态变量" class="headerlink" title="static 静态变量"></a>static 静态变量</h2><h3 id="全局静态变量"><a href="#全局静态变量" class="headerlink" title="全局静态变量"></a>全局静态变量</h3><p>在整个程序运行期间一直存在。<br>初始化：未经初始化的全局静态变量会被自动初始化为0（自动对象的值是任意的，除非他被显式初始化）；<br>作用域：全局静态变量在声明他的文件之外是不可见的，准确地说是从定义之处开始，到文件结尾。</p>
+<h3 id="局部静态变量"><a href="#局部静态变量" class="headerlink" title="局部静态变量"></a>局部静态变量</h3><p>存储在静态存储区<br>初始化：未经初始化的全局静态变量会被自动初始化为0（自动对象的值是任意的，除非他被显式初始化）；<br>作用域：作用域仍为局部作用域，当定义它的函数或者语句块结束的时候，作用域结束。但是当局部静态变量离开作用域后，并没有销毁，而是仍然驻留在内存当中，只不过我们不能再对它进行访问，直到该函数再次被调用，并且值不变；</p>
+<h3 id="静态函数"><a href="#静态函数" class="headerlink" title="静态函数"></a>静态函数</h3><p>在函数返回类型前加static，函数就定义为静态函数。函数的定义和声明在默认情况下都是extern的，但静态函数只是在声明他的文件当中可见，不能被其他文件所用。<br>函数的实现使用static修饰，那么这个函数只可在本cpp内使用，不会同其他cpp中的同名函数引起冲突；<br>warning：不要再头文件中声明static的全局函数，不要在cpp内声明非static的全局函数，如果你要在多个cpp中复用该函数，就把它的声明提到头文件里去，否则cpp内部声明需加上static修饰；</p>
+<h3 id="类的静态成员"><a href="#类的静态成员" class="headerlink" title="类的静态成员"></a>类的静态成员</h3><p>在类中，静态成员可以实现多个对象之间的数据共享，并且使用静态数据成员还不会破坏隐藏的原则，即保证了安全性。因此，静态成员是类的所有对象中共享的成员，而不是某个对象的成员。对多个对象来说，静态数据成员只存储一处，供所有对象共用</p>
+<h3 id="类的静态函数"><a href="#类的静态函数" class="headerlink" title="类的静态函数"></a>类的静态函数</h3><p>静态成员函数和静态数据成员一样，它们都属于类的静态成员，它们都不是对象成员。因此，对静态成员的引用不需要用对象名。<br>在静态成员函数的实现中不能直接引用类中说明的非静态成员，可以引用类中说明的静态成员（这点非常重要）。如果静态成员函数中要引用非静态成员时，可通过对象来引用。从中可看出，调用静态成员函数使用如下格式：&lt;类名&gt;::&lt;静态成员函数名&gt;(&lt;参数表&gt;);</p>
+<h2 id="C-和C的区别"><a href="#C-和C的区别" class="headerlink" title="C++和C的区别"></a>C++和C的区别</h2><p>设计思想上：C++是面向对象的语言，而C是面向过程的结构化编程语言。<br>语法上：（1）C++具有封装、继承和多态三种特性；（2）C++相比C，增加多许多类型安全的功能，比如强制类型转换、智能指针等；（3）C++支持范式编程，比如模板类、函数模板等。</p>
+<h3 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h3><p>封装是在设计类的一个基本原理，就是将数据与对数据进行的操作进行有机的结合，形成“类”，其中数据和函数都是类的成员。</p>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>如果一个类别B“继承自”另一个类别A，就把这个B称为“A的子类”，而把A称为“B的父类别”也可以称“A是B的超类”。继承可以使得子类具、有父类别的各种属性和方法，而不需要再次编写相同的代码。在令子类别继承父类别的同时，可以重新定义某些属性，并重写某些方法，即覆盖父类别的原有属性和方法，使其获得与父类别不同的功能。<br>（1）访问权限<br>public：父类对象内部、父类对象外部、子类对象内部、子类对象外部都可以访问。<br>protected：父类对象内部、子类对象内部可以访问，父类对象外部、子类对象外部都不可访问。<br>private：父类对象内部可以访问，其他都不可以访问。<br>（2）继承方式<br>三种继承方式不影响子类对父类的访问权限，子类对父类只看父类的访问控制权。继承方式是为了控制子类(也称派生类)的调用方(也叫用户)对父类(也称基类)的访问权限。<br>public、protected、private三种继承方式，相当于把父类的public访问权限在子类中变成了对应的权限。 如protected继承，把父类中的public成员在本类中变成了protected的访问控制权限；private继承，把父类的public成员和protected成员在本类中变成了private访问控制权。</p>
+<h3 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h3><p>多态性可以简单地概括为“一个接口，多种方法”，程序在运行时才决定调用的函数，它是面向对象编程领域的核心概念。</p>
+<h4 id="静态多态"><a href="#静态多态" class="headerlink" title="静态多态"></a>静态多态</h4><p>静态多态也称为静态绑定或早绑定。编译器在编译期间完成的，编译器根据函数实参的类型(可能会进行隐式类型转换)，可推断出要调用那个函数，如果有对应的函数就调用该函数，否则出现编译错误。<br>（1）函数重载<br>编译器根据函数不同的参数表，对同名函数的名称做修饰，然后这些同名函数就成了不同的函数（至少对于编译器来说是这样的）。函数的调用，在编译器间就已经确定了，是静态的。也就是说，它们的地址在编译期就绑定了（早绑定）。<br>（2）泛型编程<br>泛型编程就是指编写独立于特定类型的代码，泛型在C++中的主要实现为模板函数和模板类。<br>泛型的特性：<br>a) 函数模板并不是真正的函数，它只是C++编译生成具体函数的一个模子。<br>b) 函数模板本身并不生成函数，实际生成的函数是替换函数模板的那个函数，比如上例中的add(sum1,sum2)，这种替换是编译期就绑定的。<br>c) 函数模板不是只编译一份满足多重需要，而是为每一种替换它的函数编译一份。<br>d) 函数模板不允许自动类型转换。<br>e) 函数模板不可以设置默认模板实参。比如template <typename T=0>不可以。</p>
+<h3 id="动态多态"><a href="#动态多态" class="headerlink" title="动态多态"></a>动态多态</h3><p>c++的动态多态是基于虚函数的。对于相关的对象类型，确定它们之间的一个共同功能集，然后在基类中，把这些共同的功能声明为多个公共的虚函数接口。各个子类重写这些虚函数，以完成具体的功能。客户端的代码（操作函数）通过指向基类的引用或指针来操作这些对象，对虚函数的调用会自动绑定到实际提供的子类对象上去。</p>
+<h2 id="C-的四种cast转换"><a href="#C-的四种cast转换" class="headerlink" title="C++的四种cast转换"></a>C++的四种cast转换</h2><p>C++中四种类型转换是：static_cast, dynamic_cast, const_cast, reinterpret_cast<br>(1) const_cast<br>用于将const变量转为非const<br>(2) static_cast<br>用于各种隐式转换，比如非const转const，void*转指针等, static_cast能用于多态向上转化，如果向下转能成功但是不安全，结果未知；<br>(3) dynamic_cast<br>用于动态类型转换。只能用于含有虚函数的类，用于类层次间的向上和向下转化。只能转指针或引用。向下转化时，如果是非法的对于指针返回NULL，对于引用抛异常。要深入了解内部转换的原理。<br>向上转换：指的是子类向基类的转换；<br>向下转换：指的是基类向子类的转换；<br>它通过判断在执行到该语句的时候变量的运行时类型和要转换的类型是否相同来判断是否能够进行向下转换。<br>(4) reinterpret_cast<br>几乎什么都可以转，比如将int转指针，可能会出问题，尽量少用。</p>
+<p>为什么不使用C的强制转换？C的强制转换表面上看起来功能强大什么都能转，但是转化不够明确，不能进行错误检查，容易出错。</p>
+<h2 id="C-的四种智能指针"><a href="#C-的四种智能指针" class="headerlink" title="C++的四种智能指针"></a>C++的四种智能指针</h2><p>C++里面的四个智能指针: auto_ptr, shared_ptr, weak_ptr, unique_ptr 其中后三个是c++11支持，并且第一个已经被11弃用。<br>为什么要使用智能指针?智能指针的作用是管理一个指针，因为存在以下这种情况：申请的空间在函数结束时忘记释放，造成内存泄漏。使用智能指针可以很大程度上的避免这个问题，因为智能指针就是一个类，当超出了类的作用域是，类会自动调用析构函数，析构函数会自动释放资源。所以智能指针的作用原理就是在函数结束时自动释放内存空间，不需要手动释放内存空间。</p>
+<h3 id="auto-ptr（c-98的方案，cpp11已经抛弃）"><a href="#auto-ptr（c-98的方案，cpp11已经抛弃）" class="headerlink" title="auto_ptr（c++98的方案，cpp11已经抛弃）"></a>auto_ptr（c++98的方案，cpp11已经抛弃）</h3><p>auto_ptr的缺点是：存在潜在的内存崩溃问题！</p>
+<h3 id="unique-ptr（替换auto-ptr）"><a href="#unique-ptr（替换auto-ptr）" class="headerlink" title="unique_ptr（替换auto_ptr）"></a>unique_ptr（替换auto_ptr）</h3><p>unique_ptr实现独占式拥有或严格拥有概念，保证同一时间内只有一个智能指针可以指向该对象。它对于避免资源泄露(例如“以new创建对象后因为发生异常而忘记调用delete”)特别有用。</p>
+<h3 id="shared-ptr"><a href="#shared-ptr" class="headerlink" title="shared_ptr"></a>shared_ptr</h3><p>shared_ptr实现共享式拥有概念。多个智能指针可以指向相同对象，该对象和其相关资源会在“最后一个引用被销毁”时候释放。它使用计数机制来表明资源被几个指针共享。可以通过成员函数use_count()来查看资源的所有者个数。除了可以通过new来构造，还可以通过传入auto_ptr, unique_ptr,weak_ptr来构造。当我们调用release()时，当前指针会释放资源所有权，计数减一。当计数等于0时，资源会被释放。<br>shared_ptr 是为了解决 unique_ptr 在对象所有权上的局限性(unique_ptr 是独占的), 在使用引用计数的机制上提供了可以共享所有权的智能指针。<br>成员函数：<br>use_count：返回引用计数的个数;<br>unique：返回是否是独占所有权( use_count 为 1)；<br>swap：交换两个 shared_ptr 对象(即交换所拥有的对象)<br>reset 放弃内部对象的所有权或拥有对象的变更, 会引起原有对象的引用计数的减少；<br>get：返回内部对象(指针), 由于已经重载了()方法, 因此和直接使用对象是一样的.如 shared_ptr<int> sp(new int(1)); sp 与 sp.get()是等价的。</p>
+<h3 id="weak-ptr"><a href="#weak-ptr" class="headerlink" title="weak_ptr"></a>weak_ptr</h3><p>weak_ptr 是一种不控制对象生命周期的智能指针, 它指向一个 shared_ptr 管理的对象.  weak_ptr只是提供了对管理对象的一个访问手段。weak_ptr 设计的目的是为配合 shared_ptr 而引入的一种智能指针来协助 shared_ptr 工作, 它只可以从一个 shared_ptr 或另一个 weak_ptr 对象构造, 它的构造和析构不会引起引用记数的增加或减少。weak_ptr可以用来解决shared_ptr相互引用时的死锁问题,如果说两个shared_ptr相互引用,那么这两个指针的引用计数永远不可能下降为0,资源永远不会释放。它是对对象的一种弱引用，不会增加对象的引用计数，和shared_ptr之间可以相互转化，shared_ptr可以直接赋值给它，它可以通过调用lock函数来获得shared_ptr。</p>
+<h2 id="指针和引用的区别"><a href="#指针和引用的区别" class="headerlink" title="指针和引用的区别"></a>指针和引用的区别</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>（1）引用：引用就是某一变量的一个别名，对引用的操作与对变量直接操作完全一样。引用是C++对C语言的重要扩充。<br>（2）指针：指针存储的是变量在内存区域的地址。</p>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p>（1）指针有自己的一块空间，而引用只是一个别名；<br>（2）指针可以被初始化为NULL（nullptr），而引用必须被初始化且必须是一个已有对象 的引用；<br>（3）作为参数传递时，指针需要被解引用才可以对对象进行操作，而直接对引 用的修改都会改变引用所指向的对象；<br>（4）指针在使用中可以指向其它对象，但是引用只能是一个对象的引用，不能 被改变；<br>（5）指针可以有多级指针（**p），而引用至多一级。</p>
+<h2 id="malloc-和new"><a href="#malloc-和new" class="headerlink" title="malloc 和new"></a>malloc 和new</h2><p>（1）new分配内存按照数据类型进行分配，malloc分配内存按照指定的大小分配；<br>（2）new返回的是指定对象的指针，而malloc返回的是void<em>，因此malloc的返回值一般都需要进行类型转化。<br>（3）new不仅分配一段内存，而且会调用构造函数，malloc不会。<br>（4）new分配的内存要用delete销毁，malloc要用free来销毁；delete销毁的时候会调用对象的析构函数，而free则不会。<br>（5）new是一个操作符可以重载，malloc是一个库函数。<br>（6）申请数组时： new一次分配所有内存，多次调用构造函数，搭配使用delete，delete多次调用析构函数，销毁数组中的每个对象。而malloc则只能sizeof(int) </em> n。</p>
+<h2 id="虚函数和多态"><a href="#虚函数和多态" class="headerlink" title="虚函数和多态"></a>虚函数和多态</h2><p>多态的实现主要分为静态多态和动态多态，静态多态主要是重载，在编译的时候就已经确定；动态多态是用虚函数机制实现的，在运行期间动态绑定。比如说，一个父类类型的指针指向一个子类对象时候，使用父类的指针去调用子类中重写了的父类中的虚函数的时候，会调用子类重写过后的函数。<br>虚函数的实现：在有虚函数的类中，类的最开始部分是一个虚函数表的指针，这个指针指向一个虚函数表，表中放了虚函数的地址。当子类继承了父类的时候也会继承其虚函数表，当子类重写父类中虚函数时候，会将其继承到的虚函数表中的地址替换为重新写的函数地址。但是由于使用了虚函数，会增加访问内存开销，降低效率。</p>
+<h2 id="静态函数和虚函数"><a href="#静态函数和虚函数" class="headerlink" title="静态函数和虚函数"></a>静态函数和虚函数</h2><p>静态函数在编译的时候就已经确定运行时机；<br>虚函数在运行的时候动态绑定。虚函数因为用了虚函数表机制，调用的时候会增加一次内存开销。</p>
+<h2 id="基类的析构函数"><a href="#基类的析构函数" class="headerlink" title="基类的析构函数"></a>基类的析构函数</h2><p>为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数？<br>将可能会被继承的父类的析构函数设置为虚函数，可以保证当我们new一个子类，然后使用基类指针指向该子类对象，释放基类指针时可以释放掉子类的空间，防止内存泄漏。<br>C++默认的析构函数不是虚函数是因为虚函数需要额外的虚函数表和虚表指针，占用额外的内存。而对于不会被继承的类来说，其析构函数如果是虚函数，就会浪费内存。因此C++默认的析构函数不是虚函数，而是只有当需要当作父类时，设置为虚函数。 </p>
+<h2 id="C-中析构函数的作用"><a href="#C-中析构函数的作用" class="headerlink" title="C++中析构函数的作用"></a>C++中析构函数的作用</h2><p>析构函数与构造函数对应，当对象结束其生命周期，如对象所在的函数已调用完毕时，系统会自动执行析构函数。<br>析构函数名也应与类名相同，只是在函数名前面加一个位取反符~，以区别于构造函数。它不能带任何参数，也没有返回值（包括void类型）。一个类只能有一个析构函数，不能重载。<br>如果用户没有编写析构函数，编译系统会自动生成一个析构函数（即使自定义了析构函数，编译器也总是会为我们合成一个析构函数，并且如果自定义了析构函数，编译器在执行时会先调用自定义的析构函数再调用合成的析构函数）。<br>如果一个类中有指针成员，而且在使用的过程中动态的申请了内存，那么最好显示构造析构函数在销毁类之前，释放掉申请的内存空间，避免内存泄漏。</p>
+<h2 id="map和set"><a href="#map和set" class="headerlink" title="map和set"></a>map和set</h2><p>map和set都是C++的关联容器，其底层实现都是红黑树（RB-Tree）。由于 map 和set所开放的各种操作接口，RB-tree 也都提供了，所以几乎所有的 map 和set的操作行为，都只是转调 RB-tree 的操作行为。<br>map和set区别在于：<br>（1）map中的元素是key-value（关键字—值）对：关键字起到索引的作用，值则表示与索引相关联的数据；Set与之相对就是关键字的简单集合，set中每个元素只包含一个关键字。<br>（2）set的迭代器是const的，不允许修改元素的值；map允许修改value，但不允许修改key。其原因是因为map和set是根据关键字排序来保证其有序性的，如果允许修改key的话，那么首先需要删除该键，然后调节平衡，再插入修改后的键值，调节平衡，如此一来，严重破坏了map和set的结构，导致iterator失效，不知道应该指向改变前的位置，还是指向改变后的位置。所以STL中将set的迭代器设置成const，不允许修改迭代器的值；而map的迭代器则不允许修改key值，允许修改value值。<br>（3）map支持下标操作，set不支持下标操作。map可以用key做下标，map的下标运算符[ ]将关键字作为下标去执行查找，如果关键字不存在，则插入一个具有该关键字和mapped_type类型默认值的元素至map中，因此下标运算符[ ]在map应用中需要慎用。如果find能解决需要，尽可能用find。</p>
+<h2 id="Vector-和list"><a href="#Vector-和list" class="headerlink" title="Vector 和list"></a>Vector 和list</h2><h3 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h3><p>（1）连续存储的容器，动态数组，在堆上分配空间。<br>（2）底层实现：数组<br>（3）两倍容量增长：vector 增加（插入）新元素时，如果未超过当时的容量，则还有剩余空间，那么直接添加到最后（插入指定位置），然后调整迭代器。如果没有剩余空间了，则会重新配置原有元素个数的两倍空间，然后将原空间元素通过复制的方式初始化新空间，再向新空间增加元素，最后析构并释放原空间，之前的迭代器会失效。<br>（4）性能：<br>访问：O(1)<br>插入：在最后插入（空间够）速度很快；在最后插入（空间不够）则需要内存申请和释放，以及对之前数据进行拷贝。<br>在中间插入（空间够）内存拷贝，在中间插入（空间不够）需要内存申请和释放，以及对之前数据进行拷贝。<br>删除：在最后删除速度很快，在中间删除则需要内存拷贝。<br>适用场景：经常随机访问，且不经常对非尾节点进行插入删除。</p>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><p>（1）动态链表，在堆上分配空间，每插入一个元数都会分配空间，每删除一个元素都会释放空间。<br>（2）底层：双向链表<br>（3）性能：<br>访问：随机访问性能很差，只能快速访问头尾节点；<br>插入：很快，一般是常数开销；<br>删除：很快，一般是常数开销；<br>适用场景：经常插入删除大量数据。<br>适用场景：经常插入删除大量数据</p>
+<h3 id="vector和list区别"><a href="#vector和list区别" class="headerlink" title="vector和list区别"></a>vector和list区别</h3><p>1）vector底层实现是数组；list是双向 链表。<br>2）vector支持随机访问，list不支持。<br>3）vector是顺序内存，list不是。<br>4）vector在中间节点进行插入删除会导致内存拷贝，list不会。<br>5）vector一次性分配好内存，不够时才进行2倍扩容；list每次插入新节点都会进行内存申请。<br>6）vector随机访问性能好，插入删除性能差；list随机访问性能差，插入删除性能好。</p>
+<h3 id="vector和list应用"><a href="#vector和list应用" class="headerlink" title="vector和list应用"></a>vector和list应用</h3><p>vector拥有一段连续的内存空间，因此支持随机访问，如果需要高效的随即访问，而不在乎插入和删除的效率，使用vector。<br>list拥有一段不连续的内存空间，如果需要高效的插入和删除，而不关心随机访问，则应使用list。</p>
+<h2 id="STL"><a href="#STL" class="headerlink" title="STL"></a>STL</h2><p>STL主要由：以下几部分组成：<br>容器、迭代器、仿函数、算法、分配器、配接器<br>他们之间的关系：<br>1）分配器给容器分配存储空间；<br>2）算法通过迭代器获取容器中的内容；<br>3）仿函数可以协助算法完成各种操作；<br>4）配接器用来套接适配仿函数。<br>在C++标准中，STL被组织为下面的13个头文件：<algorithm>、<deque>、<functional>、<iterator>、<vector>、<list>、<map>、<memory.h>、<numeric>、<queue>、<set>、<stack>和<utility>。</p>
+<h2 id="STL中迭代器的作用"><a href="#STL中迭代器的作用" class="headerlink" title="STL中迭代器的作用"></a>STL中迭代器的作用</h2><h3 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h3><p>Iterator（迭代器）模式又称Cursor（游标）模式，用于提供一种方法顺序访问一个聚合对象中各个元素, 而又不需暴露该对象的内部表示。或者这样说可能更容易理解：Iterator模式是运用于聚合对象的一种模式，通过运用该模式，使得我们可以在不知道对象内部表示的情况下，按照一定顺序（由iterator提供的方法）访问聚合对象中的各个元素。<br>由于Iterator模式的以上特性：与聚合对象耦合，在一定程度上限制了它的广泛运用，一般仅用于底层聚合支持类，如STL的list、vector、stack等容器类及ostream_iterator等扩展iterator。</p>
+<h3 id="迭代器和指针的区别"><a href="#迭代器和指针的区别" class="headerlink" title="迭代器和指针的区别"></a>迭代器和指针的区别</h3><p>迭代器不是指针，是类模板，表现的像指针。他只是模拟了指针的一些功能，通过重载了指针的一些操作符，-&gt;、<em>、++、—等。迭代器封装了指针，是一个“可遍历STL（ Standard Template Library）容器内全部或部分元素”的对象， 本质是封装了原生指针，是指针概念的一种提升（lift），提供了比指针更高级的行为，相当于一种智能指针，他可以根据不同类型的数据结构来实现不同的++，—等操作。<br>迭代器返回的是对象引用而不是对象的值，所以cout只能输出迭代器使用</em>取值后的值而不能直接输出其自身。</p>
+<h3 id="迭代器产生原因"><a href="#迭代器产生原因" class="headerlink" title="迭代器产生原因"></a>迭代器产生原因</h3><p>Iterator类的访问方式就是把不同集合类的访问逻辑抽象出来，使得不用暴露集合内部的结构而达到循环遍历集合的效果。</p>
+<h2 id="C-源文件从文本到可执行文件经历的过程"><a href="#C-源文件从文本到可执行文件经历的过程" class="headerlink" title="C++源文件从文本到可执行文件经历的过程"></a>C++源文件从文本到可执行文件经历的过程</h2><p>对于C++源文件，从文本到可执行文件一般需要四个过程：<br>（1）预处理阶段：对源代码文件中文件的头文件、宏定义进行分析和替换，生成预编译文件；<br>（2）编译阶段：将经过预处理后的预编译文件转换成特定汇编代码，生成汇编文件；<br>（3）汇编阶段：将编译阶段生成的汇编文件转化成机器码，生成可重定位目标文件；<br>（4）链接阶段：将多个目标文件及所需要的库连接成最终的可执行目标文件。</p>
+<h2 id="include头文件"><a href="#include头文件" class="headerlink" title="include头文件"></a>include头文件</h2><p>双引号和尖括号的区别：编译器预处理阶段查找头文件的路径不一样。<br>对于使用双引号包含的头文件，查找头文件路径的顺序为：<br>1）当前头文件目录；<br>2）编译器设置的头文件路径（编译器可使用-I显式指定搜索路径）；<br>3）系统变量CPLUS_INCLUDE_PATH/C_INCLUDE_PATH指定的头文件路径。<br>对于使用尖括号包含的头文件，查找头文件的路径顺序为：<br>1）编译器设置的头文件路径（编译器可使用-I显式指定搜索路径）；<br>2）系统变量CPLUS_INCLUDE_PATH/C_INCLUDE_PATH指定的头文件路径。</p>
+<h2 id="内存溢出和内存泄漏"><a href="#内存溢出和内存泄漏" class="headerlink" title="内存溢出和内存泄漏"></a>内存溢出和内存泄漏</h2><h3 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h3><p>指程序申请内存时，没有足够的内存供申请者使用。内存溢出就是你要的内存空间超过了系统实际分配给你的空间，此时系统相当于没法满足你的需求，就会报内存溢出的错误。<br>内存溢出原因：<br>（1）内存中加载的数据量过于庞大，如一次从数据库取出过多数据；<br>（2）集合类中有对对象的引用，使用完后未清空，使得不能回收；<br>（3）代码中存在死循环或循环产生过多重复的对象实体<br>使用的第三方软件中的BUG；<br>（4）启动参数内存值设定的过小。</p>
+<h3 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h3><p>在编写应用程序的时候，程序分配了一块内存，但已经不再持有引用这块内存的对象（通常是指针），虽然这些内存被分配出去，但是无法收回，将无法被其他的进程所使用，我们说这块内存泄漏了，被泄漏的内存将在整个程序声明周期内都不可使用。<br>主要原因：是在使用new或malloc动态分配堆上的内存空间，而并未使用delete或free及时释放掉内存。<br>内存泄漏情况：<br>（1）不匹配使用new[] 和 delete[]；<br>（2）delet void * 的指针，导致没有调用到对象的析构函数，析构的所有清理工作都没有去执行从而导致内存的泄露；<br>（3）没有将基类的析构函数定义为虚函数，当基类的指针指向子类时，delete该对象时，不会调用子类的析构函数。</p>
+<h2 id="C-内存管理"><a href="#C-内存管理" class="headerlink" title="C++内存管理"></a>C++内存管理</h2><p>在C++中，虚拟内存分为代码段、数据段、BSS段、堆区、文件映射区以及栈区六部分。<br>（1）代码段:包括只读存储区和文本区，其中只读存储区存储字符串常量，文本区存储程序的机器代码。<br>（2）数据段：存储程序中已初始化的全局变量和静态变量<br>（3）bss 段：存储未初始化的全局变量和静态变量（局部+全局），以及所有被初始化为0的全局变量和静态变量。<br>（4）堆区：调用new/malloc函数时在堆区动态分配内存，同时需要调用delete/free来手动释放申请的内存。<br>（5）映射区:存储动态链接库以及调用mmap函数进行的文件映射。<br>（6）栈：使用栈空间存储函数的返回地址、参数、局部变量、返回值。</p>
+<h2 id="C-11新特性"><a href="#C-11新特性" class="headerlink" title="C++11新特性"></a>C++11新特性</h2><p>C++11 最常用的新特性如下：<br>（1）auto关键字：编译器可以根据初始值自动推导出类型。但是不能用于函数传参以及数组类型的推导；<br>（2）nullptr关键字：nullptr是一种特殊类型的字面值，它可以被转换成任意其它的指针类型；而NULL一般被宏定义为0，在遇到重载时可能会出现问题。<br>（3）智能指针：C++11新增了std::shared_ptr、std::weak_ptr等类型的智能指针，用于解决内存管理的问题。<br>（4）初始化列表：使用初始化列表来对类进行初始化。<br>（5）右值引用：基于右值引用可以实现移动语义和完美转发，消除两个对象交互时不必要的对象拷贝，节省运算存储资源，提高效率。<br>（6）atomic原子操作用于多线程资源互斥操作。<br>（7）新增STL容器array以及tuple。</p>
+<h2 id="右值引用"><a href="#右值引用" class="headerlink" title="右值引用"></a>右值引用</h2><p>右值引用是C++11中引入的新特性 , 它实现了转移语义和精确传递。它的主要目的有两个方面：<br>1）消除两个对象交互时不必要的对象拷贝，节省运算存储资源，提高效率。<br>2）能够更简洁明确地定义泛型函数。</p>
+<p>左值和右值的概念：<br>左值：能对表达式取地址、或具名对象/变量。一般指表达式结束后依然存在的持久对象。<br>右值：不能对表达式取地址，或匿名对象。一般指表达式结束就不再存在的临时对象。</p>
+<h2 id="LRU缓存"><a href="#LRU缓存" class="headerlink" title="LRU缓存"></a>LRU缓存</h2><p>LRU缓存是一种以LRU策略(距离当前最久没使用过的数据应该被淘汰)为缓存策略的缓存。<br>而所谓的缓存策略，就是当缓存满了之后，又有新数据需要加入到缓存中时，我们怎么从缓存中删除旧数据为新数据腾出空间的策略。<br>LRU，Least Recently Used的简写，即近期最少使用算法。该算法依据于程序的局部性原理， 其淘汰旧数据的策略是，距离当前最久没有被访问过的数据应该被淘汰。</p>
+<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><p>实现LRU的数据结构设计：unordered_map + double linked list。<br>（1）维护一个双向链表，该链表将缓存中的数据块按访问时间从新到旧排列起来（由于双向链表节点的交换代价很低，所以使用双向链表作为主要数据结构），节点为包含key,value的结构体（一条记录）；<br>（2）使用哈希表（map）保证缓存中数据的访问速度（由于引入哈希表可以提高查询速度，所以使用哈希表作为辅助数据结构）。map中的一个元素包含键值key以及链表中键值为key的迭代器（指针），通过key查找记录的地址，即可O(1)时间内访问链表中访问的记录。<br>接口描述<br><code>int get(int key)</code><br>功能:在哈希表中查找键值为key的元素，如果不存在返回-1；如果存在返回该key对应的value值.<br>实现:<br>这里说存在key的情况，如何get：<br>step1: 将键值为key的记录与链表首元交换位置;<br>step2: 更新哈希表中键值为key的迭代器<br><code>void put(int key, int value)</code><br>将key,value这条记录放入缓存，如果该记录已经在缓存中，更新该记录到缓存链表头部；如果不在缓存中且缓存未满，插入缓存链表头部，如果缓存满，删除尾部数据。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">int</span> <span class="keyword">key_t</span>;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">int</span> <span class="keyword">value_t</span>;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">        <span class="keyword">key_t</span> key;</span><br><span class="line">        <span class="keyword">value_t</span> value;</span><br><span class="line">    &#125; Node_t;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="built_in">list</span>&lt;Node_t&gt; cacheList_t;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="built_in">map</span>&lt;<span class="keyword">key_t</span>,cacheList_t::iterator&gt; <span class="keyword">map_t</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> m_capacity;</span><br><span class="line">    cacheList_t m_cacheList;</span><br><span class="line">    <span class="keyword">map_t</span> m_mp;    </span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    LRUCache(<span class="keyword">int</span> capacity) : m_capacity(capacity)&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> it = m_mp.<span class="built_in">find</span>(key);</span><br><span class="line">        <span class="comment">// not cached</span></span><br><span class="line">        <span class="keyword">if</span>(it == m_mp.<span class="built_in">end</span>()) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="comment">// cached</span></span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">auto</span> list_it = m_mp[key];</span><br><span class="line">            Node_t node = &#123;key,list_it-&gt;value&#125;;</span><br><span class="line">            m_cacheList.erase(list_it);</span><br><span class="line">            m_cacheList.push_front(node);</span><br><span class="line">            m_mp[key] = m_cacheList.<span class="built_in">begin</span>();</span><br><span class="line">            <span class="keyword">return</span> m_cacheList.<span class="built_in">begin</span>()-&gt;value;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> it = m_mp.<span class="built_in">find</span>(key);</span><br><span class="line">        <span class="comment">// cached</span></span><br><span class="line">        <span class="keyword">if</span>(it != m_mp.<span class="built_in">end</span>())&#123;</span><br><span class="line">            <span class="keyword">auto</span> listIt = m_mp[key];</span><br><span class="line">            <span class="comment">// delete the cached node, and then insert it to the list head</span></span><br><span class="line">            Node_t node = &#123;key, value&#125;;</span><br><span class="line">            m_cacheList.erase(listIt);</span><br><span class="line">            m_cacheList.push_front(node);</span><br><span class="line">            m_mp[key] = m_cacheList.<span class="built_in">begin</span>();</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// not cached</span></span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">// cache is full</span></span><br><span class="line">            <span class="keyword">if</span>(m_cacheList.<span class="built_in">size</span>() == m_capacity)&#123;</span><br><span class="line">                m_mp.erase(m_cacheList.back().key);</span><br><span class="line">                m_cacheList.pop_back();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// cache is not full</span></span><br><span class="line">            Node_t node = &#123;key,value&#125;;</span><br><span class="line">            m_cacheList.push_front(node);</span><br><span class="line">            m_mp[key] = m_cacheList.<span class="built_in">begin</span>();</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h2 id="C-inline函数（内嵌函数）"><a href="#C-inline函数（内嵌函数）" class="headerlink" title="C++_inline函数（内嵌函数）"></a>C++_inline函数（内嵌函数）</h2><p>在上下文切换中过程中需要一定的时间和空间开销（保护现场和恢复现场），C++提供了一种更高效的方法，即在编译时将所调用函数的代码直接嵌入到主调函数中，而不是将流程转出去。这种嵌入到主调函数中的函数称为内嵌函数，用inline 声明。<br>如：<code>inline int  max(int a, int b);</code><br>如果在类体中定义的成员函数（注：需在类体中定义函数体）中不包括循环等控制结构，C++系统自动的对它们作为内嵌函数来处理，无需显式的声明。<br>如果成员函数不在类体内定义，而在类体外定义，系统并不把它默认为内嵌函数，此时需作显式的声明。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/23/%E8%85%BE%E8%AE%AF%E5%AE%9E%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" rel="prev" title="腾讯实习项目总结">
+      <i class="fa fa-chevron-left"></i> 腾讯实习项目总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/15/windows%E4%B8%8Bvscode%E9%85%8D%E7%BD%AEc-%E7%8E%AF%E5%A2%83/" rel="next" title="windows下vscode配置c++环境">
+      windows下vscode配置c++环境 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-基础知识"><span class="nav-number">1.</span> <span class="nav-text">C++基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#static-静态变量"><span class="nav-number">1.1.</span> <span class="nav-text">static 静态变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全局静态变量"><span class="nav-number">1.1.1.</span> <span class="nav-text">全局静态变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#局部静态变量"><span class="nav-number">1.1.2.</span> <span class="nav-text">局部静态变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态函数"><span class="nav-number">1.1.3.</span> <span class="nav-text">静态函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类的静态成员"><span class="nav-number">1.1.4.</span> <span class="nav-text">类的静态成员</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类的静态函数"><span class="nav-number">1.1.5.</span> <span class="nav-text">类的静态函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-和C的区别"><span class="nav-number">1.2.</span> <span class="nav-text">C++和C的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#封装"><span class="nav-number">1.2.1.</span> <span class="nav-text">封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承"><span class="nav-number">1.2.2.</span> <span class="nav-text">继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多态"><span class="nav-number">1.2.3.</span> <span class="nav-text">多态</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#静态多态"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">静态多态</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态多态"><span class="nav-number">1.2.4.</span> <span class="nav-text">动态多态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-的四种cast转换"><span class="nav-number">1.3.</span> <span class="nav-text">C++的四种cast转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-的四种智能指针"><span class="nav-number">1.4.</span> <span class="nav-text">C++的四种智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#auto-ptr（c-98的方案，cpp11已经抛弃）"><span class="nav-number">1.4.1.</span> <span class="nav-text">auto_ptr（c++98的方案，cpp11已经抛弃）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unique-ptr（替换auto-ptr）"><span class="nav-number">1.4.2.</span> <span class="nav-text">unique_ptr（替换auto_ptr）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shared-ptr"><span class="nav-number">1.4.3.</span> <span class="nav-text">shared_ptr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#weak-ptr"><span class="nav-number">1.4.4.</span> <span class="nav-text">weak_ptr</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指针和引用的区别"><span class="nav-number">1.5.</span> <span class="nav-text">指针和引用的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">1.5.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#区别"><span class="nav-number">1.5.2.</span> <span class="nav-text">区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#malloc-和new"><span class="nav-number">1.6.</span> <span class="nav-text">malloc 和new</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚函数和多态"><span class="nav-number">1.7.</span> <span class="nav-text">虚函数和多态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态函数和虚函数"><span class="nav-number">1.8.</span> <span class="nav-text">静态函数和虚函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基类的析构函数"><span class="nav-number">1.9.</span> <span class="nav-text">基类的析构函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-中析构函数的作用"><span class="nav-number">1.10.</span> <span class="nav-text">C++中析构函数的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map和set"><span class="nav-number">1.11.</span> <span class="nav-text">map和set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vector-和list"><span class="nav-number">1.12.</span> <span class="nav-text">Vector 和list</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Vector"><span class="nav-number">1.12.1.</span> <span class="nav-text">Vector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#List"><span class="nav-number">1.12.2.</span> <span class="nav-text">List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vector和list区别"><span class="nav-number">1.12.3.</span> <span class="nav-text">vector和list区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vector和list应用"><span class="nav-number">1.12.4.</span> <span class="nav-text">vector和list应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STL"><span class="nav-number">1.13.</span> <span class="nav-text">STL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STL中迭代器的作用"><span class="nav-number">1.14.</span> <span class="nav-text">STL中迭代器的作用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器"><span class="nav-number">1.14.1.</span> <span class="nav-text">迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器和指针的区别"><span class="nav-number">1.14.2.</span> <span class="nav-text">迭代器和指针的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器产生原因"><span class="nav-number">1.14.3.</span> <span class="nav-text">迭代器产生原因</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-源文件从文本到可执行文件经历的过程"><span class="nav-number">1.15.</span> <span class="nav-text">C++源文件从文本到可执行文件经历的过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#include头文件"><span class="nav-number">1.16.</span> <span class="nav-text">include头文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存溢出和内存泄漏"><span class="nav-number">1.17.</span> <span class="nav-text">内存溢出和内存泄漏</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存溢出"><span class="nav-number">1.17.1.</span> <span class="nav-text">内存溢出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存泄漏"><span class="nav-number">1.17.2.</span> <span class="nav-text">内存泄漏</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-内存管理"><span class="nav-number">1.18.</span> <span class="nav-text">C++内存管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-11新特性"><span class="nav-number">1.19.</span> <span class="nav-text">C++11新特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#右值引用"><span class="nav-number">1.20.</span> <span class="nav-text">右值引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LRU缓存"><span class="nav-number">1.21.</span> <span class="nav-text">LRU缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现原理"><span class="nav-number">1.21.1.</span> <span class="nav-text">实现原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-inline函数（内嵌函数）"><span class="nav-number">1.22.</span> <span class="nav-text">C++_inline函数（内嵌函数）</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Kay</p>
+  <div class="site-description" itemprop="description">千里之行，始于足下</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kay</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bassyess.github.io","root":"/","scheme":"Pisces","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="快手实习项目整理论文阅读首先，是图像修复领域的调研和复现，主要是《Image Inpainting with Learnable Bidirectional Attention Maps》、《EdgeConnect: Structure Guided Image Inpainting using Edge Prediction》以及《Free-Form Image Inpainting with">
+<meta property="og:type" content="article">
+<meta property="og:title" content="快手实习项目整理">
+<meta property="og:url" content="https://bassyess.github.io/2023/01/08/%E5%BF%AB%E6%89%8B%E5%AE%9E%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%95%B4%E7%90%86/index.html">
+<meta property="og:site_name" content="Home">
+<meta property="og:description" content="快手实习项目整理论文阅读首先，是图像修复领域的调研和复现，主要是《Image Inpainting with Learnable Bidirectional Attention Maps》、《EdgeConnect: Structure Guided Image Inpainting using Edge Prediction》以及《Free-Form Image Inpainting with">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/13278405-ec200149adb2f468.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/852/format/webp">
+<meta property="article:published_time" content="2023-01-08T03:10:37.121Z">
+<meta property="article:modified_time" content="2023-01-08T03:10:37.121Z">
+<meta property="article:author" content="Kay">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/13278405-ec200149adb2f468.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/852/format/webp">
+
+<link rel="canonical" href="https://bassyess.github.io/2023/01/08/%E5%BF%AB%E6%89%8B%E5%AE%9E%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%95%B4%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>快手实习项目整理 | Home</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2023/01/08/%E5%BF%AB%E6%89%8B%E5%AE%9E%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%95%B4%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kay">
+      <meta itemprop="description" content="千里之行，始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          快手实习项目整理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-01-08 11:10:37" itemprop="dateCreated datePublished" datetime="2023-01-08T11:10:37+08:00">2023-01-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="快手实习项目整理"><a href="#快手实习项目整理" class="headerlink" title="快手实习项目整理"></a>快手实习项目整理</h1><h2 id="论文阅读"><a href="#论文阅读" class="headerlink" title="论文阅读"></a>论文阅读</h2><p>首先，是图像修复领域的调研和复现，主要是《Image Inpainting with Learnable Bidirectional Attention Maps》、《EdgeConnect: Structure Guided Image Inpainting using Edge Prediction》以及《Free-Form Image Inpainting with Gated Convolution》。<br>《Free-Form Image Inpainting with Gated Convolution》</p>
+<h2 id="图像修复"><a href="#图像修复" class="headerlink" title="图像修复"></a>图像修复</h2><p>1、使用低阶图像特征的块（patch）匹配：生成看似合理的平稳纹理，但在处理复杂的场景，例如人脸和物体的时候，常出现严重的错误。<br>2、使用卷积神经网络推理生成模型： 从大规模数据集中学习到的语义，以端到端的方式合成非平稳图像中的内容。但是普通卷积的深度生成模型，在图像填充上存在严重的问题，因为普通卷积识所有输入的像素和特征，均为有效像素。对于图像填充来说，每一层的输入时由确实外的有效像素/特征和缺失区域（掩码区域）的无效像素组成。普通卷积使用相同的卷积核，适用于所有有效、无效和混合（例如那些空洞边界）的像素/特征，在自由形状上的掩码做测试时，导致视觉上的伪影（如颜色差异，模糊和孔周围明显的边缘响应）。</p>
+<h3 id="部分卷积"><a href="#部分卷积" class="headerlink" title="部分卷积"></a>部分卷积</h3><p>为了解决这一局限性，部分卷积（PartialConv），其中卷积被遮掩（masked）和归一化，仅以有效像素为条件。基于规则的掩码更新策略，用于更新下一层的有效位置。部分卷积将所有位置视为无效或有效，并用0或1掩码乘以所有层的输入，该掩码可以看做是一个单一的不可学习的特征门（gate）通道。<br>然而，这种假设是有几个局限性：<br>（1）考虑跨网络不同层的输入空间位置，他们可能包括：a)输入图像中有有效像素；b)输入图像中有掩蔽mask像素；c)感受野的神经元没有覆盖到输入图像的有效像素；d)感受野的神经元覆盖了不同数量的输入图像的有效像素，这些有效地图像像素也可能有不同的相对位置；e)深层合成的像素；f)启发式的将所有的位置归类为无效或有效，会忽略以上这些重要信息。<br>（2）如果我们扩展到用户知道的图像修复，用户在掩码内提供的稀疏草图（sparse sketch），这些像素位置应该被视为有效地还是无效的？如何正确地更新下一层的掩码？<br>（3）对于部分卷积，无效的像素将逐层逐渐消失，基于规则的掩码将在深层全部消失。然而，为了合成孔内的像素，这些深层可能还需要知道当前位置是在孔内还是孔外？全1掩码的部分卷积不能提供这样的信息。</p>
+<h3 id="门控卷积"><a href="#门控卷积" class="headerlink" title="门控卷积"></a>门控卷积</h3><p>因此提出了门控卷积的概念，门控卷积掩码更新过程，输入特征首先用于计算门控值$g=\theta(w_gx)$，$\theta$是激活函数，$w_g$是可学习参数。最终的输出是学习到的特征和门控值$y=\fi(wx)\bigdot g$的乘积。<br>由于普通卷积是将每一个像素都当成有效值去计算的，这个特性适用于分类和检测任务，但是不适用于inpainting任务，因为inpainting任务中hole里面的像素是无效值，因此对空洞hole里面的内容和外面的内容要加以区分，部分卷积虽然将里面和外面的内容加以区分，但是它将含有1个有效值像素的区域与含有9个有效值像素的区域同等对待，这明显不合理，gated conv则是使用卷积核sigmoid函数使得网络去学习这种区分。</p>
+<h3 id="光谱归一化马尔科夫判别器（SNPatchGAN）"><a href="#光谱归一化马尔科夫判别器（SNPatchGAN）" class="headerlink" title="光谱归一化马尔科夫判别器（SNPatchGAN）"></a>光谱归一化马尔科夫判别器（SNPatchGAN）</h3><p>之前的修复网络，为了修复带有矩形确实部分的图片，提出 local GAN 来提升实验结果；然而，我们要研究的是对任意形状缺失的形状，借鉴 global and GANs、MarkovianGANs、perpetual loss、spectral-normalized GANs，作者提出一个有效地GAN loss，即为 SN-PatchGAN。<br>SN-PatchGAN的组成，是由卷积网络构成，输入为image、mask、guidance channel，输出是一个形状为h×w×c的3维特征，h、w、c分别代表高、宽和通道数。SN-PatchGAN由6个卷积层（卷积核大小为2，步幅为2）堆叠来获得Markovian Patches特征的统计信息。然后直接将SN-PatchGAN应用到特征图的每一个特征元素，以输入图像的不同位置和不同语义（在不同的通道中表示）的形式表示GAN的$h\times w\times c$个。<br>值得注意的是，在训练的环境中，输出图中每个神经元的感受野可以覆盖整个输入图像，因此不需要全局判别器。<br>作者也采用了最近提出的Spectral normalization来进一步稳定GANs的训练。我们采用SN-GANs中描述的默认Spectral normalization的fast approximation算法。<br>为了判别输入的真假，作者也采用了hings loss来作为目标函数，未采用Perceptual loss的原因是相似的patch-level information已经被编码在SN-PatchGAN中。</p>
+<h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><p>作者定制了一个带有Gated convolution layer和SN-PatchGan loss的generative inpainting network。网络结构由粗修复和细修复两个网络构成，采用了encoder-decoder network（PartialConv采用的是类似U-net的结构）。网络为全卷积神经网络，支持不同分辨率图片的输入。训练是一个端到端的过程。</p>
+<h2 id="“蝴蝶消失”特效算法"><a href="#“蝴蝶消失”特效算法" class="headerlink" title="“蝴蝶消失”特效算法"></a>“蝴蝶消失”特效算法</h2><p>快手的“蝴蝶消失”特效算法，主要是在用户上传的图片中，在蝴蝶飞舞的特效下，图片中的人像逐渐消失，还原完整的背景图像信息。算法的实现，是通过人像分割算法，检测图片中人体的位置并去除人体图像信息，然后采用图像修复算法还原人像区域可能存在的背景内容，实现蝴蝶飞舞下人像消失的特效。在这项工作中，我主要负责的是图像修复算法的研究以及后期的模型压缩等工作。<br>对于图像修复算法，我们使用卷积神经网络推理生成模型，从大规模数据集中学习到的语义，以端到端的方式合成非平稳图像中的内容。但是普通卷积的深度生成模型，在图像填充上存在严重的问题，因为普通卷积识所有输入的像素和特征，均为有效像素。但是对于图像填充来说，每一层的输入是由图像的有效像素和缺失区域的无效像素组成。普通卷积使用相同的卷积核，在人像这种自由形状上进行修复时，会导致视觉上的伪影（如颜色差异，模糊和孔周围明显的边缘响应）。<br>因此，我们采用门控卷积用于不规则的图像修复，它会为每个通道和每个空间位置（例如内部和外部掩码，RGB通道和用户知道通道）学习动态特征门控机制，使得最终的输出是学习到的特征与门控值g的乘积，门控卷积可以学会在单独的通道中突出掩码区域的信息，提高了不规则掩码输入的图像修复质量。我们通过堆叠门控卷积形成编码器和解码器网络，并将上下文注意模块集成到网络中，来更好的捕获远距离的依赖关系。<br><img src="https://upload-images.jianshu.io/upload_images/13278405-ec200149adb2f468.png?imageMogr2/auto-orient/strip|imageView2/2/w/852/format/webp" alt="网络结构"><br>由于网络采用的是生成对抗网络，处理像素级的l1重建损失函数和GAN loss(生成器和判别器都使用hinge loss)外，我们还尝试添加其他的损失函数优化图像修复效果。 我们发现不同的损失函数对图像的修复结果有很大的影响，添加log-loss以及ls-loss生成的纹理信息相对来说比较差，但可以避免斑块状伪影的问题，而relgan-loss生成的纹理信息比较好，但会出现斑块状的纹理。添加感知损失perceptual loss，通过VGG16计算全图区域的影响能有效平滑修复区域的斑块信息，减少伪影现象，而添加风格损失style loss计算图像的风格变化，并没有带来明显的效果提升，因此模型最终选择添加感知损失来优化模型修复效果。（感知损失将真实图片卷积得到的feature与生产图片卷积得到的feature进行对比，是高层的内容和全局信息接近，也就是感知的含义）。<br>由于图像修复是基于人像分割算法得到的人像区域上进行修复的，在真实场景中，可能由于人像手持物体或者头发等导致人像分割的区域不准确，有残留的边缘区域会导致修复的结果出现斑块状的伪影现象。针对这种现象，我们在模型训练的时候添加了攻击噪声，使得模型更加的稳定和鲁棒。考虑到人像分割的不准确性多是发生于边缘区域，因此我们训练的时候对人像的mask轮廓上随机添加块状的缺口，模拟分割不准确问题。在验证集的添加30%的边界攻击数据集上进行验证，模型修复的SSIM相较于原始模型降低0.04，但相较于原始模型在攻击数据集的表降低0.1现，添加边界噪声的模型具有更加鲁棒的结果，模型最终的修复指标SSIM为0.737。</p>
+<h3 id="图像修复的评价指标"><a href="#图像修复的评价指标" class="headerlink" title="图像修复的评价指标"></a>图像修复的评价指标</h3><p>计算图像修复的质量，最直接的思路即比较修复后的图片与真实图像之间的可视误差，通过visibility of errors评价图像的质量。</p>
+<h4 id="PSNR"><a href="#PSNR" class="headerlink" title="PSNR"></a>PSNR</h4><p>PSNR(Peak Signal to nise Ratio)，峰值信噪比，即峰值信号的能量与噪声的平均能量之比，通常表示时取log变成db计算，由于MSE为真实图片与含噪图像之差的能量均值，而两者的差即为噪声，因此PSNR即峰值信号能量与MSE之比。<br>优点：算法简单，计算的速度快。<br>缺点：基于对应像素点间的误差，呈现的差异值与人的主观感受不成比例，不符合人类视觉系统（HVS）的评价结果。</p>
+<h4 id="SSIM"><a href="#SSIM" class="headerlink" title="SSIM"></a>SSIM</h4><p>SSIM(Structural Similarity)，结构相似性，也就是一种全参考的图像质量评价指标，它分别从亮度、对比度、结构三方面度量图像相似性。SSIM取值范围[0, 1]，值越大，表示图像失真越小，SSIM在图像去噪、图像相似度评价上是由于PSNR的。</p>
+<script type="math/tex; mode=display">SSIM = \frac{(2\mu_x\mu_y+c_1)(\sigma_{xy}+c_2}{(\mu_x^2+\mu_y^2+c_1)(\sigma_x^2+\sigma_y^2+c_2)}</script><p>我们每次计算都是从图片上取一个NxN的窗口，然后不断滑动窗口进行计算，最后取平均值作为全局的SSIM。<br>优点：改进了PSNR的缺点，比较符合人体视觉系统的评估。<br>缺点：结构相似性指标对于图像出现位移、缩放、旋转等非结构性的失真无法有效的运作。</p>
+<h2 id="模型压缩算法"><a href="#模型压缩算法" class="headerlink" title="模型压缩算法"></a>模型压缩算法</h2><h3 id="分组卷积"><a href="#分组卷积" class="headerlink" title="分组卷积"></a>分组卷积</h3><p>分组卷积（Group convolution）：将多个卷积核拆分为分组，每个分组单独执行一系列运算之后，最终在全连接层再拼接在一起。分组卷积的重点不在于卷积，而在于分组：在执行卷积之后，将输出的feature map 执行分组。然后在每个组的数据会在各个GPU 上单独训练。<br>分组卷积在网络的全连接层才进行融合，这使得每个GPU 中只能看到部分通道的数据，这降低了模型的泛化能力。但是分组卷积降低了模型的参数数量以及计算量。<br>假设输入feature map具有$C_I$的输入通道，宽/高分别为$W_I, H_I$，假设卷积核的宽/高分别为$W_K, H_K$，有$C_O$个卷积核，则卷积的参数量为:$W_K\times H_K\times C_I\times C_O$，计算量为：$W_K\times H_K\times C_I\times W_O\times H_O\times C_O$。假设采用分组卷积，将输入通道分成G组，则分组后：参数量为$W_K\times H_K\times \frac{C_I}{G}\times \frac{C_O}{G}$，分组卷积的参数量、计算量均为标准卷积计算的$\frac{1}{G}$。</p>
+<h3 id="可分离卷积DepthWise"><a href="#可分离卷积DepthWise" class="headerlink" title="可分离卷积DepthWise"></a>可分离卷积DepthWise</h3><p>标准的卷积会考虑所有的输入通道，而DepthWise 卷积会针对每一个输入通道进行卷积操作，然后接一个1x1 的跨通道卷积操作。<br>DepthWise 卷积与分组卷积的区别在于：<br>1）分组卷积是一种通道分组的方式，它改变的是对输入的feature map 处理的方式。Depthwise 卷积是一种卷积的方式，它改变的是卷积的形式。<br>2）Depthwise 分组卷积结合了两者：首先沿着通道进行分组，然后每个分组执行DepthWise 卷积。<br>假设使用标准卷积，输入通道的数量为$C_I$，输出通道的数量为$C_O$，卷积核的尺寸为$W_K\times H_K$。则需要的参数数量为$C_I\times W_K\times H_K\times C_O$。使用Depthwise卷积时，图像的每个通道先通过一个$W_K\times H_K$的depthwise卷积层，再经过一个1x1、输出为$C_O$的卷积层。参数量为：</p>
+<script type="math/tex; mode=display">C_I\times W_K\times H_K+C_I\times 1\times 1\times C_O=W_K\times H_K\times C_I+C_IC_O</script><p>其参数数量是标准卷积的$\frac{1}{C_O}+\frac{1}{W_KH_K}$。</p>
+<h3 id="知识蒸馏"><a href="#知识蒸馏" class="headerlink" title="知识蒸馏"></a>知识蒸馏</h3><p>知识蒸馏的本质是让大的teacher model来协助线上的student model进行训练。因为模型训练时，我们通常采用复杂模型或Ensemble方式来获取最好的结果，从而导致参数冗余验证，在前向推理的时候，需要对模型进行复杂的计算。而知识蒸馏是把复杂模型或多个模型Ensemble（Teacher）学到的知识迁移到另一个轻量级模型上（Student）叫知识蒸馏，使得模型变轻量的同时（方便部署），尽量不损失性能。<br>知识蒸馏主要分成三个大类：<br>（1）输出迁移（output transfer），将网络的输出（soft-target）作为知识；<br>（2）特征迁移（feature transfer），将网络学习的特征作为知识；<br>（3）关系迁移（relation transfer），将网络或样本的关系作为知识。<br>在输出迁移中，我们对一些术语进行定义：</p>
+<ul>
+<li>Teacher：原始较大的模型或模型Ensemble，用于获取知识；</li>
+<li>Student：新的较小模型，接收teacher的知识，训练后用于前向预测；</li>
+<li>Hard target：样本原本的标签，Onehot</li>
+<li>Soft target：Teacher输出的预测结果（一般是softmax之后的概率）</li>
+</ul>
+<p>这里的软目标的优势在于：<br>（1）弥补了简单分类中监督信号不足（信息熵比较少）的问题，增加了信息量；<br>（2）提供了训练数据中类别的关系（数据增强）；<br>（3）可能增强了模型泛化的能力。<br>而特征迁移Feature Transfer——将网络学习的特征作为知识，对卷积网络隐藏层输出的特征图——feature map（特征 &amp; 知识）进行迁移（Attention transfer），让学生网络的feature map与教师网络的feature map尽可能相似。<br>关系迁移Relation Transfer——将网络或者样本的关系作为知识，让学生网络学习教师网络层与层之间的关系（特征关系）。</p>
+<h3 id="模型压缩过程"><a href="#模型压缩过程" class="headerlink" title="模型压缩过程"></a>模型压缩过程</h3><p>在原始的图像修复模型中，输入的图像大小为256x256，卷积的第一层通道数为48，模型的参数量接近25G，模型修复指标SSIM为0.7273。首先，们将输出图像的大小resize到128x128大小，模型的参数量降低为6G，但是模型的修复指标SSIM降低为0.6918，然后我们采用mobile_v2中的可分离卷积的思想，替换模型中的卷积方式，模型的参数量减少为1G，此时模型的SSIM指标为0.6486；接着我们进一步将卷积层的通道数减少为24，模型的参数量为300M，修复指标为0.6276。我们采用压缩的方式，很好的降低了模型的参数量，但由于模型压缩过程导致有用的参数的丢失，使得模型修复指标出现严重的下降，图像修复结果也出现严重的斑块状的伪影。为此，我们采用知识蒸馏的思想，将未压缩的模型作为教师网络，利用教师网络中生成的粗糙和中间特征图和输出的精细修复图，对学生网络的粗糙特征图和输出进行是修复图进行监督，在损失函数中计算二者的重建损失l1-loss，使得学生网络在训练过程中保留更多有用的信息。采用知识蒸馏的做法后，在参数量为1G的压缩模型中，SSIM指标提升为0.6661，在300M的蒸馏版本中模型的SSIM指标提升为0.6500，相较于未蒸馏前的效果有了明显的改进，而且修复的图片的斑块状伪影减少，修复区域更加的平滑。但在一些颜色变化复杂的区域，修复效果和原始相比还是会呈现明显的亮斑，因此我们添加感知损失计算teacher模型输出图像和学生网络输出图像的差值来平滑图像学生网络图像修复的结果。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/15/windows%E4%B8%8Bvscode%E9%85%8D%E7%BD%AEc-%E7%8E%AF%E5%A2%83/" rel="prev" title="windows下vscode配置c++环境">
+      <i class="fa fa-chevron-left"></i> windows下vscode配置c++环境
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/01/08/hello-world/" rel="next" title="Hello World">
+      Hello World <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#快手实习项目整理"><span class="nav-number">1.</span> <span class="nav-text">快手实习项目整理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#论文阅读"><span class="nav-number">1.1.</span> <span class="nav-text">论文阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图像修复"><span class="nav-number">1.2.</span> <span class="nav-text">图像修复</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#部分卷积"><span class="nav-number">1.2.1.</span> <span class="nav-text">部分卷积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#门控卷积"><span class="nav-number">1.2.2.</span> <span class="nav-text">门控卷积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#光谱归一化马尔科夫判别器（SNPatchGAN）"><span class="nav-number">1.2.3.</span> <span class="nav-text">光谱归一化马尔科夫判别器（SNPatchGAN）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络结构"><span class="nav-number">1.2.4.</span> <span class="nav-text">网络结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#“蝴蝶消失”特效算法"><span class="nav-number">1.3.</span> <span class="nav-text">“蝴蝶消失”特效算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#图像修复的评价指标"><span class="nav-number">1.3.1.</span> <span class="nav-text">图像修复的评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PSNR"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">PSNR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SSIM"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">SSIM</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型压缩算法"><span class="nav-number">1.4.</span> <span class="nav-text">模型压缩算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分组卷积"><span class="nav-number">1.4.1.</span> <span class="nav-text">分组卷积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可分离卷积DepthWise"><span class="nav-number">1.4.2.</span> <span class="nav-text">可分离卷积DepthWise</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#知识蒸馏"><span class="nav-number">1.4.3.</span> <span class="nav-text">知识蒸馏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型压缩过程"><span class="nav-number">1.4.4.</span> <span class="nav-text">模型压缩过程</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Kay</p>
+  <div class="site-description" itemprop="description">千里之行，始于足下</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kay</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

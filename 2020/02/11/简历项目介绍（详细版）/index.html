@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bassyess.github.io","root":"/","scheme":"Pisces","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="基于姿态估计的康复健身平台大纲 系统架构 前端设计 后台架构   算法模块 2D姿态估计 3D姿态估计 动作识别    项目介绍本项目来源是北京邮电大学的创新创业项目，主要目的是为了搭建基于人体姿态估计算法的平台，为用户在家中使用普通的2D摄像头，辅助进行健身和康复训练提供检测和指导。 系统架构摄像头采集图片，每秒采集10帧，将视频帧(600, 400)转为base64编码格式，和用户的user-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简历项目介绍（详细版）">
+<meta property="og:url" content="https://bassyess.github.io/2020/02/11/%E7%AE%80%E5%8E%86%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D%EF%BC%88%E8%AF%A6%E7%BB%86%E7%89%88%EF%BC%89/index.html">
+<meta property="og:site_name" content="Home">
+<meta property="og:description" content="基于姿态估计的康复健身平台大纲 系统架构 前端设计 后台架构   算法模块 2D姿态估计 3D姿态估计 动作识别    项目介绍本项目来源是北京邮电大学的创新创业项目，主要目的是为了搭建基于人体姿态估计算法的平台，为用户在家中使用普通的2D摄像头，辅助进行健身和康复训练提供检测和指导。 系统架构摄像头采集图片，每秒采集10帧，将视频帧(600, 400)转为base64编码格式，和用户的user-">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bassyess.github.io/images/system.jpg">
+<meta property="og:image" content="https://bassyess.github.io/images/HCN.jpg">
+<meta property="article:published_time" content="2020-02-11T01:07:30.000Z">
+<meta property="article:modified_time" content="2023-01-08T03:10:37.126Z">
+<meta property="article:author" content="Kay">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bassyess.github.io/images/system.jpg">
+
+<link rel="canonical" href="https://bassyess.github.io/2020/02/11/%E7%AE%80%E5%8E%86%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D%EF%BC%88%E8%AF%A6%E7%BB%86%E7%89%88%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>简历项目介绍（详细版） | Home</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bassyess.github.io/2020/02/11/%E7%AE%80%E5%8E%86%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D%EF%BC%88%E8%AF%A6%E7%BB%86%E7%89%88%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kay">
+      <meta itemprop="description" content="千里之行，始于足下">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Home">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          简历项目介绍（详细版）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-11 09:07:30" itemprop="dateCreated datePublished" datetime="2020-02-11T09:07:30+08:00">2020-02-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-08 11:10:37" itemprop="dateModified" datetime="2023-01-08T11:10:37+08:00">2023-01-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="基于姿态估计的康复健身平台"><a href="#基于姿态估计的康复健身平台" class="headerlink" title="基于姿态估计的康复健身平台"></a>基于姿态估计的康复健身平台</h1><h2 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h2><ul>
+<li>系统架构<ul>
+<li>前端设计</li>
+<li>后台架构</li>
+</ul>
+</li>
+<li>算法模块<ul>
+<li>2D姿态估计</li>
+<li>3D姿态估计</li>
+<li>动作识别</li>
+</ul>
+</li>
+</ul>
+<h2 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h2><p>本项目来源是北京邮电大学的创新创业项目，主要目的是为了搭建基于人体姿态估计算法的平台，为用户在家中使用普通的2D摄像头，辅助进行健身和康复训练提供检测和指导。</p>
+<h2 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h2><p><img src="/images/system.jpg" alt="系统架构"><br>摄像头采集图片，每秒采集10帧，将视频帧(600, 400)转为base64编码格式，和用户的user-token、任务的task-id一起封装成Json对象。然后通过stomp通信协议，利用activemq消息中间件进行前端和后台之间的信息传递。前端模拟生产者发送消息，通过设定的topics发送到对应的队列Queues中。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> client, destination, login, passcode;</span><br><span class="line">url = <span class="string">"ws://10.103.238.165:61614"</span>;</span><br><span class="line">destination = <span class="string">"/queue/video"</span>;</span><br><span class="line">login = <span class="string">"admin"</span>;</span><br><span class="line">passcode = <span class="string">"password"</span>;</span><br><span class="line"></span><br><span class="line">client = Stomp.client(url);</span><br><span class="line"><span class="string">''</span><span class="string">'</span></span><br><span class="line"><span class="string">timer = setInterval(</span></span><br><span class="line"><span class="string">            function () &#123;</span></span><br><span class="line"><span class="string">                ctx.drawImage(video, 0, 0, 600, 400);</span></span><br><span class="line"><span class="string">                var data = canvas.toDataURL('</span>image/jpeg<span class="string">', 1.0);    //将获取到的图像转换为base64编码</span></span><br><span class="line"><span class="string">                //newblob = dataURItoBlob(data);</span></span><br><span class="line"><span class="string">                //添加状态判断，当为OPEN时，发送消息</span></span><br><span class="line"><span class="string">                //var message = &#123;&#125;;</span></span><br><span class="line"><span class="string">                client.send(destination, &#123;'</span>user-token<span class="string">': 123, '</span>task<span class="string">': 0x01&#125;, data);//发送消息, 0x02 -&gt; 0000 0010</span></span><br><span class="line"><span class="string">                //接收图片时间</span></span><br><span class="line"><span class="string">                var timestamp = new Date().getTime();</span></span><br><span class="line"><span class="string">            &#125;, 100);</span></span><br></pre></td></tr></table></figure><br>后台是是SpringBoot+Mybatis框架搭建，通过模拟一个消费者，应用监听器监听消息。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@JmsListener</span>(destination = <span class="string">"video"</span>,containerFactory = <span class="string">"jmsListenerContainerQueue"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">processImage</span><span class="params">(Message message)</span> </span>&#123;</span><br><span class="line"><span class="comment">//      if (message instanceof BytesMessage) &#123;</span></span><br><span class="line">            BytesMessage bytesMessage = (BytesMessage)message;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">// 得到一些参数：</span></span><br><span class="line">                String user_token = String.valueOf(bytesMessage.getByteProperty(<span class="string">"user-token"</span>));  <span class="comment">// user-token</span></span><br><span class="line">                String task = String.valueOf(bytesMessage.getByteProperty(<span class="string">"task"</span>));               <span class="comment">// task</span></span><br><span class="line">                String image_base64 =<span class="string">""</span>;                                            <span class="comment">// origin image</span></span><br><span class="line">                UUID uuid= UUID.randomUUID();</span><br><span class="line">                String imageID = uuid.toString();                                   <span class="comment">// imageID</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>*<span class="number">1024</span>];</span><br><span class="line">                <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">while</span>((len=bytesMessage.readBytes(buffer))!=-<span class="number">1</span>)&#123;</span><br><span class="line">                    image_base64 = <span class="keyword">new</span> String(buffer,<span class="number">0</span>,len);</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">                Jedis jedis = jedisPool.getResource();</span><br><span class="line">                Map&lt;String,String&gt; imageData = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line">                imageData.put(<span class="string">"imageID"</span>,imageID);</span><br><span class="line">                imageData.put(<span class="string">"userToken"</span>,user_token);</span><br><span class="line">                imageData.put(<span class="string">"taskList"</span>,task);</span><br><span class="line">                imageData.put(<span class="string">"image"</span>,image_base64);</span><br><span class="line"></span><br><span class="line">                JSONObject jsonObject = JSONObject.fromObject(imageData);</span><br><span class="line"></span><br><span class="line"><span class="comment">//              比较task列表并分发存入对应的redis的list</span></span><br><span class="line">                <span class="keyword">int</span> taskToDo = Integer.parseInt(task);</span><br><span class="line">                <span class="keyword">if</span>((taskToDo&amp;<span class="number">0x01</span>)&gt;<span class="number">0</span>) &#123; <span class="comment">//pose</span></span><br><span class="line">                    jedis.rpush(<span class="string">"image_queue_to_pose_estimation"</span>, jsonObject.toString());</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>((taskToDo&amp;<span class="number">0x02</span>)&gt;<span class="number">0</span>)&#123; <span class="comment">//face</span></span><br><span class="line">                    jedis.rpush(<span class="string">"image_queue_to_face_recognition"</span>, jsonObject.toString());</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>((taskToDo&amp;<span class="number">0x04</span>)&gt;<span class="number">0</span>)&#123; <span class="comment">//object</span></span><br><span class="line">                    jedis.rpush(<span class="string">"image_queue_to_object_recognition"</span>, jsonObject.toString());</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//手动释放资源，不然会因为jedisPool里面的maxActive=200的限制，只能创建200个jedis资源。</span></span><br><span class="line">                jedis.close();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JMSException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br>后台将前端发送的Json对象解析出来，为了保证每张图片不重复，使用UUID随机生成图片ID(image_id)，将image_id、user_token、task_id和image_base64放入Hashmap中，转成Json对象存入redis中，通过redis的发布/订阅模式，和服务器算法进行信息传输。算法一直运行在服务器上，订阅redis的频道channel，来监听redis中存储的消息。将消息中的Json对象解析出来后，将base_64编码的图片数据解码转变成numpy矩阵类型，送入深度学习模型，将得到的human对象的list,human对象里包含BodyParts，是每个对象的x,y坐标和置信度值。然后human对象封装成Json对象，通过发布新的通道存储在redis中，业务后台同样订阅该通道，将算法模块返回的结果通过websocket方式提供给前端展示。</p>
+<h3 id="消息中间件"><a href="#消息中间件" class="headerlink" title="消息中间件"></a>消息中间件</h3><p>消息中间件事一种夸进程的通信方式，这种方式使得系统之间上下游进行了逻辑和物理解耦合。使用消息中间件，在C/S或B/S模型中，请求可以由服务器端主动发起；消息中间件与上下游相对独立，不关心系统的技术架构，更适用于异构系统之间的通信和数据交互。</p>
+<ol>
+<li>ActiveMQ<br>ActiveMQ支持两种消息队列模型为点对点（Point To Point）模型和发布-订阅（Publisher To Subscriber）模型。其中，点对点模型以queue作为消息的承载，消息生产者发送消息到queue中，然后消费者获取消息。对于已经被消费过的信息，queue中不再存储，虽然支持多个消费者，但一个消息只能被消费一次。发布-订阅模型，以topic承载消息，生产者发布消息到topic中，订阅该topic的多个消费者能同时接收到该消息。消息的两种传送机制为推送和拉取。推送的方式有消息中间件主动将消息发送给消费者，能处理快速即时的消息，但如果消费者处理消息能力较弱，消息推送不断，则有可能造成缓冲区的溢出；拉取的方式由消费者主动向消息中间件拉取信息，会造成消息的部分延迟。</li>
+<li>Redis<br>Redis作为key-value内存型存储系统，一般作为缓存中间件使用，在某些场景下也可以作为消息中间件进行数据的缓存和传输。Redis具有基于内存的高速读写特性，支持String、List、Hash、Set、Zset五种类型的操作，支持原子性事务，还具有较为丰富的特性。将Redis作为消息中间件使用，一般利用其列表的数据结构，生产者通过Ipush来发布消息，消费者通过brpop来获取消息。此种实现方式，在Redis宕机且数据没有持久化的情况下可能造成数据的丢失，对于数据可靠性要求不是太高的场景中适用。</li>
+</ol>
+<h2 id="算法模块"><a href="#算法模块" class="headerlink" title="算法模块"></a>算法模块</h2><h3 id="2D姿态估计"><a href="#2D姿态估计" class="headerlink" title="2D姿态估计"></a>2D姿态估计</h3><p><a href="https://blog.csdn.net/zziahgf/article/details/79643752" target="_blank" rel="noopener">CPM模型</a><br><a href="https://blog.csdn.net/htt789/article/details/80283370" target="_blank" rel="noopener">openpose姿态估计</a><br><a href="https://zhuanlan.zhihu.com/p/66803058" target="_blank" rel="noopener">openpose</a><br><a href="https://blog.csdn.net/young__fan/article/details/90719285" target="_blank" rel="noopener">匈牙利算法</a><br>使用openpose获得人体的18个关键点坐标，然后输入HCN网络进行动作分类，然后使用动态时间规划进行动作匹配。<br>数据集：公司给的健身动作视频，每个动作是3-5s，每组动作锻炼30次，总共进行8组，每段视频都是是单一的健身指导视频。由于视频中只有单一的参与者指导动作，训练数据背景单一，估考虑采用基于骨骼关键点的行为识别。<br>算法流程：<br>1.从redis中读取图片，将base64编码转为矩阵数据<br>2.输入openpose算法，得到人体的18个关键点。<br>BODY_PARTS = { “Nose”: 0, “Neck”: 1, “RShoulder”: 2, “RElbow”:3, “RWrist”: 4, “LShoulder”: 5, “LElbow”: 6, “LWrist”: 7, “RHip”: 8, “RKnee”: 9, “RAnkle”: 10, “LHip”: 11, “LKnee”: 12, “LAnkle”: 13, “REye”: 14, “LEye”: 15, “REar”: 16, “LEar”: 17, “Background”: 18 }<br>3.将得到的17个关键点输入到HCN网络进行动作分类。<br>关键点：在训练动作分类网络时，可以对关键点信息进行数据增强。<br>1)归一化处理，将其他通道求平均，只保留C和V通道求数据的均值和方差，然后对每一个数据进行归一化处理。<br>2）时间片段选取，在150帧时间序列中选择有效的64帧<br>3）坐标旋转变换，随机设一个角度，对构建旋转矩阵，对关键点进行旋转变换。<br>CNN 模型在提取高层面信息方面能力出色，并且也已经被用于根据骨架学习空间-时间特征。这些基于 CNN 的方法可以通过将时间动态和骨架关节分别编码成行和列而将骨架序列表示成一张图像，然后就像图像分类一样将图像输入 CNN 来识别其中含有的动作。但是，在这种情况下，只有卷积核内的相邻关节才被认为是在学习共现特征。尽管感受野（receptive field）能在之后的卷积层中覆盖骨架的所有关节，但我们很难有效地从所有关节中挖掘共现特征。由于空间维度中的权重共享机制，CNN 模型无法为每个关节都学习自由的参数。这促使我们设计一个能获得所有关节的全局响应的模型，以利用不同关节之间的相关性。<br>着眼于人的行为动作的特点，我们将行为动作中关节点具有的共现性特性引入到网络设计中，将其作为网络参数学习的约束来优化识别性能。人的某个行为动作常常和骨架的一些特定关节点构成的集合，以及这个集合中节点的交互密切相关。如要判别是否在打电话，关节点“手腕”、“手肘”、“肩膀”和“头”的动作最为关键。不同的行为动作与之密切相关的节点集合有所不同。例如对于“走路”的行为动作，“脚腕”、“膝盖”、“臀部”等关节点构成具有判别力的节点集合。我们将这种几个关节点同时影响和决定判别的特性称为共现性（Co-occurrence）。<br>我们提出了一种端到端的共现特征学习框架，其使用了 CNN 来自动地从骨架序列中学习分层的共现特征。我们发现一个卷积层的输出是来自所有输入通道的全局响应。如果一个骨架的每个关节都被当作是一个通道，那么卷积层就可以轻松地学习所有关节的共现。更具体而言，我们将骨架序列表示成了一个形状帧×关节×3（最后一维作为通道）的张量。我们首先使用核大小为 n×1 的卷积层独立地为每个关节学习了点层面的特征。然后我们再将该卷积层的输出转置，以将关节的维度作为通道。在这个转置运算之后，后续的层分层地聚合来自所有关节的全局特征。<br><img src="/images/HCN.jpg" alt=""><br>我们提出的分层式共现网络（HCN：Hierarchical Co-occurrence Network）的概况。绿色模块是卷积层，其中最后一维表示输出通道的数量。后面的「/2」表示卷积之后附带的最大池化层，步幅为 2。转置层是根据顺序参数重新排列输入张量的维度。conv1、conv5、conv6 和 fc7 之后附加了 ReLU 激活函数以引入非线性。<br>4.动作匹配，采用动态时间规划（DTW）算法，判断用户的运动视频和标准动作是否匹配。<br><a href="https://zhuanlan.zhihu.com/p/32849741" target="_blank" rel="noopener">DTW介绍</a><br>比较在该段时间内用户的姿态的(x,y)坐标点与标准模板的相似度进行评分。我们需要构造一个nxm的矩阵网格，矩阵元素(i, j)表示qi和cj两个点的距离d(qi, cj)（也就是序列Q的每一个点和序列C的每一个点之间的相似度，距离越小则相似度越高。）我们定义一个累加距离cumulative distances。从(0, 0)点开始匹配这两个序列Q和C，每到一个点，之前所有的点计算的距离都会累加。到达终点(n, m)后，这个累积距离就是我们上面说的最后的总的距离，也就是序列Q和C的相似度。</p>
+<script type="math/tex; mode=display">\gamma(i,j)=d(q_i,c_j)+min(\gamma(i-1,j-1),\gamma(i-1,j),\gamma(i,j-1))</script>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/12/%E7%AE%80%E5%8E%86%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" rel="next" title="简历项目介绍">
+      简历项目介绍 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基于姿态估计的康复健身平台"><span class="nav-number">1.</span> <span class="nav-text">基于姿态估计的康复健身平台</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#大纲"><span class="nav-number">1.1.</span> <span class="nav-text">大纲</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目介绍"><span class="nav-number">1.2.</span> <span class="nav-text">项目介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统架构"><span class="nav-number">1.3.</span> <span class="nav-text">系统架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#消息中间件"><span class="nav-number">1.3.1.</span> <span class="nav-text">消息中间件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法模块"><span class="nav-number">1.4.</span> <span class="nav-text">算法模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2D姿态估计"><span class="nav-number">1.4.1.</span> <span class="nav-text">2D姿态估计</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Kay</p>
+  <div class="site-description" itemprop="description">千里之行，始于足下</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kay</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
